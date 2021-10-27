@@ -132,3 +132,10 @@ input:focus {
   grid-template-columns: auto auto;
   grid-gap: 1em;
 }
+.sender-extras label {
+  display:block;
+}
+.sender-extras input {
+  display: inline;
+  width: auto;
+}

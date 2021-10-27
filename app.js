@@ -24,6 +24,7 @@ app.post('/', (req, res) => {
   const textversion = req.body.textversion;
   const htmlversion = req.body.htmlversion;
   const ampversion = req.body.ampversion;
+  const preventThreading = req.body.preventThreading;
 
   if ('MAIL_EMAIL' in process.env){ var email = process.env.MAIL_EMAIL }
   else { var email = req.body.email; }
@@ -53,11 +54,26 @@ app.post('/', (req, res) => {
     }
   });
 
+  function appendUniqueSubject(val) {
+    if(val == 'yes') {
+      let d = new Date();
+      let date = d.getUTCDate()
+      let month = d.getUTCMonth() + 1
+      let year = d.getUTCFullYear()
+      let hours = d.getUTCHours()
+      let mins = d.getUTCMinutes()
+      let secs = d.getUTCSeconds()
+      let dateStr = ` ${year}${month}${date} [${hours}:${mins}:${secs}]`
+      return dateStr
+    } else {
+      return ''
+    }
+  }
 
   let mailOptions = {
     from: `"${from}" <${email}>`,
     to: testaddress,
-    subject: testsubject,
+    subject: `${testsubject}${appendUniqueSubject(preventThreading)}`,
     html: htmlversion,
     text: textversion,
     amp: ampversion,
