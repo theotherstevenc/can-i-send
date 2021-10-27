@@ -1,0 +1,134 @@
+.CodeMirror {
+  height: 100%;
+}
+.CodeMirror, .previews {
+  display: none;
+}
+.editor-on + .CodeMirror,
+.preview-on {
+  display: block;
+}
+body {
+  margin:0;
+  padding:0;
+  font-size: 20px;
+  font-family: sans-serif;
+}
+button {
+  font:inherit;
+}
+.form {
+  position: absolute; top: 0; bottom: 0;
+  width: 100%;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+}
+iframe, textarea {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  background: none;
+  resize: none;
+}
+iframe, .textframe {
+  border:0;
+}
+.tabcontent {
+  display: none;
+}
+.headers {
+  display: grid;
+  grid-template-columns: auto 3fr 3fr 1fr;
+  grid-gap: 4px;
+  margin: .2em;
+}
+.headers input, .headers div, .headers button {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  font: inherit;
+  font-size: .7em;
+  white-space: nowrap;
+  border: 1px solid #000;
+  border-radius: 0.2em;
+}
+.headers div, .headers button {
+  background: #dbdbdb;
+}
+.tab {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+.tabs {
+  padding: 11px;
+  border: 1px solid #000;
+  border-radius: 0.2em;
+  margin: 0.2em;
+}
+.tabs a {
+  text-decoration: none;
+  color: inherit;
+}
+.editor {
+  display: flex;
+  max-height: 100vh;
+  overflow: scroll;
+}
+.preview div {
+  border: 1px solid #000;
+  height: 100%;
+  box-sizing: border-box;
+}
+.active {
+  color: white;
+  background: #747395;
+}
+.split, .gutter.gutter-horizontal {
+  float: left;
+}
+.gutter.gutter-horizontal {
+  cursor: ew-resize;
+}
+.modal-window {
+  display: grid;
+}
+.modal-window input, .modal-window button, .modal-window select {
+  width: 100%;
+  box-sizing: border-box;
+  font: inherit;
+  margin: 0.5em 0;
+  padding: 1em 0.5em;
+}
+.modal-window button {
+  font-size: 1.4em;
+  padding: .5em;
+  font-weight: bold;
+}
+#success h1 {
+  text-align: center;
+}
+#success .modal-window {
+  width: 20%;
+}
+.success-btn:focus,
+input:focus {
+  outline:3px Highlight solid;
+}
+#settings label {
+  font-weight:bold;
+}
+#settings input, #settings select {
+  font-weight:normal;
+}
+.sender-settings, .sender-settings-details {
+  border: 1px solid #757575;
+  padding: 1em;
+  margin: 0.4em;
+  border-radius: 0.2em;
+  box-shadow: #000 1px 3px 27px -15px;
+}
+.sender-settings-details {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-gap: 1em;
+}
