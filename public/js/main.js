@@ -165,9 +165,19 @@ if(sessionStorage.getItem('_SESSION_display')) {
     textEditor.setOption("theme", sessionTheme);
   }
 
-// look into combining this with editor font size via function()
-$('.setting-tabsize').on('input', function(){
-  htmlEditor.setOption('tabSize', sessionStorage.getItem('_SESSION_tabsize'));
-  ampEditor.setOption('tabSize', sessionStorage.getItem('_SESSION_tabsize'));
-  textEditor.setOption('tabSize', sessionStorage.getItem('_SESSION_tabsize'));
-})
+// set the value of the checkbox. generify this somehow
+if(sessionStorage.getItem('_SESSION_thread') == 'yes') {
+  $('.setting-thread').prop( 'checked', true );
+  $('.setting-thread').val(sessionStorage.getItem('_SESSION_thread'))
+} else if(sessionStorage.getItem('_SESSION_thread') == 'no') {
+  $('.setting-thread').prop( 'checked', false );
+  $('.setting-thread').val(sessionStorage.getItem('_SESSION_thread'))
+}
+
+$('.setting-thread').change(function() {
+  if ($(this).is(':checked')) {
+    sessionStorage.setItem(`_SESSION_thread`, 'yes')
+  } else {
+    sessionStorage.setItem(`_SESSION_thread`, 'no')
+  }
+});
