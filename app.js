@@ -92,12 +92,17 @@ app.post('/', (req, res) => {
 });
 
 //port can be changed
-app.listen(1999, () => console.log(`
- _____ _____ _____ _____ __
-| __  |   __| __  |   __|  |
-|    -|   __| __ -|   __|  |__
-|__|__|_____|_____|_____|_____|
-made with ❤ by a 𝗥𝗘𝗕𝗘𝗟
-Server started...
-http://localhost:1999
-` ));
+// app.listen(1999, () => console.log(`
+//  _____ _____ _____ _____ __
+// | __  |   __| __  |   __|  |
+// |    -|   __| __ -|   __|  |__
+// |__|__|_____|_____|_____|_____|
+// made with ❤ by a 𝗥𝗘𝗕𝗘𝗟
+// Server started...
+// http://localhost:1999
+// ` ));
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 8000;
+}
+app.listen(port);
