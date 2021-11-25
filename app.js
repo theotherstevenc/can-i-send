@@ -92,7 +92,13 @@ app.post('/', (req, res) => {
 });
 
 //port can be changed
-app.listen(1999, () => console.log(`
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 9999;
+}
+
+//app.listen(port);
+app.listen(port, () => console.log(`
  _____ _____ _____ _____ __
 | __  |   __| __  |   __|  |
 |    -|   __| __ -|   __|  |__
