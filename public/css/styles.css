@@ -104,9 +104,11 @@ iframe, .textframe {
   padding: 1em 0.5em;
 }
 .modal-window button {
-  font-size: 1.4em;
-  padding: .5em;
+  font-size: 1.2em;
+  padding: 0.5em;
   font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
 }
 #success h1 {
   text-align: center;
