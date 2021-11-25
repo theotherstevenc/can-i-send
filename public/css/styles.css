@@ -52,6 +52,10 @@ iframe, .textframe {
   border: 1px solid #000;
   border-radius: 0.2em;
 }
+.btn {
+  cursor: pointer;
+}
+
 .headers div, .headers button {
   background: #dbdbdb;
 }
