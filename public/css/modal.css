@@ -49,3 +49,15 @@
 .open {
     display: block;
 }
+
+.sendfail {
+    display: none;
+}
+
+.failure .sendfail {
+    display: inline-block;
+    background: #c90606;
+    padding: 0.5em;
+    color: white;
+    border-radius: 0.3em;
+}
