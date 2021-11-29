@@ -12,10 +12,10 @@
   </head>
   <body class="body">
 
-    <div id="success" class="modal{{#if sent}} open{{/if}}">
+    <div id="success" class="modal{{#if sendSuccess}} open{{/if}}{{#if sendFailure}} open failure{{/if}}">
       <div class="modal-window">
         <span class="close" data-dismiss="modal">&times;</span>
-          <h1>📧 email sent!</h1>
+          <h1>📧 email <span class="sendfail">not</span> sent!</h1>
         <button class="success-btn" data-dismiss="modal">Close</button>
       </div>
     </div>
@@ -119,12 +119,23 @@
     <script src="../public/js/themes.js"></script>
     <script src="../public/js/main.js"></script>
     <script src="../public/js/modal.js"></script>
-    {{#if sent}}
+    {{#if sendSuccess}}
     {{!-- automatically close the popup after successful send --}}
       <script>
-        var modal = document.querySelector('[class="modal open"]');
+        var modalSuccess = document.querySelector('[class="modal open"]');
           setTimeout(function(){ 
-            modal.classList.remove('open');
+            modalSuccess.classList.remove('open');
+            },
+          3000
+        );
+      </script>
+    {{/if}}
+    {{#if sendFailure}}
+    {{!-- automatically close the popup after successful send --}}
+      <script>
+        var modalFailure = document.querySelector('[class="modal open failure"]');
+          setTimeout(function(){ 
+            modalFailure.classList.remove('open', 'failure');
             },
           3000
         );

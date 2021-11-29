@@ -81,12 +81,14 @@ app.post('/', (req, res) => {
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-        return console.log(error);
-    }
-    console.log('Message sent: %s', info.messageId);
-    console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-
-    res.render('home', {sent:true});
+        //return console.log(error);
+        res.render('home', {sendFailure:true, sendSuccess:false});
+    } else {
+        console.log('Message sent: %s', info.messageId);
+        console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+    
+        res.render('home', {sendSuccess:true,sendFailure:false});
+      }
   });
 
 });
