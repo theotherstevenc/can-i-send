@@ -88,10 +88,9 @@ htmlEditor.on('change', htmlPreview)
 function ampPreview(){
   session.editor.amp = ampEditor.getValue()
   sessionStorage.setItem('_SESSION_amp', session.editor.amp)
-	var preview = document.querySelector('.ampframe').contentDocument;
-	preview.open();
-	preview.write(ampEditor.getValue());
-	preview.close();
+  var preview = document.querySelector('.ampframe')
+  const html = ampEditor.getValue()
+  preview.src = `data:text/html;charset=utf-8, ${encodeURIComponent(html)}`
 }
 ampEditor.on('change', ampPreview)
 
