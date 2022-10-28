@@ -10,12 +10,21 @@ const app = express();
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
 app.use('/public', express.static(path.join(__dirname, 'public')));
-//app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
-//app.use(bodyParser.json())
 app.use(bodyParser.json({limit: '50mb'}));
+
+const _env = {
+  body: {
+    email: process.env.MAIL_EMAIL,
+    pass: process.env.MAIL_PASS,
+    from: process.env.MAIL_FROM_NAME,
+    host: process.env.MAIL_HOST,
+    port: process.env.MAIL_PORT,
+  }
+}
+
 app.get('/', (req,res) =>{
-  res.render('home');
+  res.render('home', {_env});
 });
 
 app.post('/', (req, res) => {
@@ -26,22 +35,13 @@ app.post('/', (req, res) => {
   const ampversion = req.body.ampversion;
   const preventThreading = req.body.preventThreading;
 
-  if ('MAIL_EMAIL' in process.env){ var email = process.env.MAIL_EMAIL }
-  else { var email = req.body.email; }
+  let email = _env.body.email || req.body.email
+  let pass  = _env.body.pass || req.body.pass
+  let from  = _env.body.from || req.body.from
+  let host  = _env.body.host || req.body.host
+  let port  = _env.body.port || req.body.port
 
-  if ('MAIL_PASS' in process.env){ var pass = process.env.MAIL_PASS }
-  else { var pass = req.body.pass;   }
-
-  if ('MAIL_FROM_NAME' in process.env){ var from = process.env.MAIL_FROM_NAME }
-  else { var from = req.body.from; }
-
-  if ('MAIL_HOST' in process.env){ var host = process.env.MAIL_HOST }
-  else { var host = req.body.host; }
-
-  if ('MAIL_PORT' in process.env){ var port = process.env.MAIL_PORT }
-  else { var port = req.body.port; }
-
-  let transporter = nodemailer.createTransport({
+  let transportObj = {
     host: host,
     port: port,
     secure: false,
@@ -52,7 +52,9 @@ app.post('/', (req, res) => {
     tls:{
       rejectUnauthorized:false
     }
-  });
+  }
+
+  let transporter = nodemailer.createTransport(transportObj);
 
   function appendUniqueSubject(val) {
     if(val == 'yes') {
@@ -81,7 +83,6 @@ app.post('/', (req, res) => {
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-        //return console.log(error);
         res.render('home', {sendFailure:true, sendSuccess:false});
     } else {
         console.log('Message sent: %s', info.messageId);
