@@ -165,18 +165,39 @@ if(sessionStorage.getItem('_SESSION_display')) {
   }
 
 // set the value of the checkbox. generify this somehow
-if(sessionStorage.getItem('_SESSION_thread') == 'yes') {
+if(sessionStorage.getItem('_SESSION_thread') == 'yes_thread_subject') {
   $('.setting-thread').prop( 'checked', true );
   $('.setting-thread').val(sessionStorage.getItem('_SESSION_thread'))
-} else if(sessionStorage.getItem('_SESSION_thread') == 'no') {
+} else if(sessionStorage.getItem('_SESSION_thread') == '') {
   $('.setting-thread').prop( 'checked', false );
   $('.setting-thread').val(sessionStorage.getItem('_SESSION_thread'))
 }
 
 $('.setting-thread').change(function() {
   if ($(this).is(':checked')) {
-    sessionStorage.setItem(`_SESSION_thread`, 'yes')
+    sessionStorage.setItem(`_SESSION_thread`, 'yes_thread_subject')
+    $('.setting-thread').val(sessionStorage.getItem('_SESSION_thread'))
   } else {
-    sessionStorage.setItem(`_SESSION_thread`, 'no')
+    sessionStorage.setItem(`_SESSION_thread`, '')
+    $('.setting-thread').val(sessionStorage.getItem('_SESSION_thread'))
+  }
+});
+
+// this is the minify logic. generifiy this
+if(sessionStorage.getItem('_SESSION_minify') == 'yes_minify') {
+  $('.setting-minify').prop( 'checked', true );
+  $('.setting-minify').val(sessionStorage.getItem('_SESSION_minify'))
+} else if(sessionStorage.getItem('_SESSION_minify') == '') {
+  $('.setting-minify').prop( 'checked', false );
+  $('.setting-minify').val(sessionStorage.getItem('_SESSION_minify'))
+}
+
+$('.setting-minify').change(function() {
+  if ($(this).is(':checked')) {
+    sessionStorage.setItem(`_SESSION_minify`, 'yes_minify')
+    $('.setting-minify').val(sessionStorage.getItem('_SESSION_minify'))
+  } else {
+    sessionStorage.setItem(`_SESSION_minify`, '')
+    $('.setting-minify').val(sessionStorage.getItem('_SESSION_minify'))
   }
 });
