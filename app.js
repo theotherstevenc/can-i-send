@@ -6,6 +6,7 @@ const exphbs = require('express-handlebars');
 const path = require('path')
 const nodemailer = require('nodemailer');
 const app = express();
+const minify = require('html-minifier').minify;
 
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
@@ -30,10 +31,19 @@ app.get('/', (req,res) =>{
 app.post('/', (req, res) => {
   const testaddress = req.body.testaddress;
   const testsubject = req.body.testsubject;
-  const textversion = req.body.textversion;
-  const htmlversion = req.body.htmlversion;
   const ampversion = req.body.ampversion;
-  const preventThreading = req.body.preventThreading;
+  const textversion = req.body.textversion;
+  const htmlversion = (() => {
+
+    if(req.body.minifyHTML !== '_session_on-minify') return req.body.htmlversion
+
+    let markup = minify(req.body.htmlversion, {
+      collapseWhitespace:true,
+      minifyCSS:true,
+    })
+    return markup
+
+  })();
 
   let email = _env.body.email || req.body.email
   let pass  = _env.body.pass || req.body.pass
@@ -57,25 +67,22 @@ app.post('/', (req, res) => {
   let transporter = nodemailer.createTransport(transportObj);
 
   function appendUniqueSubject(val) {
-    if(val == 'yes') {
+    if(val !== '_session_on-thread') return
       let d = new Date();
-      let date = d.getUTCDate()
-      let month = d.getUTCMonth() + 1
-      let year = d.getUTCFullYear()
-      let hours = d.getUTCHours()
-      let mins = d.getUTCMinutes()
-      let secs = d.getUTCSeconds()
-      let dateStr = ` ${year}${month}${date} [${hours}:${mins}:${secs}]`
-      return dateStr
-    } else {
-      return ''
-    }
+        let date = d.getUTCDate()
+        let month = d.getUTCMonth() + 1
+        let year = d.getUTCFullYear()
+        let hours = d.getUTCHours()
+        let mins = d.getUTCMinutes()
+        let secs = d.getUTCSeconds()
+        let dateStr = ` ${year}${month}${date} [${hours}:${mins}:${secs}]`
+          return dateStr
   }
 
   let mailOptions = {
     from: `"${from}" <${email}>`,
     to: testaddress,
-    subject: `${testsubject}${appendUniqueSubject(preventThreading)}`,
+    subject: `${testsubject}${appendUniqueSubject(req.body.preventThreading)}`,
     html: htmlversion,
     text: textversion,
     amp: ampversion,
