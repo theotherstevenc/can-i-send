@@ -199,3 +199,4 @@ Object.keys(session.addOns).forEach((key, index) => {
       }
     });
   })
+
