@@ -31,16 +31,20 @@ app.get('/', (req,res) =>{
 app.post('/', (req, res) => {
   const testaddress = req.body.testaddress;
   const testsubject = req.body.testsubject;
+  const ampversion = req.body.ampversion;
   const textversion = req.body.textversion;
-  
-  let htmlversion = req.body.htmlversion;
-  if(req.body.minifyHTML === 'yes_minify'){
-    htmlversion = minify(req.body.htmlversion, {
+  const htmlversion = (() => {
+
+    if(req.body.minifyHTML !== '_session_on-minify') return req.body.htmlversion
+
+    let markup = minify(req.body.htmlversion, {
       collapseWhitespace:true,
       minifyCSS:true,
     })
-  }
-  const ampversion = req.body.ampversion;
+    return markup
+
+  })();
+
 
   let email = _env.body.email || req.body.email
   let pass  = _env.body.pass || req.body.pass
@@ -64,19 +68,16 @@ app.post('/', (req, res) => {
   let transporter = nodemailer.createTransport(transportObj);
 
   function appendUniqueSubject(val) {
-    if(val == 'yes_thread_subject') {
+    if(val !== '_session_on-thread') return
       let d = new Date();
-      let date = d.getUTCDate()
-      let month = d.getUTCMonth() + 1
-      let year = d.getUTCFullYear()
-      let hours = d.getUTCHours()
-      let mins = d.getUTCMinutes()
-      let secs = d.getUTCSeconds()
-      let dateStr = ` ${year}${month}${date} [${hours}:${mins}:${secs}]`
-      return dateStr
-    } else {
-      return ''
-    }
+        let date = d.getUTCDate()
+        let month = d.getUTCMonth() + 1
+        let year = d.getUTCFullYear()
+        let hours = d.getUTCHours()
+        let mins = d.getUTCMinutes()
+        let secs = d.getUTCSeconds()
+        let dateStr = ` ${year}${month}${date} [${hours}:${mins}:${secs}]`
+          return dateStr
   }
 
   let mailOptions = {
