@@ -6,6 +6,7 @@ const exphbs = require('express-handlebars');
 const path = require('path')
 const nodemailer = require('nodemailer');
 const app = express();
+const minify = require('html-minifier').minify;
 
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
@@ -31,9 +32,15 @@ app.post('/', (req, res) => {
   const testaddress = req.body.testaddress;
   const testsubject = req.body.testsubject;
   const textversion = req.body.textversion;
-  const htmlversion = req.body.htmlversion;
+  
+  let htmlversion = req.body.htmlversion;
+  if(req.body.minifyHTML === 'yes_minify'){
+    htmlversion = minify(req.body.htmlversion, {
+      collapseWhitespace:true,
+      minifyCSS:true,
+    })
+  }
   const ampversion = req.body.ampversion;
-  const preventThreading = req.body.preventThreading;
 
   let email = _env.body.email || req.body.email
   let pass  = _env.body.pass || req.body.pass
@@ -57,7 +64,7 @@ app.post('/', (req, res) => {
   let transporter = nodemailer.createTransport(transportObj);
 
   function appendUniqueSubject(val) {
-    if(val == 'yes') {
+    if(val == 'yes_thread_subject') {
       let d = new Date();
       let date = d.getUTCDate()
       let month = d.getUTCMonth() + 1
@@ -75,7 +82,7 @@ app.post('/', (req, res) => {
   let mailOptions = {
     from: `"${from}" <${email}>`,
     to: testaddress,
-    subject: `${testsubject}${appendUniqueSubject(preventThreading)}`,
+    subject: `${testsubject}${appendUniqueSubject(req.body.preventThreading)}`,
     html: htmlversion,
     text: textversion,
     amp: ampversion,
