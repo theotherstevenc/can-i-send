@@ -72,10 +72,18 @@ const session = {
     pass: '',
     fontsize: '',
   },
-  addOns: {
-    thread: '',
-    minify: '',
-  }
+  addOns: [
+    {
+      'id':'thread',
+      'label': 'Prevent Threading',
+      'name': 'preventThreading'
+    },
+    {
+      'id':'minify',
+      'label': 'Minify',
+      'name': 'minifyHTML'
+    },
+  ]
 }
 
 // initialize editor session to avoid bugs
@@ -176,27 +184,44 @@ if(sessionStorage.getItem('_SESSION_display')) {
     textEditor.setOption("theme", sessionTheme)
 }
 
-// manage initial value of addons checkbox
-  Object.keys(session.addOns).forEach((key, index) => {
-    if(sessionStorage.getItem(`_SESSION_${key}`) == `_session_on-${key}`) {
-      $(`.setting-${key}`).prop( 'checked', true )
-      $(`.setting-${key}`).val(sessionStorage.getItem(`_SESSION_${key}`))
-    } else if(sessionStorage.getItem(`_SESSION_${key}`) == '') {
-      $(`.setting-${key}`).prop( 'checked', false )
-      $(`.setting-${key}`).val(sessionStorage.getItem(`_SESSION_${key}`))
-    } 
-  })
+// generate additional sender settings based on addOnss array
+let advancedSettings = ''
+session.addOns.forEach((addOn) => {
+  advancedSettings += 
+  `
+  <label for="setting-${addOn.id}">
+  <input type="checkbox" id="setting-${addOn.id}" class="setting-${addOn.id}" name="${addOn.name}">
+  ${addOn.label}         
+  </label>
+  `
+})
+document.querySelector('.sender-extras').insertAdjacentHTML('afterbegin', advancedSettings)
 
-// manage change state values of addons checkbox
-Object.keys(session.addOns).forEach((key, index) => {
-    $(`.setting-${key}`).change(function() {
+// manage initial value of addons checkbox
+  for(let addOn of session.addOns) {
+
+    if(sessionStorage.getItem(`_SESSION_${addOn.id}`) == `_session_on-${addOn.id}`) {
+      $(`.setting-${addOn.id}`).prop( 'checked', true )
+      $(`.setting-${addOn.id}`).val(sessionStorage.getItem(`_SESSION_${addOn.id}`))
+    } else if(sessionStorage.getItem(`_SESSION_${addOn.id}`) == '') {
+      $(`.setting-${addOn.id}`).prop( 'checked', false )
+      $(`.setting-${addOn.id}`).val(sessionStorage.getItem(`_SESSION_${addOn.id}`))
+    } 
+
+// manage change state values of addon.ids checkbox
+    $(`.setting-${addOn.id}`).change(function() {
       if ($(this).is(':checked')) {
-        sessionStorage.setItem(`_SESSION_${key}`, `_session_on-${key}`)
-        $(`.setting-${key}`).val(sessionStorage.getItem(`_SESSION_${key}`))
+        sessionStorage.setItem(`_SESSION_${addOn.id}`, `_session_on-${addOn.id}`)
+        $(`.setting-${addOn.id}`).val(sessionStorage.getItem(`_SESSION_${addOn.id}`))
       } else {
-        sessionStorage.setItem(`_SESSION_${key}`, '')
-        $(`.setting-${key}`).val(sessionStorage.getItem(`_SESSION_${key}`))
+        sessionStorage.setItem(`_SESSION_${addOn.id}`, '')
+        $(`.setting-${addOn.id}`).val(sessionStorage.getItem(`_SESSION_${addOn.id}`))
       }
-    });
-  })
+    })
+
+}
+
+
+
+
 
