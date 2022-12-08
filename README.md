@@ -1,9 +1,11 @@
 # can i send
 A customizable app for sending test emails with various MIME types. This was specifically built with sending **AMP for Email** in mind. 
 
-[can-i-send.herokuapp.com](https://can-i-send.herokuapp.com)
+~~[can-i-send.herokuapp.com](https://can-i-send.herokuapp.com)~~
 
-> In order to work on Heroku, credentials must be provided during each session, which can be easily managed in the settings modal. Read more below, in regard to credentials and usage.
+[can-i-send.cyclic.app](https://can-i-send.cyclic.app)
+
+> In order to work on ~~Heroku~~ Cyclic, credentials must be provided during each session, which can be easily managed in the settings modal. Read more below, in regard to credentials and usage.
 
 ## The current mime type order is:
 1. HTML
