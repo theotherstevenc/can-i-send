@@ -57,9 +57,9 @@ function mime(evt, mime) {
 // layout the session object
 const session = {
   editor: {
-    html: '',
-    amp: '',
-    text: '',
+    html: defaults.html,
+    amp: defaults.amp,
+    text: defaults.text,
   },
   settings: {
     address: '',
@@ -86,12 +86,12 @@ const session = {
   ]
 }
 
-// initialize editor session to avoid bugs
-Object.keys(session.editor).forEach((key, index) => {
+// initialize editor session to avoid bugs + set default values
+for(const[key, val] of Object.entries(session.editor)) {
   if (sessionStorage.getItem(`_SESSION_${key}`) == null) {
-    sessionStorage.setItem(`_SESSION_${key}`, '')
-  }
-})
+    sessionStorage.setItem(`_SESSION_${key}`, val)
+  } 
+}
 
 // update preview with values from html editor
 function htmlPreview(){
