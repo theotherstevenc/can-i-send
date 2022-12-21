@@ -8,11 +8,64 @@ const nodemailer = require('nodemailer');
 const app = express();
 const minify = require('html-minifier').minify;
 
+const fs = require('fs')
+const fileUpload = require('express-fileupload')
+const emlformat = require('eml-format')
+
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
 app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(bodyParser.json({limit: '50mb'}));
+
+app.post('/upload', 
+  fileUpload({ 
+    createParentPath: true,
+    limits: {
+      fileSize: 200000 // 200kb
+    },
+    abortOnLimit: true 
+  }),
+  
+  (req, res) => {
+    let output = ''
+    let ampVersion = ''
+    const files = req.files
+
+    Object.keys(files).forEach(key => {
+      const filepath = path.join(__dirname, 'files', 'uploaded.eml')
+
+      files[key].mv(filepath, (err) => {
+        if(err) return res.status(500).json({status: 'error', message: err}) 
+        let eml = fs.readFileSync(filepath, 'utf-8')
+
+        emlformat.read(eml, function(error, data) {
+
+          if (error) return console.log(error, 'errrrrrrr')
+
+          if(data.attachments && data.attachments[0].contentType.includes('x-amp-html')) { 
+            ampVersion = data.attachments[0].data
+          }
+
+          output = {
+            htmlVersion: data.html,
+            textVersion: data.text,
+            ampVersion: ampVersion,
+          }  
+
+          return res.json({
+            output: output,
+            status:'success', 
+            message: Object.keys(files).toString(),
+          })
+
+        })
+      })   
+
+    })
+     
+  }
+)
 
 const _env = {
   body: {

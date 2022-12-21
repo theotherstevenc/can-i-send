@@ -110,6 +110,9 @@ iframe, .textframe {
   text-transform: uppercase;
   cursor: pointer;
 }
+.modal-window .setting-eml {
+  padding: 0;
+}
 #success h1 {
   text-align: center;
 }
