@@ -2,4 +2,3 @@
 .history
 *.env
 node_modules
-files/

@@ -20,7 +20,6 @@ app.use(bodyParser.json({limit: '50mb'}));
 
 app.post('/upload', 
   fileUpload({ 
-    createParentPath: true,
     limits: {
       fileSize: 200000 // 200kb
     },
@@ -33,37 +32,48 @@ app.post('/upload',
     const files = req.files
 
     Object.keys(files).forEach(key => {
-      const filepath = path.join(__dirname, 'files', 'uploaded.eml')
+      const filepath = path.join(__dirname, 'files', files[key].name)
 
       files[key].mv(filepath, (err) => {
-        if(err) return res.status(500).json({status: 'error', message: err}) 
-        let eml = fs.readFileSync(filepath, 'utf-8')
+        if(err) {
+          return res.status(500).json({status: 'error', message: `moving error: ${err}`}) 
+        } else {
+          let eml = fs.readFileSync(filepath, 'utf-8')
 
-        emlformat.read(eml, function(error, data) {
+          emlformat.read(eml, function(error, data) {
+  
+            if (error) {
+              return console.log(error, 'error reading')
+            } else {
 
-          if (error) return console.log(error, 'errrrrrrr')
-
-          if(data.attachments && data.attachments[0].contentType.includes('x-amp-html')) { 
-            ampVersion = data.attachments[0].data
-          }
-
-          output = {
-            htmlVersion: data.html,
-            textVersion: data.text,
-            ampVersion: ampVersion,
-          }  
-
-          return res.json({
-            output: output,
-            status:'success', 
-            message: Object.keys(files).toString(),
+              if(data.attachments && data.attachments[0].contentType.includes('x-amp-html')) { 
+                ampVersion = data.attachments[0].data
+              }
+    
+              output = {
+                htmlVersion: data.html,
+                textVersion: data.text,
+                ampVersion: ampVersion,
+              }  
+    
+              return res.json({
+                output: output,
+                status:'success', 
+                message: Object.keys(files).toString(),
+              })
+            
+            }
+  
           })
+        }
+        
+        fs.unlinkSync(filepath)
 
-        })
-      })   
-
+      })  
+      
+      
     })
-     
+    
   }
 )
 
