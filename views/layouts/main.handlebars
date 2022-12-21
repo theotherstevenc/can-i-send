@@ -92,6 +92,11 @@
             </div>
             <div class="sender-settings sender-extras">
             </div>
+            <div class="sender-settings">
+              <label for="setting-eml">Send existing EML<br>
+                <input type="file" id="setting-eml" class="setting-eml" accept=".eml"/>
+              </label>
+            </div>            
           <button data-dismiss="modal">Close</button>
         </div>
       </div>
@@ -114,6 +119,7 @@
     <script src="../public/js/split.min.js"></script>
     <script src="../public/js/themes.js"></script>
     <script src="../public/utils/default.js"></script>
+    <script src="../public/js/process.js"></script>
     <script src="../public/js/main.js"></script>
     <script src="../public/js/modal.js"></script>
     {{#if sendSuccess}}

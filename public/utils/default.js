@@ -34,7 +34,7 @@
   </body>
 </html>
   `,
-  text: `Plain text version`,
+  text: `Default plain text version`,
   amp: `
   <!doctype html>
   <html ⚡4email data-css-strict>
