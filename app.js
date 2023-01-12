@@ -32,6 +32,7 @@ app.post('/upload', (req, res) => {
 
   const uploadedFileExt = path.extname(req.files.uploadKey.name)
   const allowlist = ['.eml']
+  let ampVersion = ''
 
   if(!allowlist.includes(uploadedFileExt)) {
     return res.status(422)
@@ -42,10 +43,14 @@ app.post('/upload', (req, res) => {
     .parseEml()
     .then(result  => {
 
+    if((result.attachments.length > 0) && result.attachments[0].contentType.includes('x-amp-html')) {
+      ampVersion = result.attachments[0].content.toString()
+    }
+    
     const output = {
       htmlVersion: result.html,
       textVersion: result.text,
-      ampVersion: result.attachments[0].content.toString(),
+      ampVersion: ampVersion
     } 
 
     return res.json({
