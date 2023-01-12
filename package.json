@@ -1,6 +1,6 @@
 {
   "name": "newwaveamp",
-  "version": "2.0.5",
+  "version": "2.1",
   "description": "SENDING AMP EMAIL",
   "main": "app.js",
   "scripts": {

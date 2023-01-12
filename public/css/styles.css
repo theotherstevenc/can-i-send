@@ -52,10 +52,6 @@ iframe, .textframe {
   border: 1px solid #000;
   border-radius: 0.2em;
 }
-.btn {
-  cursor: pointer;
-}
-
 .headers div, .headers button {
   background: #dbdbdb;
 }
@@ -73,6 +69,10 @@ iframe, .textframe {
   text-decoration: none;
   color: inherit;
 }
+.btn,
+.tabs:hover {
+  cursor: pointer;
+}
 .editor {
   display: flex;
   max-height: 100vh;
@@ -85,7 +85,7 @@ iframe, .textframe {
 }
 .active {
   color: white;
-  background: #747395;
+  background: #5e7f9f;
 }
 .split, .gutter.gutter-horizontal {
   float: left;
@@ -134,12 +134,18 @@ input:focus {
   padding: 1em;
   margin: 0.4em;
   border-radius: 0.2em;
-  box-shadow: #000 1px 3px 27px -15px;
+  box-shadow: #00000050 1px 3px 27px -15px;
 }
 .sender-settings-details {
   display: grid;
   grid-template-columns: auto auto;
   grid-gap: 1em;
+}
+.sender-settings legend {
+  font-weight: bold;
+}
+.sender-settings p {
+  margin:0;
 }
 .sender-extras label {
   display:block;

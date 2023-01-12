@@ -22,10 +22,22 @@ app.use(
   fileUpload({
     useTempFiles : true,
     tempFileDir : '/tmp/',
+    limits: {
+      fileSize: 200000
+    }
   })
 );
 
 app.post('/upload', (req, res) => {
+
+  const uploadedFileExt = path.extname(req.files.uploadKey.name)
+  const allowlist = ['.eml']
+
+  if(!allowlist.includes(uploadedFileExt)) {
+    return res.status(422)
+  }
+  // todo: add UI messaging to indicate error
+
   new emlParser(fs.createReadStream(req.files.uploadKey.tempFilePath))
     .parseEml()
     .then(result  => {
@@ -104,8 +116,8 @@ app.post('/', (req, res) => {
   function appendUniqueSubject(val) {
     if(val !== '_session_on-thread') return
       let d = new Date();
-        let date = d.getUTCDate()
-        let month = d.getUTCMonth() + 1
+        let date = ('0' + d.getUTCDate() + 1).slice(-2)
+        let month = ('0' + d.getUTCMonth() + 1).slice(-2)
         let year = d.getUTCFullYear()
         let hours = d.getUTCHours()
         let mins = d.getUTCMinutes()
