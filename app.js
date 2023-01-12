@@ -10,7 +10,7 @@ const minify = require('html-minifier').minify;
 
 const fs = require('fs')
 const fileUpload = require('express-fileupload')
-const emlformat = require('eml-format')
+const emlParser = require('eml-parser');
 
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
@@ -18,64 +18,35 @@ app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(bodyParser.json({limit: '50mb'}));
 
-app.post('/upload', 
-  fileUpload({ 
-    limits: {
-      fileSize: 200000 // 200kb
-    },
-    abortOnLimit: true 
-  }),
-  
-  (req, res) => {
-    let output = ''
-    let ampVersion = ''
-    const files = req.files
+app.use(
+  fileUpload({
+    useTempFiles : true,
+    tempFileDir : '/tmp/',
+  })
+);
 
-    Object.keys(files).forEach(key => {
-      const filepath = path.join(__dirname, 'files', files[key].name)
+app.post('/upload', (req, res) => {
+  new emlParser(fs.createReadStream(req.files.uploadKey.tempFilePath))
+    .parseEml()
+    .then(result  => {
 
-      files[key].mv(filepath, (err) => {
-        if(err) {
-          return res.status(500).json({status: 'error', message: `moving error: ${err}`}) 
-        } else {
-          let eml = fs.readFileSync(filepath, 'utf-8')
+    const output = {
+      htmlVersion: result.html,
+      textVersion: result.text,
+      ampVersion: result.attachments[0].content.toString(),
+    } 
 
-          emlformat.read(eml, function(error, data) {
-  
-            if (error) {
-              return console.log(error, 'error reading')
-            } else {
-
-              if(data.attachments && data.attachments[0].contentType.includes('x-amp-html')) { 
-                ampVersion = data.attachments[0].data
-              }
-    
-              output = {
-                htmlVersion: data.html,
-                textVersion: data.text,
-                ampVersion: ampVersion,
-              }  
-    
-              return res.json({
-                output: output,
-                status:'success', 
-                message: Object.keys(files).toString(),
-              })
-            
-            }
-  
-          })
-        }
-        
-        fs.unlinkSync(filepath)
-
-      })  
-      
-      
+    return res.json({
+      output: output,
+      status:'success', 
+      message: Object.keys(req.files).toString(),
     })
-    
-  }
-)
+
+  })
+  .catch(err  => {
+    console.log(err);
+  })
+})
 
 const _env = {
   body: {
