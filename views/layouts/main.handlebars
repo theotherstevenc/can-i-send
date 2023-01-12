@@ -5,8 +5,8 @@
     <title>html ⚡ 4email</title>
     <link rel="icon" type="image/png" href="../public/img/favicon-32x32.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/codemirror.css">
-    <link rel="stylesheet" href="../public/css/default.css" id="codemirror-theme">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/addon/fold/foldgutter.css">
+    <link rel="stylesheet" href="../public/css/default.css" id="codemirror-theme">
     <link rel="stylesheet" href="../public/css/styles.css">
     <link rel="stylesheet" href="../public/css/modal.css">
   </head>
@@ -90,12 +90,15 @@
                 <input type="text" id="setting-fontsize" class="setting-fontsize" name="fontsize" placeholder="ex: 1.3em">
               </label>
             </div>
-            <div class="sender-settings sender-extras">
-            </div>
+            <fieldset class="sender-settings sender-extras">
+              <legend>send time settings</legend>
+              
+            </fieldset>
             <div class="sender-settings">
-              <label for="setting-eml">Send existing EML<br>
+              <label for="setting-eml">Convert existing EML<br>
                 <input type="file" id="setting-eml" class="setting-eml" accept=".eml"/>
               </label>
+              <p>This will extract the markup and insert it into the UI according to its MIME type</p>
             </div>            
           <button data-dismiss="modal">Close</button>
         </div>

@@ -74,14 +74,16 @@ const session = {
   },
   addOns: [
     {
-      'id':'thread',
+      'id': 'thread',
       'label': 'Prevent Threading',
-      'name': 'preventThreading'
+      'name': 'preventThreading',
+      'description': 'append a timestamp to the subject',
     },
     {
       'id':'minify',
       'label': 'Minify',
-      'name': 'minifyHTML'
+      'name': 'minifyHTML',
+      'description' : 'collapse whitespace and remove comments from CSS',
     },
   ]
 }
@@ -191,11 +193,11 @@ session.addOns.forEach((addOn) => {
   `
   <label for="setting-${addOn.id}">
   <input type="checkbox" id="setting-${addOn.id}" class="setting-${addOn.id}" name="${addOn.name}">
-  ${addOn.label}         
+  ${addOn.label}: <span style="font-weight:normal">${addOn.description}</span>         
   </label>
   `
 })
-document.querySelector('.sender-extras').insertAdjacentHTML('afterbegin', advancedSettings)
+document.querySelector('.sender-extras').insertAdjacentHTML('beforeend', advancedSettings)
 
 // manage initial value of addons checkbox
   for(let addOn of session.addOns) {
