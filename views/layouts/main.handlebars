@@ -65,23 +65,6 @@
       <div id="settings" class="modal">
         <div class="modal-window">
           <span class="close" data-dismiss="modal">&times;</span>
-            <div class="sender-settings">
-              <label for="setting-host">host<br>
-                <input type="text" id="setting-host" class="setting-host" name="host" placeholder="ex: smtp.gmail.com">
-              </label>
-              <label for="setting-port">port<br>
-                <input type="text" id="setting-port" class="setting-port" name="port" placeholder="ex: 587">
-              </label>
-              <label for="setting-email">username<br>
-                <input type="text" id="setting-email" class="setting-email" name="email" placeholder="ex: example@gmail.com">
-              </label>
-              <label for="setting-pass">password<br>
-                <input type="password" id="setting-pass" class="setting-pass" name="pass" placeholder="ex: aVerySecurePassword">
-              </label>
-              <label for="setting-from">from<br>
-                <input type="text" id="setting-from" class="setting-from" name="from" placeholder="ex: Homer Simpson">
-              </label>
-            </div>
             <div class="sender-settings-details">
               <label for="select">theme<br>
                 <select onchange="selectTheme()" id=select></select>
@@ -100,7 +83,24 @@
               </label>
               <p>This will extract the markup and insert it into the UI according to its MIME type</p>
             </div>            
-          <button data-dismiss="modal">Close</button>
+            <div class="sender-settings">
+              <label for="setting-host">host<br>
+                <input type="text" id="setting-host" class="setting-host" name="host" placeholder="ex: smtp.gmail.com">
+              </label>
+              <label for="setting-port">port<br>
+                <input type="text" id="setting-port" class="setting-port" name="port" placeholder="ex: 587">
+              </label>
+              <label for="setting-email">username<br>
+                <input type="text" id="setting-email" class="setting-email" name="email" placeholder="ex: example@gmail.com">
+              </label>
+              <label for="setting-pass">password<br>
+                <input type="password" id="setting-pass" class="setting-pass" name="pass" placeholder="ex: aVerySecurePassword">
+              </label>
+              <label for="setting-from">from<br>
+                <input type="text" id="setting-from" class="setting-from" name="from" placeholder="ex: Homer Simpson">
+              </label>
+            </div>
+            <button data-dismiss="modal">Close</button>
         </div>
       </div>
 
