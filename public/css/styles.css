@@ -1,3 +1,7 @@
+[data-lastpass-icon-root] {
+  display: none;
+}
+
 .CodeMirror {
   height: 100%;
 }
@@ -42,7 +46,7 @@ iframe, .textframe {
   grid-gap: 4px;
   margin: .2em;
 }
-.headers input, .headers div, .headers button {
+.headers input, .headers .btn, .headers button {
   width: 100%;
   padding: 10px;
   box-sizing: border-box;
