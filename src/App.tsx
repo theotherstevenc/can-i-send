@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import Editor from '@monaco-editor/react'
 import Split from 'react-split'
-
+import { TagsInput } from 'react-tag-input-component'
 import './App.css'
 import { defaults } from './util/defaults'
 import { useEffect, useState } from 'react'
@@ -13,7 +13,7 @@ enum EDITOR_TYPE {
 }
 function App() {
   const [activeEditor, setActiveEditor] = useState<string>(EDITOR_TYPE.HTML)
-  const [email, setEmail] = useState('rebelforce.test@gmail.com')
+  const [email, setEmail] = useState<string[]>(JSON.parse(localStorage.getItem('email') || '[]'))
   const [subject, setSubject] = useState('subject')
   const [html, setHtml] = useState<string>(defaults.html.trim())
   const [htmlCopy, setHtmlCopy] = useState<string>(defaults.html.trim())
@@ -28,6 +28,8 @@ function App() {
   const [password, setPassword] = useState(localStorage.getItem('password') || '')
   const [from, setFrom] = useState(localStorage.getItem('from') || '')
 
+  // const [selected, setSelected] = useState(['papaya'])
+
   const customMinifyHtml = (html: string): string => {
     return html
       .replace(/<!--\[if mso\]>[\s\S]*?<!\[endif\]-->/g, (match) => {
@@ -39,6 +41,7 @@ function App() {
   }
 
   useEffect(() => {
+    localStorage.setItem('email', JSON.stringify(email))
     localStorage.setItem('minifyHTML', JSON.stringify(minifyHTML))
     localStorage.setItem('wordWrap', JSON.stringify(wordWrap))
     localStorage.setItem('host', host)
@@ -46,7 +49,7 @@ function App() {
     localStorage.setItem('username', username)
     localStorage.setItem('password', password)
     localStorage.setItem('from', from)
-  }, [minifyHTML, wordWrap, host, port, username, password, from])
+  }, [email, minifyHTML, wordWrap, host, port, username, password, from])
 
   useEffect(() => {
     if (minifyHTML) {
@@ -156,8 +159,12 @@ function App() {
         <button type='button' onClick={() => handleUpdateSettings()}>
           Settings
         </button>
-        <input type='email' value={email} onChange={(e) => setEmail(e.target.value)} />
-        <input type='text' value={subject} onChange={(e) => setSubject(e.target.value)} />
+        <div className='split-container'>
+          <Split className='split'>
+            <TagsInput value={email} onChange={setEmail} />
+            <input type='text' value={subject} onChange={(e) => setSubject(e.target.value)} />
+          </Split>
+        </div>
         <button type='button' onClick={() => sendEmail()}>
           Send Email
         </button>

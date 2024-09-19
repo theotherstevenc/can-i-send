@@ -4,6 +4,11 @@
   flex-direction: column;
 }
 
+button,
+input {
+  font: inherit;
+}
+
 .monaco-editor {
   flex: 1;
 }
@@ -38,10 +43,8 @@ button:hover {
 
 .controls {
   display: flex;
-  justify-content: space-between;
-  height: 2em;
 }
 
-.controls input {
-  flex: 3;
+.controls .split-container {
+  flex: 4;
 }
