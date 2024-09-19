@@ -39,9 +39,9 @@ button:hover {
 .controls {
   display: flex;
   justify-content: space-between;
-  height: 2em; /* or 2rem */
+  height: 2em;
 }
 
 .controls input {
-  flex: 3; /* make inputs take up more space than buttons */
+  flex: 3;
 }

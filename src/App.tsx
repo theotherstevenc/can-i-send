@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import Editor from '@monaco-editor/react'
 import Split from 'react-split'
 
@@ -5,13 +6,13 @@ import './App.css'
 import { defaults } from './util/defaults'
 import { useEffect, useState } from 'react'
 
-enum EditorType {
-  HTML = 'htmleditor',
-  TEXT = 'texteditor',
-  AMP = 'ampeditor',
+enum EDITOR_TYPE {
+  HTML = 'html',
+  TEXT = 'text',
+  AMP = 'amp',
 }
 function App() {
-  const [activeEditor, setActiveEditor] = useState<string>(EditorType.HTML)
+  const [activeEditor, setActiveEditor] = useState<string>(EDITOR_TYPE.HTML)
   const [email, setEmail] = useState('rebelforce.test@gmail.com')
   const [subject, setSubject] = useState('subject')
   const [html, setHtml] = useState<string>(defaults.html.trim())
@@ -19,8 +20,13 @@ function App() {
   const [text, setText] = useState<string>(defaults.text.trim())
   const [amp, setAmp] = useState<string>(defaults.amp.trim())
   const [preventThreading, setPreventThreading] = useState(false)
-  const [minifyHTML, setMinifyHTML] = useState(false)
-  const [wordWrap, setWordWrap] = useState(false)
+  const [minifyHTML, setMinifyHTML] = useState(() => JSON.parse(localStorage.getItem('minifyHTML') || 'false'))
+  const [wordWrap, setWordWrap] = useState(() => JSON.parse(localStorage.getItem('wordWrap') || 'false'))
+  const [host, setHost] = useState(localStorage.getItem('host') || '')
+  const [port, setPort] = useState(localStorage.getItem('port') || '')
+  const [username, setUsername] = useState(localStorage.getItem('username') || '')
+  const [password, setPassword] = useState(localStorage.getItem('password') || '')
+  const [from, setFrom] = useState(localStorage.getItem('from') || '')
 
   const customMinifyHtml = (html: string): string => {
     return html
@@ -33,6 +39,16 @@ function App() {
   }
 
   useEffect(() => {
+    localStorage.setItem('minifyHTML', JSON.stringify(minifyHTML))
+    localStorage.setItem('wordWrap', JSON.stringify(wordWrap))
+    localStorage.setItem('host', host)
+    localStorage.setItem('port', port)
+    localStorage.setItem('username', username)
+    localStorage.setItem('password', password)
+    localStorage.setItem('from', from)
+  }, [minifyHTML, wordWrap, host, port, username, password, from])
+
+  useEffect(() => {
     if (minifyHTML) {
       setHtmlCopy(html)
       setHtml(customMinifyHtml(html))
@@ -40,27 +56,6 @@ function App() {
       setHtml(htmlCopy)
     }
   }, [minifyHTML])
-
-  const editors = [
-    {
-      id: EditorType.HTML,
-      language: 'html',
-      value: html,
-      onChange: (newValue: string | undefined) => setHtml(newValue || ''),
-    },
-    {
-      id: EditorType.TEXT,
-      language: 'text',
-      value: text,
-      onChange: (newValue: string | undefined) => setText(newValue || ''),
-    },
-    {
-      id: EditorType.AMP,
-      language: 'html',
-      value: amp,
-      onChange: (newValue: string | undefined) => setAmp(newValue || ''),
-    },
-  ]
 
   const sendEmail = async (): Promise<void> => {
     try {
@@ -77,6 +72,11 @@ function App() {
           ampversion: amp,
           preventThreading,
           minifyHTML,
+          host,
+          port,
+          username,
+          password,
+          from,
         }),
       })
 
@@ -90,7 +90,28 @@ function App() {
     }
   }
 
-  const handleEditorChange = (editor: EditorType) => {
+  const editors = [
+    {
+      type: EDITOR_TYPE.HTML,
+      language: 'html',
+      value: html,
+      onChange: (newValue: string | undefined) => setHtml(newValue || ''),
+    },
+    {
+      type: EDITOR_TYPE.TEXT,
+      language: 'text',
+      value: text,
+      onChange: (newValue: string | undefined) => setText(newValue || ''),
+    },
+    {
+      type: EDITOR_TYPE.AMP,
+      language: 'html',
+      value: amp,
+      onChange: (newValue: string | undefined) => setAmp(newValue || ''),
+    },
+  ]
+
+  const handleEditorChange = (editor: EDITOR_TYPE) => {
     setActiveEditor(editor)
   }
 
@@ -142,13 +163,13 @@ function App() {
         </button>
       </div>
       <div className='editors'>
-        <button type='button' onClick={() => handleEditorChange(EditorType.HTML)}>
+        <button type='button' onClick={() => handleEditorChange(EDITOR_TYPE.HTML)}>
           html
         </button>
-        <button type='button' onClick={() => handleEditorChange(EditorType.TEXT)}>
+        <button type='button' onClick={() => handleEditorChange(EDITOR_TYPE.TEXT)}>
           text
         </button>
-        <button type='button' onClick={() => handleEditorChange(EditorType.AMP)}>
+        <button type='button' onClick={() => handleEditorChange(EDITOR_TYPE.AMP)}>
           amp
         </button>
         <input
@@ -178,16 +199,31 @@ function App() {
         />
         <label htmlFor='wordWrap'>Word wrap</label>
 
-        <label htmlFor='setting-eml'>Convert EML</label>
         <input type='file' id='setting-eml' accept='.eml' onChange={(e) => handleFileUpload(e)} />
+        <label htmlFor='setting-eml'>Convert EML</label>
+
+        <label htmlFor='host'>host</label>
+        <input type='text' id='host' value={host} onChange={(e) => setHost(e.target.value)} />
+
+        <label htmlFor='port'>port</label>
+        <input type='text' id='port' value={port} onChange={(e) => setPort(e.target.value)} />
+
+        <label htmlFor='email'>username</label>
+        <input type='text' id='email' value={username} onChange={(e) => setUsername(e.target.value)} />
+
+        <label htmlFor='pass'>password</label>
+        <input type='password' id='pass' value={password} onChange={(e) => setPassword(e.target.value)} />
+
+        <label htmlFor='from'>from</label>
+        <input type='text' id='from' value={from} onChange={(e) => setFrom(e.target.value)} />
       </div>
       <Split className='split'>
         <div className='workspace-editor'>
           {editors.map(
             (editor) =>
-              activeEditor === editor.id && (
+              activeEditor === editor.type && (
                 <Editor
-                  key={editor.id}
+                  key={editor.type}
                   defaultLanguage={editor.language}
                   defaultValue={editor.value}
                   value={editor.value}
@@ -205,10 +241,7 @@ function App() {
           )}
         </div>
         <div className='workspace-preview'>
-          {editors.map(
-            (editor) =>
-              activeEditor === editor.id && <iframe key={editor.id} srcDoc={editor.value} />
-          )}
+          {editors.map((editor) => activeEditor === editor.type && <iframe key={editor.type} srcDoc={editor.value} />)}
         </div>
       </Split>
     </div>
