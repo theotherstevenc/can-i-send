@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import Editor from '@monaco-editor/react'
 import Split from 'react-split'
 
@@ -6,8 +5,13 @@ import './App.css'
 import { defaults } from './util/defaults'
 import { useEffect, useState } from 'react'
 
+enum EditorType {
+  HTML = 'htmleditor',
+  TEXT = 'texteditor',
+  AMP = 'ampeditor',
+}
 function App() {
-  const [activeEditor, setActiveEditor] = useState('htmleditor')
+  const [activeEditor, setActiveEditor] = useState<string>(EditorType.HTML)
   const [email, setEmail] = useState('rebelforce.test@gmail.com')
   const [subject, setSubject] = useState('subject')
   const [html, setHtml] = useState<string>(defaults.html.trim())
@@ -39,26 +43,26 @@ function App() {
 
   const editors = [
     {
-      id: 'htmleditor',
+      id: EditorType.HTML,
       language: 'html',
       value: html,
       onChange: (newValue: string | undefined) => setHtml(newValue || ''),
     },
     {
-      id: 'texteditor',
+      id: EditorType.TEXT,
       language: 'text',
       value: text,
       onChange: (newValue: string | undefined) => setText(newValue || ''),
     },
     {
-      id: 'ampeditor',
+      id: EditorType.AMP,
       language: 'html',
       value: amp,
       onChange: (newValue: string | undefined) => setAmp(newValue || ''),
     },
   ]
 
-  const sendEmail = async () => {
+  const sendEmail = async (): Promise<void> => {
     try {
       const response = await fetch('http://localhost:8080/api/send', {
         method: 'POST',
@@ -71,8 +75,8 @@ function App() {
           htmlversion: html,
           textversion: text,
           ampversion: amp,
-          preventThreading: preventThreading,
-          minifyHTML: minifyHTML,
+          preventThreading,
+          minifyHTML,
         }),
       })
 
@@ -86,7 +90,7 @@ function App() {
     }
   }
 
-  const handleEditorChange = (editor: string) => {
+  const handleEditorChange = (editor: EditorType) => {
     setActiveEditor(editor)
   }
 
@@ -100,10 +104,13 @@ function App() {
       const formData = new FormData()
       formData.append('file', file)
 
-      const response = await fetch('http://localhost:8080/api/upload', {
+      const url = 'http://localhost:8080/api/upload'
+      const options = {
         method: 'POST',
         body: formData,
-      })
+      }
+
+      const response = await fetch(url, options)
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
@@ -115,7 +122,7 @@ function App() {
       }
 
       const data = JSON.parse(text)
-      // const data = await response.json()
+
       setHtml(data.html)
       setText(data.text)
       setAmp(data.amp)
@@ -135,22 +142,40 @@ function App() {
         </button>
       </div>
       <div className='editors'>
-        <button type='button' onClick={() => handleEditorChange('htmleditor')}>
+        <button type='button' onClick={() => handleEditorChange(EditorType.HTML)}>
           html
         </button>
-        <button type='button' onClick={() => handleEditorChange('texteditor')}>
+        <button type='button' onClick={() => handleEditorChange(EditorType.TEXT)}>
           text
         </button>
-        <button type='button' onClick={() => handleEditorChange('ampeditor')}>
+        <button type='button' onClick={() => handleEditorChange(EditorType.AMP)}>
           amp
         </button>
-        <input type='checkbox' id='preventThreading' name='preventThreading' checked={preventThreading} onChange={(e) => setPreventThreading(e.target.checked)} />
+        <input
+          type='checkbox'
+          id='preventThreading'
+          name='preventThreading'
+          checked={preventThreading}
+          onChange={(e) => setPreventThreading(e.target.checked)}
+        />
         <label htmlFor='preventThreading'>Prevent Threading</label>
 
-        <input type='checkbox' id='minifyHTML' name='minifyHTML' checked={minifyHTML} onChange={(e) => setMinifyHTML(e.target.checked)} />
+        <input
+          type='checkbox'
+          id='minifyHTML'
+          name='minifyHTML'
+          checked={minifyHTML}
+          onChange={(e) => setMinifyHTML(e.target.checked)}
+        />
         <label htmlFor='minifyHTML'>Minify</label>
 
-        <input type='checkbox' id='wordWrap' name='wordWrap' checked={wordWrap} onChange={(e) => setWordWrap(e.target.checked)} />
+        <input
+          type='checkbox'
+          id='wordWrap'
+          name='wordWrap'
+          checked={wordWrap}
+          onChange={(e) => setWordWrap(e.target.checked)}
+        />
         <label htmlFor='wordWrap'>Word wrap</label>
 
         <label htmlFor='setting-eml'>Convert EML</label>
@@ -164,8 +189,9 @@ function App() {
                 <Editor
                   key={editor.id}
                   defaultLanguage={editor.language}
-                  value={editor.value}
                   defaultValue={editor.value}
+                  value={editor.value}
+                  onChange={editor.onChange}
                   options={{
                     readOnly: minifyHTML,
                     wordWrap: wordWrap ? 'on' : 'off',
@@ -174,12 +200,16 @@ function App() {
                       enabled: false,
                     },
                   }}
-                  onChange={editor.onChange}
                 />
               )
           )}
         </div>
-        <div className='workspace-preview'>{editors.map((editor) => activeEditor === editor.id && <iframe key={editor.id} srcDoc={editor.value} />)}</div>
+        <div className='workspace-preview'>
+          {editors.map(
+            (editor) =>
+              activeEditor === editor.id && <iframe key={editor.id} srcDoc={editor.value} />
+          )}
+        </div>
       </Split>
     </div>
   )

@@ -4,6 +4,7 @@
   "version": "2.0.0",
   "type": "module",
   "scripts": {
+    "serve": "cd server && node app.js",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
