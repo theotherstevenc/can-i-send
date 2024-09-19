@@ -1,4 +1,4 @@
- const defaults = {
+export const defaults = {
   html: `
   <!DOCTYPE html>
   <html lang="en" dir="ltr" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
@@ -47,5 +47,5 @@
       AMP4EMAIL
     </body>
   </html>
-`
+`,
 }
