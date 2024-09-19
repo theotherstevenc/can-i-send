@@ -2,9 +2,12 @@
 import Editor from '@monaco-editor/react'
 import Split from 'react-split'
 import { TagsInput } from 'react-tag-input-component'
+import Modal from 'react-modal'
+Modal.setAppElement('#root')
+
 import './App.css'
 import { defaults } from './util/defaults'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 enum EDITOR_TYPE {
   HTML = 'html',
@@ -28,7 +31,35 @@ function App() {
   const [password, setPassword] = useState(localStorage.getItem('password') || '')
   const [from, setFrom] = useState(localStorage.getItem('from') || '')
 
-  // const [selected, setSelected] = useState(['papaya'])
+  const [modalIsOpen, setModalIsOpen] = useState(false)
+  const closeButtonRef = useRef<HTMLButtonElement>(null)
+
+  const openModal = () => {
+    setModalIsOpen(true)
+  }
+
+  const closeModal = () => {
+    setModalIsOpen(false)
+  }
+
+  const afterOpenModal = () => {
+    const closeButton = closeButtonRef.current
+    if (closeButton) {
+      closeButton.focus()
+    }
+  }
+
+  const customStyles = {
+    overlay: {
+      backgroundColor: 'rgba(0, 0, 0, 0.75)',
+    },
+    content: {
+      padding: '20px',
+      borderRadius: '10px',
+      backgroundColor: '#fff',
+      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+    },
+  }
 
   const customMinifyHtml = (html: string): string => {
     return html
@@ -118,10 +149,6 @@ function App() {
     setActiveEditor(editor)
   }
 
-  function handleUpdateSettings(): void {
-    throw new Error('Function not implemented.')
-  }
-
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
@@ -156,9 +183,44 @@ function App() {
   return (
     <div className='App'>
       <div className='controls'>
-        <button type='button' onClick={() => handleUpdateSettings()}>
+        <button type='button' onClick={openModal}>
           Settings
         </button>
+        <Modal
+          isOpen={modalIsOpen}
+          onAfterOpen={afterOpenModal}
+          onRequestClose={closeModal}
+          style={customStyles}
+          contentLabel='Advanced Settings'
+        >
+          <button ref={closeButtonRef} onClick={closeModal}>
+            Close
+          </button>
+          <div className='setting'>
+            <input type='file' id='setting-eml' accept='.eml' onChange={(e) => handleFileUpload(e)} />
+            <label htmlFor='setting-eml'>Convert EML</label>
+          </div>
+          <div className='setting'>
+            <label htmlFor='host'>host</label>
+            <input type='text' id='host' value={host} onChange={(e) => setHost(e.target.value)} />
+          </div>
+          <div className='setting'>
+            <label htmlFor='port'>port</label>
+            <input type='text' id='port' value={port} onChange={(e) => setPort(e.target.value)} />
+          </div>
+          <div className='setting'>
+            <label htmlFor='email'>username</label>
+            <input type='text' id='email' value={username} onChange={(e) => setUsername(e.target.value)} />
+          </div>
+          <div className='setting'>
+            <label htmlFor='pass'>password</label>
+            <input type='password' id='pass' value={password} onChange={(e) => setPassword(e.target.value)} />
+          </div>
+          <div className='setting'>
+            <label htmlFor='from'>from</label>
+            <input type='text' id='from' value={from} onChange={(e) => setFrom(e.target.value)} />
+          </div>
+        </Modal>
         <div className='split-container'>
           <Split className='split'>
             <TagsInput value={email} onChange={setEmail} />
@@ -179,14 +241,6 @@ function App() {
         <button type='button' onClick={() => handleEditorChange(EDITOR_TYPE.AMP)}>
           amp
         </button>
-        <input
-          type='checkbox'
-          id='preventThreading'
-          name='preventThreading'
-          checked={preventThreading}
-          onChange={(e) => setPreventThreading(e.target.checked)}
-        />
-        <label htmlFor='preventThreading'>Prevent Threading</label>
 
         <input
           type='checkbox'
@@ -206,23 +260,14 @@ function App() {
         />
         <label htmlFor='wordWrap'>Word wrap</label>
 
-        <input type='file' id='setting-eml' accept='.eml' onChange={(e) => handleFileUpload(e)} />
-        <label htmlFor='setting-eml'>Convert EML</label>
-
-        <label htmlFor='host'>host</label>
-        <input type='text' id='host' value={host} onChange={(e) => setHost(e.target.value)} />
-
-        <label htmlFor='port'>port</label>
-        <input type='text' id='port' value={port} onChange={(e) => setPort(e.target.value)} />
-
-        <label htmlFor='email'>username</label>
-        <input type='text' id='email' value={username} onChange={(e) => setUsername(e.target.value)} />
-
-        <label htmlFor='pass'>password</label>
-        <input type='password' id='pass' value={password} onChange={(e) => setPassword(e.target.value)} />
-
-        <label htmlFor='from'>from</label>
-        <input type='text' id='from' value={from} onChange={(e) => setFrom(e.target.value)} />
+        <input
+          type='checkbox'
+          id='preventThreading'
+          name='preventThreading'
+          checked={preventThreading}
+          onChange={(e) => setPreventThreading(e.target.checked)}
+        />
+        <label htmlFor='preventThreading'>Prevent Threading</label>
       </div>
       <Split className='split'>
         <div className='workspace-editor'>
