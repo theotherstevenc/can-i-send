@@ -1,17 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import './App.css'
-import { defaults } from './util/defaults'
 import { useEffect, useState } from 'react'
+import { styled } from '@mui/material/styles'
+import { Checkbox, FormControlLabel, TextField, Box, Button } from '@mui/material'
+import CloudUploadIcon from '@mui/icons-material/CloudUpload'
+import { defaults } from './util/defaults'
 import Split from 'react-split'
 import Editor from '@monaco-editor/react'
 import { TagsInput } from 'react-tag-input-component'
-import { styled } from '@mui/material/styles'
-import Button from '@mui/material/Button'
-import CloudUploadIcon from '@mui/icons-material/CloudUpload'
-import Checkbox from '@mui/material/Checkbox'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import TextField from '@mui/material/TextField'
-import Box from '@mui/material/Box'
 
 enum EDITOR_TYPE {
   HTML = 'html',
