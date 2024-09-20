@@ -1,7 +1,6 @@
 require('dotenv').config()
 
 const PORT = process.env.PORT || 8080
-
 const express = require('express')
 const bodyParser = require('body-parser')
 const path = require('path')
@@ -10,36 +9,26 @@ const htmlMinifier = require('html-minifier').minify
 const fs = require('fs')
 const fileUpload = require('express-fileupload')
 const { simpleParser } = require('mailparser')
+const cors = require('cors')
+const bodyParserConfig = { limit: '50mb', extended: true }
 
 const app = express()
 
-// Enable CORS + Allow all origins
-const cors = require('cors')
 app.use(cors({ origin: '*' }))
-
-// Middleware Configuration
-const bodyParserConfig = { limit: '50mb', extended: true }
 app.use(bodyParser.urlencoded(bodyParserConfig))
 app.use(bodyParser.json(bodyParserConfig))
 app.use(fileUpload())
 
-const _env = {
-  body: {
-    email: process.env.MAIL_EMAIL,
-    pass: process.env.MAIL_PASS,
-    from: process.env.MAIL_FROM_NAME,
-    host: process.env.MAIL_HOST,
-    port: process.env.MAIL_PORT,
-  },
-}
-
 app.post('/api/send', (req, res) => {
-  const { preventThreading, minifyHTML, testaddress, testsubject, ampversion, textversion, htmlversion } = req.body
-
-  // Validate request body
-  if (!testaddress || !testsubject || !htmlversion) {
-    return res.status(400).json({ error: 'Missing required fields' })
-  }
+  const {
+    preventThreading,
+    minifyHTML,
+    testaddress,
+    testsubject,
+    ampversion,
+    textversion,
+    htmlversion,
+  } = req.body
 
   const minifiedHTML = minifyHTML
     ? htmlMinifier(htmlversion, {
@@ -48,18 +37,18 @@ app.post('/api/send', (req, res) => {
       })
     : htmlversion
 
-  const email = _env.body.email || req.body.email
-  const pass = _env.body.pass || req.body.pass
-  const from = _env.body.from || req.body.from
-  const host = _env.body.host || req.body.host
-  const port = _env.body.port || req.body.port
+  const user = req.body.username || process.env.MAIL_USERNAME
+  const pass = req.body.password || process.env.MAIL_PASS
+  const from = req.body.from || process.env.MAIL_FROM_NAME
+  const host = req.body.host || process.env.MAIL_HOST
+  const port = req.body.port || process.env.MAIL_PORT
 
   const transportObj = {
     host: host,
     port: port,
     secure: false,
     auth: {
-      user: email,
+      user: user,
       pass: pass,
     },
     tls: {
@@ -71,19 +60,17 @@ app.post('/api/send', (req, res) => {
 
   const appendUniqueSubject = () => {
     if (!preventThreading) return ''
-    const d = new Date()
-    const date = ('0' + d.getUTCDate()).slice(-2)
-    const month = ('0' + (d.getUTCMonth() + 1)).slice(-2)
-    const year = d.getUTCFullYear()
-    const hours = ('0' + d.getUTCHours()).slice(-2)
-    const mins = ('0' + d.getUTCMinutes()).slice(-2)
-    const secs = ('0' + d.getUTCSeconds()).slice(-2)
-    const dateStr = `${year}${month}${date} [${hours}:${mins}:${secs}]`
-    return dateStr
+    const dateStr = new Date()
+      .toISOString()
+      .replace('T', ' ')
+      .slice(0, 19)
+      .replace(/-/g, '')
+      .replace(/:/g, ':')
+    return ' ' + dateStr
   }
 
   const mailOptions = {
-    from: `"${from}" <${email}>`,
+    from: `"${from}" <${user}>`,
     to: testaddress,
     subject: `${testsubject}${appendUniqueSubject()}`,
     html: htmlversion,

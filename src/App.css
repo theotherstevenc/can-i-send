@@ -46,10 +46,6 @@ button:hover {
   cursor: col-resize;
 }
 
-.MuiButton-startIcon {
-  /* margin: 0 !important; */
-}
-
-.MuiInputBase-input {
-  /* padding: 0 !important; */
+.rti--container {
+  padding: 0 0.5rem !important;
 }

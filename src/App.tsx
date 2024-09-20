@@ -2,7 +2,16 @@
 import './App.css'
 import { useEffect, useState } from 'react'
 import { styled } from '@mui/material/styles'
-import { Checkbox, FormControlLabel, TextField, Box, Button } from '@mui/material'
+import {
+  Checkbox,
+  FormControlLabel,
+  TextField,
+  Box,
+  Button,
+  Snackbar,
+  Alert,
+  AlertColor,
+} from '@mui/material'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import { defaults } from './util/defaults'
 import Split from 'react-split'
@@ -16,6 +25,9 @@ enum EDITOR_TYPE {
 }
 
 function App() {
+  const [alertOpen, setAlertOpen] = useState(false)
+  const [alertSeverity, setAlertSeverity] = useState<AlertColor>('success')
+  const [alertMessage, setAlertMessage] = useState('')
   const [activeEditor, setActiveEditor] = useState<string>(EDITOR_TYPE.HTML)
   const [email, setEmail] = useState<string[]>(
     JSON.parse(localStorage.getItem('email') || '["ex@abc.com", "ex@xyz.com"]')
@@ -113,9 +125,16 @@ function App() {
       })
 
       if (!response.ok) {
+        setAlertMessage('Email not sent successfully')
+        setAlertSeverity('error')
+        setAlertOpen(true)
+        console.log('Email not sent successfully')
         throw new Error(`Error: ${response.statusText}`)
       }
 
+      setAlertMessage('Email sent successfully')
+      setAlertSeverity('success')
+      setAlertOpen(true)
       console.log('Email sent successfully')
     } catch (error) {
       console.log(error)
@@ -192,6 +211,11 @@ function App() {
 
   return (
     <div className='App'>
+      <Snackbar open={alertOpen} autoHideDuration={4000} onClose={() => setAlertOpen(false)}>
+        <Alert onClose={() => setAlertOpen(false)} severity={alertSeverity}>
+          {alertMessage}
+        </Alert>
+      </Snackbar>
       <div className='editors'>
         <Box
           sx={{
@@ -299,6 +323,7 @@ function App() {
           <Box
             sx={{
               display: 'flex',
+              gap: '.2rem',
             }}
           >
             <Button
@@ -329,6 +354,7 @@ function App() {
                   variant='outlined'
                   label='subject line'
                   value={subject}
+                  size='small'
                   onChange={(e) => setSubject(e.target.value)}
                 />
               </Split>
