@@ -1,65 +1,52 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import Editor from '@monaco-editor/react'
-import Split from 'react-split'
-import { TagsInput } from 'react-tag-input-component'
-import Modal from 'react-modal'
-Modal.setAppElement('#root')
-
 import './App.css'
 import { defaults } from './util/defaults'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
+import Split from 'react-split'
+import Editor from '@monaco-editor/react'
+import { TagsInput } from 'react-tag-input-component'
+import { styled } from '@mui/material/styles'
+import Button from '@mui/material/Button'
+import CloudUploadIcon from '@mui/icons-material/CloudUpload'
+import Checkbox from '@mui/material/Checkbox'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import TextField from '@mui/material/TextField'
+import Box from '@mui/material/Box'
 
 enum EDITOR_TYPE {
   HTML = 'html',
   TEXT = 'text',
   AMP = 'amp',
 }
+
 function App() {
   const [activeEditor, setActiveEditor] = useState<string>(EDITOR_TYPE.HTML)
-  const [email, setEmail] = useState<string[]>(JSON.parse(localStorage.getItem('email') || '[]'))
-  const [subject, setSubject] = useState('subject')
+  const [email, setEmail] = useState<string[]>(
+    JSON.parse(localStorage.getItem('email') || '["ex@abc.com", "ex@xyz.com"]')
+  )
+  const [subject, setSubject] = useState(localStorage.getItem('subject') || '')
   const [html, setHtml] = useState<string>(defaults.html.trim())
   const [htmlCopy, setHtmlCopy] = useState<string>(defaults.html.trim())
   const [text, setText] = useState<string>(defaults.text.trim())
   const [amp, setAmp] = useState<string>(defaults.amp.trim())
   const [preventThreading, setPreventThreading] = useState(false)
-  const [minifyHTML, setMinifyHTML] = useState(() => JSON.parse(localStorage.getItem('minifyHTML') || 'false'))
-  const [wordWrap, setWordWrap] = useState(() => JSON.parse(localStorage.getItem('wordWrap') || 'false'))
+  const [minifyHTML, setMinifyHTML] = useState(() =>
+    JSON.parse(localStorage.getItem('minifyHTML') || 'false')
+  )
+  const [wordWrap, setWordWrap] = useState(() =>
+    JSON.parse(localStorage.getItem('wordWrap') || 'false')
+  )
   const [host, setHost] = useState(localStorage.getItem('host') || '')
   const [port, setPort] = useState(localStorage.getItem('port') || '')
   const [username, setUsername] = useState(localStorage.getItem('username') || '')
   const [password, setPassword] = useState(localStorage.getItem('password') || '')
   const [from, setFrom] = useState(localStorage.getItem('from') || '')
-
-  const [modalIsOpen, setModalIsOpen] = useState(false)
-  const closeButtonRef = useRef<HTMLButtonElement>(null)
-
-  const openModal = () => {
-    setModalIsOpen(true)
-  }
-
-  const closeModal = () => {
-    setModalIsOpen(false)
-  }
-
-  const afterOpenModal = () => {
-    const closeButton = closeButtonRef.current
-    if (closeButton) {
-      closeButton.focus()
-    }
-  }
-
-  const customStyles = {
-    overlay: {
-      backgroundColor: 'rgba(0, 0, 0, 0.75)',
-    },
-    content: {
-      padding: '20px',
-      borderRadius: '10px',
-      backgroundColor: '#fff',
-      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-    },
-  }
+  const [sizes, setSizes] = useState<number[]>(
+    JSON.parse(localStorage.getItem('sizes') || '[80, 20]')
+  )
+  const [editorSizes, setEditorSizes] = useState<number[]>(
+    JSON.parse(localStorage.getItem('editorSizes') || '[50, 50]')
+  )
 
   const customMinifyHtml = (html: string): string => {
     return html
@@ -72,6 +59,9 @@ function App() {
   }
 
   useEffect(() => {
+    localStorage.setItem('subject', subject)
+    localStorage.setItem('editorSizes', JSON.stringify(editorSizes))
+    localStorage.setItem('sizes', JSON.stringify(sizes))
     localStorage.setItem('email', JSON.stringify(email))
     localStorage.setItem('minifyHTML', JSON.stringify(minifyHTML))
     localStorage.setItem('wordWrap', JSON.stringify(wordWrap))
@@ -80,7 +70,19 @@ function App() {
     localStorage.setItem('username', username)
     localStorage.setItem('password', password)
     localStorage.setItem('from', from)
-  }, [email, minifyHTML, wordWrap, host, port, username, password, from])
+  }, [
+    subject,
+    editorSizes,
+    sizes,
+    email,
+    minifyHTML,
+    wordWrap,
+    host,
+    port,
+    username,
+    password,
+    from,
+  ])
 
   useEffect(() => {
     if (minifyHTML) {
@@ -180,96 +182,173 @@ function App() {
     }
   }
 
+  const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1,
+  })
+
   return (
     <div className='App'>
-      <div className='controls'>
-        <button type='button' onClick={openModal}>
-          Settings
-        </button>
-        <Modal
-          isOpen={modalIsOpen}
-          onAfterOpen={afterOpenModal}
-          onRequestClose={closeModal}
-          style={customStyles}
-          contentLabel='Advanced Settings'
-        >
-          <button ref={closeButtonRef} onClick={closeModal}>
-            Close
-          </button>
-          <div className='setting'>
-            <input type='file' id='setting-eml' accept='.eml' onChange={(e) => handleFileUpload(e)} />
-            <label htmlFor='setting-eml'>Convert EML</label>
-          </div>
-          <div className='setting'>
-            <label htmlFor='host'>host</label>
-            <input type='text' id='host' value={host} onChange={(e) => setHost(e.target.value)} />
-          </div>
-          <div className='setting'>
-            <label htmlFor='port'>port</label>
-            <input type='text' id='port' value={port} onChange={(e) => setPort(e.target.value)} />
-          </div>
-          <div className='setting'>
-            <label htmlFor='email'>username</label>
-            <input type='text' id='email' value={username} onChange={(e) => setUsername(e.target.value)} />
-          </div>
-          <div className='setting'>
-            <label htmlFor='pass'>password</label>
-            <input type='password' id='pass' value={password} onChange={(e) => setPassword(e.target.value)} />
-          </div>
-          <div className='setting'>
-            <label htmlFor='from'>from</label>
-            <input type='text' id='from' value={from} onChange={(e) => setFrom(e.target.value)} />
-          </div>
-        </Modal>
-        <div className='split-container'>
-          <Split className='split'>
-            <TagsInput value={email} onChange={setEmail} />
-            <input type='text' value={subject} onChange={(e) => setSubject(e.target.value)} />
-          </Split>
-        </div>
-        <button type='button' onClick={() => sendEmail()}>
-          Send Email
-        </button>
-      </div>
       <div className='editors'>
-        <button type='button' onClick={() => handleEditorChange(EDITOR_TYPE.HTML)}>
-          html
-        </button>
-        <button type='button' onClick={() => handleEditorChange(EDITOR_TYPE.TEXT)}>
-          text
-        </button>
-        <button type='button' onClick={() => handleEditorChange(EDITOR_TYPE.AMP)}>
-          amp
-        </button>
+        <Box
+          sx={{
+            display: 'flex',
+          }}
+        >
+          <Box sx={{ flexGrow: 1 }}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={minifyHTML}
+                  onChange={(e) => setMinifyHTML(e.target.checked)}
+                  name='minifyHTML'
+                  color='primary'
+                />
+              }
+              label='Minify'
+            />
 
-        <input
-          type='checkbox'
-          id='minifyHTML'
-          name='minifyHTML'
-          checked={minifyHTML}
-          onChange={(e) => setMinifyHTML(e.target.checked)}
-        />
-        <label htmlFor='minifyHTML'>Minify</label>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={wordWrap}
+                  onChange={(e) => setWordWrap(e.target.checked)}
+                  name='wordWrap'
+                  color='primary'
+                />
+              }
+              label='Word wrap'
+            />
 
-        <input
-          type='checkbox'
-          id='wordWrap'
-          name='wordWrap'
-          checked={wordWrap}
-          onChange={(e) => setWordWrap(e.target.checked)}
-        />
-        <label htmlFor='wordWrap'>Word wrap</label>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={preventThreading}
+                  onChange={(e) => setPreventThreading(e.target.checked)}
+                  name='preventThreading'
+                  color='primary'
+                />
+              }
+              label='Prevent Threading'
+            />
+          </Box>
+          <Box sx={{ flexGrow: 1 }}>
+            <TextField
+              id='host'
+              label='host'
+              value={host}
+              onChange={(e) => setHost(e.target.value)}
+              variant='outlined'
+              size='small'
+            />
 
-        <input
-          type='checkbox'
-          id='preventThreading'
-          name='preventThreading'
-          checked={preventThreading}
-          onChange={(e) => setPreventThreading(e.target.checked)}
-        />
-        <label htmlFor='preventThreading'>Prevent Threading</label>
+            <TextField
+              id='port'
+              label='port'
+              value={port}
+              onChange={(e) => setPort(e.target.value)}
+              variant='outlined'
+              size='small'
+            />
+
+            <TextField
+              id='email'
+              label='username'
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              variant='outlined'
+              size='small'
+            />
+
+            <TextField
+              id='pass'
+              label='password'
+              type='password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              variant='outlined'
+              size='small'
+            />
+
+            <TextField
+              id='from'
+              label='from'
+              value={from}
+              onChange={(e) => setFrom(e.target.value)}
+              variant='outlined'
+              size='small'
+            />
+          </Box>
+          <Button
+            component='label'
+            role={undefined}
+            variant='contained'
+            tabIndex={-1}
+            startIcon={<CloudUploadIcon />}
+          >
+            Upload + Convert EML
+            <VisuallyHiddenInput type='file' accept='.eml' onChange={(e) => handleFileUpload(e)} />
+          </Button>
+        </Box>
       </div>
-      <Split className='split'>
+      <div className='controls'>
+        <div className='split-container'>
+          <Box
+            sx={{
+              display: 'flex',
+            }}
+          >
+            <Button
+              variant={activeEditor === EDITOR_TYPE.HTML ? 'outlined' : 'contained'}
+              onClick={() => handleEditorChange(EDITOR_TYPE.HTML)}
+            >
+              html
+            </Button>
+
+            <Button
+              variant={activeEditor === EDITOR_TYPE.TEXT ? 'outlined' : 'contained'}
+              onClick={() => handleEditorChange(EDITOR_TYPE.TEXT)}
+            >
+              text
+            </Button>
+
+            <Button
+              variant={activeEditor === EDITOR_TYPE.AMP ? 'outlined' : 'contained'}
+              onClick={() => handleEditorChange(EDITOR_TYPE.AMP)}
+            >
+              amp
+            </Button>
+
+            <Box sx={{ flexGrow: 1 }}>
+              <Split className='split' sizes={sizes} onDragEnd={(sizes) => setSizes(sizes)}>
+                <TagsInput value={email} onChange={setEmail} />
+                <TextField
+                  variant='outlined'
+                  label='subject line'
+                  value={subject}
+                  onChange={(e) => setSubject(e.target.value)}
+                />
+              </Split>
+            </Box>
+
+            <Button variant='contained' color='primary' onClick={() => sendEmail()}>
+              Send Email
+            </Button>
+          </Box>
+        </div>
+      </div>
+      <Split
+        className='split'
+        sizes={editorSizes}
+        onDragEnd={(editorSizes) => setEditorSizes(editorSizes)}
+      >
         <div className='workspace-editor'>
           {editors.map(
             (editor) =>
@@ -293,7 +372,10 @@ function App() {
           )}
         </div>
         <div className='workspace-preview'>
-          {editors.map((editor) => activeEditor === editor.type && <iframe key={editor.type} srcDoc={editor.value} />)}
+          {editors.map(
+            (editor) =>
+              activeEditor === editor.type && <iframe key={editor.type} srcDoc={editor.value} />
+          )}
         </div>
       </Split>
     </div>
