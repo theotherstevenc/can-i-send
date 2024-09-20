@@ -2,16 +2,7 @@
 import './App.css'
 import { useEffect, useState } from 'react'
 import { styled } from '@mui/material/styles'
-import {
-  Checkbox,
-  FormControlLabel,
-  TextField,
-  Box,
-  Button,
-  Snackbar,
-  Alert,
-  AlertColor,
-} from '@mui/material'
+import { Checkbox, FormControlLabel, TextField, Box, Button, Snackbar, Alert, AlertColor } from '@mui/material'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import { defaults } from './util/defaults'
 import Split from 'react-split'
@@ -24,37 +15,53 @@ enum EDITOR_TYPE {
   AMP = 'amp',
 }
 
+type EmailData = {
+  testaddress: string[]
+  testsubject: string
+  htmlversion: string
+  textversion: string
+  ampversion: string
+  preventThreading: boolean
+  minifyHTML: boolean
+  host: string
+  port: string
+  user: string
+  pass: string
+  from: string
+}
+
 function App() {
-  const [alertOpen, setAlertOpen] = useState(false)
+  // Alert state
+  const [alertOpen, setAlertOpen] = useState<boolean>(false)
   const [alertSeverity, setAlertSeverity] = useState<AlertColor>('success')
-  const [alertMessage, setAlertMessage] = useState('')
+  const [alertMessage, setAlertMessage] = useState<string>('')
+
+  // Editor state
   const [activeEditor, setActiveEditor] = useState<string>(EDITOR_TYPE.HTML)
-  const [email, setEmail] = useState<string[]>(
-    JSON.parse(localStorage.getItem('email') || '["ex@abc.com", "ex@xyz.com"]')
-  )
-  const [subject, setSubject] = useState(localStorage.getItem('subject') || '')
+  const [editorSizes, setEditorSizes] = useState<number[]>(JSON.parse(localStorage.getItem('editorSizes') || '[50, 50]'))
+
+  // Email content state
+  const [email, setEmail] = useState<string[]>(JSON.parse(localStorage.getItem('email') || '["ex@abc.com", "ex@xyz.com"]'))
+  const [subject, setSubject] = useState<string>(localStorage.getItem('subject') || '')
   const [html, setHtml] = useState<string>(defaults.html.trim())
   const [htmlCopy, setHtmlCopy] = useState<string>(defaults.html.trim())
   const [text, setText] = useState<string>(defaults.text.trim())
   const [amp, setAmp] = useState<string>(defaults.amp.trim())
-  const [preventThreading, setPreventThreading] = useState(false)
-  const [minifyHTML, setMinifyHTML] = useState(() =>
-    JSON.parse(localStorage.getItem('minifyHTML') || 'false')
-  )
-  const [wordWrap, setWordWrap] = useState(() =>
-    JSON.parse(localStorage.getItem('wordWrap') || 'false')
-  )
+
+  // Email settings state
+  const [preventThreading, setPreventThreading] = useState<boolean>(false)
+  const [minifyHTML, setMinifyHTML] = useState<boolean>(() => JSON.parse(localStorage.getItem('minifyHTML') || 'false'))
+  const [wordWrap, setWordWrap] = useState<boolean>(() => JSON.parse(localStorage.getItem('wordWrap') || 'false'))
+
+  // Server configuration state
   const [host, setHost] = useState(localStorage.getItem('host') || '')
   const [port, setPort] = useState(localStorage.getItem('port') || '')
-  const [username, setUsername] = useState(localStorage.getItem('username') || '')
-  const [password, setPassword] = useState(localStorage.getItem('password') || '')
+  const [user, setUser] = useState(localStorage.getItem('user') || '')
+  const [pass, setPass] = useState(localStorage.getItem('pass') || '')
   const [from, setFrom] = useState(localStorage.getItem('from') || '')
-  const [sizes, setSizes] = useState<number[]>(
-    JSON.parse(localStorage.getItem('sizes') || '[80, 20]')
-  )
-  const [editorSizes, setEditorSizes] = useState<number[]>(
-    JSON.parse(localStorage.getItem('editorSizes') || '[50, 50]')
-  )
+
+  // Layout state
+  const [sizes, setSizes] = useState<number[]>(JSON.parse(localStorage.getItem('sizes') || '[80, 20]'))
 
   const customMinifyHtml = (html: string): string => {
     return html
@@ -75,22 +82,10 @@ function App() {
     localStorage.setItem('wordWrap', JSON.stringify(wordWrap))
     localStorage.setItem('host', host)
     localStorage.setItem('port', port)
-    localStorage.setItem('username', username)
-    localStorage.setItem('password', password)
+    localStorage.setItem('user', user)
+    localStorage.setItem('pass', pass)
     localStorage.setItem('from', from)
-  }, [
-    subject,
-    editorSizes,
-    sizes,
-    email,
-    minifyHTML,
-    wordWrap,
-    host,
-    port,
-    username,
-    password,
-    from,
-  ])
+  }, [subject, editorSizes, sizes, email, minifyHTML, wordWrap, host, port, user, pass, from])
 
   useEffect(() => {
     if (minifyHTML) {
@@ -101,43 +96,61 @@ function App() {
     }
   }, [minifyHTML])
 
-  const sendEmail = async (): Promise<void> => {
-    try {
-      const response = await fetch('http://localhost:8080/api/send', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          testaddress: email,
-          testsubject: subject,
-          htmlversion: html,
-          textversion: text,
-          ampversion: amp,
-          preventThreading,
-          minifyHTML,
-          host,
-          port,
-          username,
-          password,
-          from,
-        }),
-      })
+  const sendEmailRequest = async (emailData: EmailData) => {
+    const response = await fetch(import.meta.env.VITE_API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(emailData),
+    })
+    return response
+  }
 
-      if (!response.ok) {
-        setAlertMessage('Email not sent successfully')
-        setAlertSeverity('error')
-        setAlertOpen(true)
-        console.log('Email not sent successfully')
-        throw new Error(`Error: ${response.statusText}`)
-      }
+  const handleError = (error: Error) => {
+    setAlertMessage('An error occurred while processing your request.')
+    setAlertSeverity('error')
+    setAlertOpen(true)
+    console.error(error)
+  }
 
-      setAlertMessage('Email sent successfully')
-      setAlertSeverity('success')
+  const handleResponse = (response: Response) => {
+    if (!response.ok) {
+      setAlertMessage('Email not sent successfully')
+      setAlertSeverity('error')
       setAlertOpen(true)
-      console.log('Email sent successfully')
+      throw new Error(`Error: ${response.statusText}`)
+    }
+
+    setAlertMessage('Email sent successfully')
+    setAlertSeverity('success')
+    setAlertOpen(true)
+  }
+
+  const sendEmail = async () => {
+    const currentDateTime = new Date().toISOString().replace('T', ' ').split('.')[0]
+    const formattedSubject = preventThreading ? `${subject} ${currentDateTime}` : subject
+
+    const emailData = {
+      testaddress: email,
+      testsubject: formattedSubject,
+      htmlversion: html,
+      textversion: text,
+      ampversion: amp,
+      preventThreading,
+      minifyHTML,
+      host,
+      port,
+      user,
+      pass,
+      from,
+    }
+
+    try {
+      const response = await sendEmailRequest(emailData)
+      handleResponse(response)
     } catch (error) {
-      console.log(error)
+      handleError(error as Error)
     }
   }
 
@@ -223,96 +236,27 @@ function App() {
           }}
         >
           <Box sx={{ flexGrow: 1 }}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={minifyHTML}
-                  onChange={(e) => setMinifyHTML(e.target.checked)}
-                  name='minifyHTML'
-                  color='primary'
-                />
-              }
-              label='Minify'
-            />
+            <FormControlLabel control={<Checkbox checked={minifyHTML} onChange={(e) => setMinifyHTML(e.target.checked)} name='minifyHTML' color='primary' />} label='Minify' />
+
+            <FormControlLabel control={<Checkbox checked={wordWrap} onChange={(e) => setWordWrap(e.target.checked)} name='wordWrap' color='primary' />} label='Word wrap' />
 
             <FormControlLabel
-              control={
-                <Checkbox
-                  checked={wordWrap}
-                  onChange={(e) => setWordWrap(e.target.checked)}
-                  name='wordWrap'
-                  color='primary'
-                />
-              }
-              label='Word wrap'
-            />
-
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={preventThreading}
-                  onChange={(e) => setPreventThreading(e.target.checked)}
-                  name='preventThreading'
-                  color='primary'
-                />
-              }
+              control={<Checkbox checked={preventThreading} onChange={(e) => setPreventThreading(e.target.checked)} name='preventThreading' color='primary' />}
               label='Prevent Threading'
             />
           </Box>
           <Box sx={{ flexGrow: 1 }}>
-            <TextField
-              id='host'
-              label='host'
-              value={host}
-              onChange={(e) => setHost(e.target.value)}
-              variant='outlined'
-              size='small'
-            />
+            <TextField id='host' label='host' value={host} onChange={(e) => setHost(e.target.value)} variant='outlined' size='small' />
 
-            <TextField
-              id='port'
-              label='port'
-              value={port}
-              onChange={(e) => setPort(e.target.value)}
-              variant='outlined'
-              size='small'
-            />
+            <TextField id='port' label='port' value={port} onChange={(e) => setPort(e.target.value)} variant='outlined' size='small' />
 
-            <TextField
-              id='email'
-              label='username'
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              variant='outlined'
-              size='small'
-            />
+            <TextField id='username' label='username' value={user} onChange={(e) => setUser(e.target.value)} variant='outlined' size='small' />
 
-            <TextField
-              id='pass'
-              label='password'
-              type='password'
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              variant='outlined'
-              size='small'
-            />
+            <TextField id='pass' label='password' type='password' value={pass} onChange={(e) => setPass(e.target.value)} variant='outlined' size='small' />
 
-            <TextField
-              id='from'
-              label='from'
-              value={from}
-              onChange={(e) => setFrom(e.target.value)}
-              variant='outlined'
-              size='small'
-            />
+            <TextField id='from' label='from' value={from} onChange={(e) => setFrom(e.target.value)} variant='outlined' size='small' />
           </Box>
-          <Button
-            component='label'
-            role={undefined}
-            variant='contained'
-            tabIndex={-1}
-            startIcon={<CloudUploadIcon />}
-          >
+          <Button component='label' role={undefined} variant='contained' tabIndex={-1} startIcon={<CloudUploadIcon />}>
             Upload + Convert EML
             <VisuallyHiddenInput type='file' accept='.eml' onChange={(e) => handleFileUpload(e)} />
           </Button>
@@ -326,37 +270,22 @@ function App() {
               gap: '.2rem',
             }}
           >
-            <Button
-              variant={activeEditor === EDITOR_TYPE.HTML ? 'outlined' : 'contained'}
-              onClick={() => handleEditorChange(EDITOR_TYPE.HTML)}
-            >
+            <Button variant={activeEditor === EDITOR_TYPE.HTML ? 'outlined' : 'contained'} onClick={() => handleEditorChange(EDITOR_TYPE.HTML)}>
               html
             </Button>
 
-            <Button
-              variant={activeEditor === EDITOR_TYPE.TEXT ? 'outlined' : 'contained'}
-              onClick={() => handleEditorChange(EDITOR_TYPE.TEXT)}
-            >
+            <Button variant={activeEditor === EDITOR_TYPE.TEXT ? 'outlined' : 'contained'} onClick={() => handleEditorChange(EDITOR_TYPE.TEXT)}>
               text
             </Button>
 
-            <Button
-              variant={activeEditor === EDITOR_TYPE.AMP ? 'outlined' : 'contained'}
-              onClick={() => handleEditorChange(EDITOR_TYPE.AMP)}
-            >
+            <Button variant={activeEditor === EDITOR_TYPE.AMP ? 'outlined' : 'contained'} onClick={() => handleEditorChange(EDITOR_TYPE.AMP)}>
               amp
             </Button>
 
             <Box sx={{ flexGrow: 1 }}>
               <Split className='split' sizes={sizes} onDragEnd={(sizes) => setSizes(sizes)}>
                 <TagsInput value={email} onChange={setEmail} />
-                <TextField
-                  variant='outlined'
-                  label='subject line'
-                  value={subject}
-                  size='small'
-                  onChange={(e) => setSubject(e.target.value)}
-                />
+                <TextField variant='outlined' label='subject line' value={subject} size='small' onChange={(e) => setSubject(e.target.value)} />
               </Split>
             </Box>
 
@@ -366,11 +295,7 @@ function App() {
           </Box>
         </div>
       </div>
-      <Split
-        className='split'
-        sizes={editorSizes}
-        onDragEnd={(editorSizes) => setEditorSizes(editorSizes)}
-      >
+      <Split className='split' sizes={editorSizes} onDragEnd={(editorSizes) => setEditorSizes(editorSizes)}>
         <div className='workspace-editor'>
           {editors.map(
             (editor) =>
@@ -393,12 +318,7 @@ function App() {
               )
           )}
         </div>
-        <div className='workspace-preview'>
-          {editors.map(
-            (editor) =>
-              activeEditor === editor.type && <iframe key={editor.type} srcDoc={editor.value} />
-          )}
-        </div>
+        <div className='workspace-preview'>{editors.map((editor) => activeEditor === editor.type && <iframe key={editor.type} srcDoc={editor.value} />)}</div>
       </Split>
     </div>
   )
