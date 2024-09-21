@@ -97,13 +97,15 @@ function App() {
   }, [minifyHTML])
 
   const sendEmailRequest = async (emailData: EmailData) => {
-    const response = await fetch(import.meta.env.VITE_API_URL, {
+    const url = '/api/send'
+    const options = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(emailData),
-    })
+    }
+    const response = await fetch(url, options)
     return response
   }
 
@@ -185,7 +187,7 @@ function App() {
       const formData = new FormData()
       formData.append('file', file)
 
-      const url = 'http://localhost:8080/api/upload'
+      const url = '/api/upload'
       const options = {
         method: 'POST',
         body: formData,
