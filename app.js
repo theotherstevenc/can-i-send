@@ -1,17 +1,18 @@
-require('dotenv').config()
+import dotenv from 'dotenv'
+dotenv.config()
 
 const PORT = process.env.PORT || 8080
 const bodyParserConfig = { limit: '50mb', extended: true }
 
-const bodyParser = require('body-parser')
-const cors = require('cors')
-const express = require('express')
-const fs = require('fs')
-const fileUpload = require('express-fileupload')
-const htmlMinifier = require('html-minifier').minify
-const nodemailer = require('nodemailer')
-const path = require('path')
-const { simpleParser } = require('mailparser')
+import bodyParser from 'body-parser'
+import cors from 'cors'
+import express from 'express'
+import fs from 'fs'
+import fileUpload from 'express-fileupload'
+import { minify as htmlMinifier } from 'html-minifier'
+import nodemailer from 'nodemailer'
+import path from 'path'
+import { simpleParser } from 'mailparser'
 
 const app = express()
 
