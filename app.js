@@ -6,12 +6,11 @@ const bodyParserConfig = { limit: '50mb', extended: true }
 
 import bodyParser from 'body-parser'
 import cors from 'cors'
+import CryptoJS from 'crypto-js'
 import express from 'express'
-import fs from 'fs'
 import fileUpload from 'express-fileupload'
 import { minify as htmlMinifier } from 'html-minifier'
 import nodemailer from 'nodemailer'
-import path from 'path'
 import { simpleParser } from 'mailparser'
 
 const app = express()
@@ -21,6 +20,28 @@ app.use(bodyParser.json(bodyParserConfig))
 app.use(cors({ origin: '*' }))
 app.use(express.static('build'))
 app.use(fileUpload())
+
+const encryptText = (text, key) => {
+  return CryptoJS.AES.encrypt(text, key).toString()
+}
+
+const decryptText = (encryptedData) => {
+  const decrypted = CryptoJS.AES.decrypt(encryptedData, process.env.ENCRYPTION_KEY)
+  return decrypted.toString(CryptoJS.enc.Utf8)
+}
+
+app.post('/api/encrypt', async (req, res) => {
+  try {
+    const { text } = req.body
+    if (!text) {
+      return res.status(400).json({ error: 'Text is required' })
+    }
+    const encrypted = encryptText(text, process.env.ENCRYPTION_KEY)
+    res.json({ encrypted })
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' })
+  }
+})
 
 app.post('/api/send', (req, res) => {
   const { minifyHTML, testaddress, testsubject, ampversion, textversion, htmlversion } = req.body
@@ -33,7 +54,7 @@ app.post('/api/send', (req, res) => {
     : htmlversion
 
   const user = req.body.user || process.env.MAIL_USERNAME
-  const pass = req.body.pass || process.env.MAIL_PASS
+  const pass = decryptText(req.body.pass) || process.env.MAIL_PASS
   const from = req.body.from || process.env.MAIL_FROM_NAME
   const host = req.body.host || process.env.MAIL_HOST
   const port = req.body.port || process.env.MAIL_PORT
