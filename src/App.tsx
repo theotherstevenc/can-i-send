@@ -30,6 +30,27 @@ type EmailData = {
   from: string
 }
 
+const encryptString = async (text: string): Promise<string> => {
+  if (!text) return ''
+  try {
+    const response = await fetch('/api/encrypt', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ text }),
+    })
+    if (!response.ok) {
+      throw new Error('Network response was not ok')
+    }
+    const data = await response.json()
+    return data.encrypted
+  } catch (error) {
+    console.error('Error encrypting string:', error)
+    return ''
+  }
+}
+
 function App() {
   // Alert state
   const [alertOpen, setAlertOpen] = useState<boolean>(false)
@@ -254,7 +275,16 @@ function App() {
 
             <TextField id='username' label='username' value={user} onChange={(e) => setUser(e.target.value)} variant='outlined' size='small' />
 
-            <TextField id='pass' label='password' type='password' value={pass} onChange={(e) => setPass(e.target.value)} variant='outlined' size='small' />
+            <TextField
+              id='pass'
+              label='password'
+              type='password'
+              value={pass}
+              onChange={(e) => setPass(e.target.value)}
+              onBlur={async (e) => setPass(await encryptString(e.target.value))}
+              variant='outlined'
+              size='small'
+            />
 
             <TextField id='from' label='from' value={from} onChange={(e) => setFrom(e.target.value)} variant='outlined' size='small' />
           </Box>
