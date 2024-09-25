@@ -2,66 +2,24 @@
 import './App.css'
 import { useEffect, useState } from 'react'
 import { styled } from '@mui/material/styles'
-import { Checkbox, FormControlLabel, TextField, Box, Button, Snackbar, Alert, AlertColor } from '@mui/material'
+import { Checkbox, FormControlLabel, TextField, Box, Button, Snackbar, Alert, AlertColor, Backdrop, CircularProgress, Typography } from '@mui/material'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import { defaults } from './util/defaults'
 import Split from 'react-split'
 import Editor from '@monaco-editor/react'
 import { TagsInput } from 'react-tag-input-component'
-
-enum EDITOR_TYPE {
-  HTML = 'html',
-  TEXT = 'text',
-  AMP = 'amp',
-}
-
-type EmailData = {
-  testaddress: string[]
-  testsubject: string
-  htmlversion: string
-  textversion: string
-  ampversion: string
-  preventThreading: boolean
-  minifyHTML: boolean
-  host: string
-  port: string
-  user: string
-  pass: string
-  from: string
-}
-
-const encryptString = async (text: string): Promise<string> => {
-  if (!text) return ''
-  try {
-    const response = await fetch('/api/encrypt', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ text }),
-    })
-    if (!response.ok) {
-      throw new Error('Network response was not ok')
-    }
-    const data = await response.json()
-    return data.encrypted
-  } catch (error) {
-    console.error('Error encrypting string:', error)
-    return ''
-  }
-}
+import { EDITOR_TYPE, EditorType, EmailData } from './util/types'
 
 function App() {
-  // Alert state
   const [alertOpen, setAlertOpen] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
   const [alertSeverity, setAlertSeverity] = useState<AlertColor>('success')
   const [alertMessage, setAlertMessage] = useState<string>('')
 
-  // Editor state
   const [activeEditor, setActiveEditor] = useState<string>(EDITOR_TYPE.HTML)
   const [editorSizes, setEditorSizes] = useState<number[]>(JSON.parse(localStorage.getItem('editorSizes') || '[50, 50]'))
+  const [sizes, setSizes] = useState<number[]>(JSON.parse(localStorage.getItem('sizes') || '[80, 20]'))
 
-  // Email content state
   const [email, setEmail] = useState<string[]>(JSON.parse(localStorage.getItem('email') || '["ex@abc.com", "ex@xyz.com"]'))
   const [subject, setSubject] = useState<string>(localStorage.getItem('subject') || '')
   const [html, setHtml] = useState<string>(defaults.html.trim())
@@ -69,20 +27,15 @@ function App() {
   const [text, setText] = useState<string>(defaults.text.trim())
   const [amp, setAmp] = useState<string>(defaults.amp.trim())
 
-  // Email settings state
   const [preventThreading, setPreventThreading] = useState<boolean>(false)
   const [minifyHTML, setMinifyHTML] = useState<boolean>(() => JSON.parse(localStorage.getItem('minifyHTML') || 'false'))
   const [wordWrap, setWordWrap] = useState<boolean>(() => JSON.parse(localStorage.getItem('wordWrap') || 'false'))
 
-  // Server configuration state
   const [host, setHost] = useState(localStorage.getItem('host') || '')
   const [port, setPort] = useState(localStorage.getItem('port') || '')
   const [user, setUser] = useState(localStorage.getItem('user') || '')
   const [pass, setPass] = useState(localStorage.getItem('pass') || '')
   const [from, setFrom] = useState(localStorage.getItem('from') || '')
-
-  // Layout state
-  const [sizes, setSizes] = useState<number[]>(JSON.parse(localStorage.getItem('sizes') || '[80, 20]'))
 
   const customMinifyHtml = (html: string): string => {
     return html
@@ -151,6 +104,7 @@ function App() {
   }
 
   const sendEmail = async () => {
+    setLoading(true)
     const currentDateTime = new Date().toISOString().replace('T', ' ').split('.')[0]
     const formattedSubject = preventThreading ? `${subject} ${currentDateTime}` : subject
 
@@ -174,6 +128,8 @@ function App() {
       handleResponse(response)
     } catch (error) {
       handleError(error as Error)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -198,7 +154,7 @@ function App() {
     },
   ]
 
-  const handleEditorChange = (editor: EDITOR_TYPE) => {
+  const handleEditorChange = (editor: EditorType) => {
     setActiveEditor(editor)
   }
 
@@ -233,6 +189,27 @@ function App() {
     }
   }
 
+  const encryptString = async (text: string): Promise<string> => {
+    if (!text) return ''
+    try {
+      const response = await fetch('/api/encrypt', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text }),
+      })
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      }
+      const data = await response.json()
+      return data.encrypted
+    } catch (error) {
+      console.error('Error encrypting string:', error)
+      return ''
+    }
+  }
+
   const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
     clipPath: 'inset(50%)',
@@ -252,6 +229,16 @@ function App() {
           {alertMessage}
         </Alert>
       </Snackbar>
+
+      <Backdrop open={loading} style={{ zIndex: 9999, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <Box style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: 'InfoBackground', padding: '1rem 1rem 0 1rem', borderRadius: '.5rem' }}>
+          <CircularProgress color='info' size='2.5rem' thickness={4} />
+          <Typography variant='h2' color='textPrimary' style={{ marginTop: '0', padding: '1rem', fontSize: '1.5rem', fontWeight: 500 }}>
+            Sending in Progress...
+          </Typography>
+        </Box>
+      </Backdrop>
+
       <div className='editors'>
         <Box
           sx={{
