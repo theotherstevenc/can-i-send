@@ -9,7 +9,6 @@ import cors from 'cors'
 import CryptoJS from 'crypto-js'
 import express from 'express'
 import fileUpload from 'express-fileupload'
-import { minify as htmlMinifier } from 'html-minifier'
 import nodemailer from 'nodemailer'
 import { simpleParser } from 'mailparser'
 
@@ -44,14 +43,7 @@ app.post('/api/encrypt', async (req, res) => {
 })
 
 app.post('/api/send', (req, res) => {
-  const { minifyHTML, testaddress, testsubject, ampversion, textversion, htmlversion } = req.body
-
-  const minifiedHTML = minifyHTML
-    ? htmlMinifier(htmlversion, {
-        collapseWhitespace: true,
-        minifyCSS: true,
-      })
-    : htmlversion
+  const { testaddress, testsubject, ampversion, textversion, htmlversion } = req.body
 
   const user = req.body.user || process.env.MAIL_USERNAME
   const pass = decryptText(req.body.pass) || process.env.MAIL_PASS
