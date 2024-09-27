@@ -31,11 +31,20 @@ function App() {
   const [minifyHTML, setMinifyHTML] = useState<boolean>(() => JSON.parse(localStorage.getItem('minifyHTML') || 'false'))
   const [wordWrap, setWordWrap] = useState<boolean>(() => JSON.parse(localStorage.getItem('wordWrap') || 'false'))
 
-  const [host, setHost] = useState(localStorage.getItem('host') || '')
-  const [port, setPort] = useState(localStorage.getItem('port') || '')
-  const [user, setUser] = useState(localStorage.getItem('user') || '')
-  const [pass, setPass] = useState(localStorage.getItem('pass') || '')
-  const [from, setFrom] = useState(localStorage.getItem('from') || '')
+  const localSenderSettings = JSON.parse(localStorage.getItem('senderSettings') || '{}')
+  const [senderSettings, setSenderSettings] = useState({
+    host: localSenderSettings.host || '',
+    port: localSenderSettings.port || '',
+    user: localSenderSettings.user || '',
+    pass: localSenderSettings.pass || '',
+    from: localSenderSettings.from || '',
+  })
+
+  const updateSenderSettings = (key: string, value: string) => {
+    setSenderSettings((prevSettings) => {
+      return { ...prevSettings, [key]: value }
+    })
+  }
 
   const customMinifyHtml = (html: string): string => {
     return html
@@ -54,12 +63,8 @@ function App() {
     localStorage.setItem('email', JSON.stringify(email))
     localStorage.setItem('minifyHTML', JSON.stringify(minifyHTML))
     localStorage.setItem('wordWrap', JSON.stringify(wordWrap))
-    localStorage.setItem('host', host)
-    localStorage.setItem('port', port)
-    localStorage.setItem('user', user)
-    localStorage.setItem('pass', pass)
-    localStorage.setItem('from', from)
-  }, [subject, editorSizes, sizes, email, minifyHTML, wordWrap, host, port, user, pass, from])
+    localStorage.setItem('senderSettings', JSON.stringify(senderSettings))
+  }, [subject, editorSizes, sizes, email, minifyHTML, wordWrap, senderSettings])
 
   useEffect(() => {
     if (minifyHTML) {
@@ -107,6 +112,7 @@ function App() {
     setLoading(true)
     const currentDateTime = new Date().toISOString().replace('T', ' ').split('.')[0]
     const formattedSubject = preventThreading ? `${subject} ${currentDateTime}` : subject
+    const { host, port, user, pass, from } = senderSettings
 
     const emailData = {
       testaddress: email,
@@ -256,24 +262,24 @@ function App() {
             />
           </Box>
           <Box sx={{ flexGrow: 1 }}>
-            <TextField id='host' label='host' value={host} onChange={(e) => setHost(e.target.value)} variant='outlined' size='small' />
+            <TextField id='host' label='host' value={senderSettings.host} onChange={(e) => updateSenderSettings('host', e.target.value)} variant='outlined' size='small' />
 
-            <TextField id='port' label='port' value={port} onChange={(e) => setPort(e.target.value)} variant='outlined' size='small' />
+            <TextField id='port' label='port' value={senderSettings.port} onChange={(e) => updateSenderSettings('port', e.target.value)} variant='outlined' size='small' />
 
-            <TextField id='username' label='username' value={user} onChange={(e) => setUser(e.target.value)} variant='outlined' size='small' />
+            <TextField id='username' label='username' value={senderSettings.user} onChange={(e) => updateSenderSettings('user', e.target.value)} variant='outlined' size='small' />
 
             <TextField
               id='pass'
               label='password'
               type='password'
-              value={pass}
-              onChange={(e) => setPass(e.target.value)}
-              onBlur={async (e) => setPass(await encryptString(e.target.value))}
+              value={senderSettings.pass}
+              onChange={(e) => updateSenderSettings('pass', e.target.value)}
+              onBlur={async (e) => updateSenderSettings('pass', await encryptString(e.target.value))}
               variant='outlined'
               size='small'
             />
 
-            <TextField id='from' label='from' value={from} onChange={(e) => setFrom(e.target.value)} variant='outlined' size='small' />
+            <TextField id='from' label='from' value={senderSettings.from} onChange={(e) => updateSenderSettings('from', e.target.value)} variant='outlined' size='small' />
           </Box>
           <Button component='label' role={undefined} variant='contained' tabIndex={-1} startIcon={<CloudUploadIcon />}>
             Upload + Convert EML
