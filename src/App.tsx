@@ -9,6 +9,7 @@ import Split from 'react-split'
 import Editor from '@monaco-editor/react'
 import { TagsInput } from 'react-tag-input-component'
 import { EDITOR_TYPE, EditorType, EmailData } from './util/types'
+import { getEditorsConfig } from './util/editorsConfig'
 
 function App() {
   const [activeEditor, setActiveEditor] = useState<string>(EDITOR_TYPE.HTML)
@@ -150,27 +151,6 @@ function App() {
     }
   }
 
-  const editors = [
-    {
-      type: EDITOR_TYPE.HTML,
-      language: 'html',
-      value: html,
-      onChange: (newValue: string | undefined) => setHtml(newValue || ''),
-    },
-    {
-      type: EDITOR_TYPE.TEXT,
-      language: 'text',
-      value: text,
-      onChange: (newValue: string | undefined) => setText(newValue || ''),
-    },
-    {
-      type: EDITOR_TYPE.AMP,
-      language: 'html',
-      value: amp,
-      onChange: (newValue: string | undefined) => setAmp(newValue || ''),
-    },
-  ]
-
   const handleEditorChange = (editor: EditorType) => {
     setActiveEditor(editor)
   }
@@ -226,6 +206,8 @@ function App() {
       return ''
     }
   }
+
+  const editors = getEditorsConfig(html, setHtml, text, setText, amp, setAmp)
 
   const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
