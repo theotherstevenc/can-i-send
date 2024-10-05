@@ -2,7 +2,19 @@
 import './App.css'
 import { useEffect, useState } from 'react'
 import { styled } from '@mui/material/styles'
-import { Checkbox, FormControlLabel, TextField, Box, Button, Snackbar, Alert, AlertColor, Backdrop, CircularProgress, Typography } from '@mui/material'
+import {
+  Checkbox,
+  FormControlLabel,
+  TextField,
+  Box,
+  Button,
+  Snackbar,
+  Alert,
+  AlertColor,
+  Backdrop,
+  CircularProgress,
+  Typography,
+} from '@mui/material'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import { defaults } from './util/defaults'
 import Split from 'react-split'
@@ -237,7 +249,16 @@ function App() {
       </Snackbar>
 
       <Backdrop open={loading} style={{ zIndex: 9999, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <Box style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: 'InfoBackground', padding: '1rem 1rem 0 1rem', borderRadius: '.5rem' }}>
+        <Box
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            backgroundColor: 'InfoBackground',
+            padding: '1rem 1rem 0 1rem',
+            borderRadius: '.5rem',
+          }}
+        >
           <CircularProgress color='info' size='2.5rem' thickness={4} />
           <Typography variant='h2' color='textPrimary' style={{ marginTop: '0', padding: '1rem', fontSize: '1.5rem', fontWeight: 500 }}>
             Sending in Progress...
@@ -252,21 +273,55 @@ function App() {
           }}
         >
           <Box sx={{ flexGrow: 1 }}>
-            <FormControlLabel control={<Checkbox checked={minifyHTML} onChange={(e) => setMinifyHTML(e.target.checked)} name='minifyHTML' color='primary' />} label='Minify' />
-
-            <FormControlLabel control={<Checkbox checked={wordWrap} onChange={(e) => setWordWrap(e.target.checked)} name='wordWrap' color='primary' />} label='Word wrap' />
+            <FormControlLabel
+              control={<Checkbox checked={minifyHTML} onChange={(e) => setMinifyHTML(e.target.checked)} name='minifyHTML' color='primary' />}
+              label='Minify'
+            />
 
             <FormControlLabel
-              control={<Checkbox checked={preventThreading} onChange={(e) => setPreventThreading(e.target.checked)} name='preventThreading' color='primary' />}
+              control={<Checkbox checked={wordWrap} onChange={(e) => setWordWrap(e.target.checked)} name='wordWrap' color='primary' />}
+              label='Word wrap'
+            />
+
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={preventThreading}
+                  onChange={(e) => setPreventThreading(e.target.checked)}
+                  name='preventThreading'
+                  color='primary'
+                />
+              }
               label='Prevent Threading'
             />
           </Box>
           <Box sx={{ flexGrow: 1 }}>
-            <TextField id='host' label='host' value={senderSettings.host} onChange={(e) => updateSenderSettings('host', e.target.value)} variant='outlined' size='small' />
+            <TextField
+              id='host'
+              label='host'
+              value={senderSettings.host}
+              onChange={(e) => updateSenderSettings('host', e.target.value)}
+              variant='outlined'
+              size='small'
+            />
 
-            <TextField id='port' label='port' value={senderSettings.port} onChange={(e) => updateSenderSettings('port', e.target.value)} variant='outlined' size='small' />
+            <TextField
+              id='port'
+              label='port'
+              value={senderSettings.port}
+              onChange={(e) => updateSenderSettings('port', e.target.value)}
+              variant='outlined'
+              size='small'
+            />
 
-            <TextField id='username' label='username' value={senderSettings.user} onChange={(e) => updateSenderSettings('user', e.target.value)} variant='outlined' size='small' />
+            <TextField
+              id='username'
+              label='username'
+              value={senderSettings.user}
+              onChange={(e) => updateSenderSettings('user', e.target.value)}
+              variant='outlined'
+              size='small'
+            />
 
             <TextField
               id='pass'
@@ -279,7 +334,14 @@ function App() {
               size='small'
             />
 
-            <TextField id='from' label='from' value={senderSettings.from} onChange={(e) => updateSenderSettings('from', e.target.value)} variant='outlined' size='small' />
+            <TextField
+              id='from'
+              label='from'
+              value={senderSettings.from}
+              onChange={(e) => updateSenderSettings('from', e.target.value)}
+              variant='outlined'
+              size='small'
+            />
           </Box>
           <Button component='label' role={undefined} variant='contained' tabIndex={-1} startIcon={<CloudUploadIcon />}>
             Upload + Convert EML
@@ -343,7 +405,9 @@ function App() {
               )
           )}
         </div>
-        <div className='workspace-preview'>{editors.map((editor) => activeEditor === editor.type && <iframe key={editor.type} srcDoc={editor.value} />)}</div>
+        <div className='workspace-preview'>
+          {editors.map((editor) => activeEditor === editor.type && <iframe key={editor.type} srcDoc={editor.value} />)}
+        </div>
       </Split>
     </div>
   )
