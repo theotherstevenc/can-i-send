@@ -100,26 +100,23 @@ function App() {
     return response
   }
 
-  const handleError = (error: Error) => {
-    setAlertMessage('An error occurred while processing your request.')
-    setAlertSeverity('error')
+  const handleAlert = (message: string, severity: 'error' | 'success', error?: Error) => {
+    setAlertMessage(message)
+    setAlertSeverity(severity)
     setAlertOpen(true)
-    console.error(error)
+    if (error) console.error(error)
   }
 
+  const handleError = (error: Error) => {
+    handleAlert('An error occurred while processing your request.', 'error', error)
+  }
   const handleResponse = (response: Response) => {
     if (!response.ok) {
-      setAlertMessage('Email not sent successfully')
-      setAlertSeverity('error')
-      setAlertOpen(true)
-      throw new Error(`Error: ${response.statusText}`)
+      handleAlert('Email not sent successfully', 'error')
+      throw new Error('Error: ' + response.statusText)
     }
-
-    setAlertMessage('Email sent successfully')
-    setAlertSeverity('success')
-    setAlertOpen(true)
+    handleAlert('Email sent successfully!', 'success')
   }
-
   const sendEmail = async () => {
     setLoading(true)
     const currentDateTime = new Date().toISOString().replace('T', ' ').split('.')[0]
