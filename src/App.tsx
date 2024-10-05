@@ -2,19 +2,7 @@
 import './App.css'
 import { useEffect, useState } from 'react'
 import { styled } from '@mui/material/styles'
-import {
-  Checkbox,
-  FormControlLabel,
-  TextField,
-  Box,
-  Button,
-  Snackbar,
-  Alert,
-  AlertColor,
-  Backdrop,
-  CircularProgress,
-  Typography,
-} from '@mui/material'
+import { Checkbox, FormControlLabel, TextField, Box, Button, Snackbar, Alert, Backdrop, CircularProgress, Typography } from '@mui/material'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import { defaults } from './util/defaults'
 import Split from 'react-split'
@@ -23,11 +11,6 @@ import { TagsInput } from 'react-tag-input-component'
 import { EDITOR_TYPE, EditorType, EmailData } from './util/types'
 
 function App() {
-  const [alertOpen, setAlertOpen] = useState<boolean>(false)
-  const [loading, setLoading] = useState<boolean>(false)
-  const [alertSeverity, setAlertSeverity] = useState<AlertColor>('success')
-  const [alertMessage, setAlertMessage] = useState<string>('')
-
   const [activeEditor, setActiveEditor] = useState<string>(EDITOR_TYPE.HTML)
   const [editorSizes, setEditorSizes] = useState<number[]>(JSON.parse(localStorage.getItem('editorSizes') || '[50, 50]'))
   const [sizes, setSizes] = useState<number[]>(JSON.parse(localStorage.getItem('sizes') || '[80, 20]'))
@@ -42,6 +25,14 @@ function App() {
   const [preventThreading, setPreventThreading] = useState<boolean>(false)
   const [minifyHTML, setMinifyHTML] = useState<boolean>(() => JSON.parse(localStorage.getItem('minifyHTML') || 'false'))
   const [wordWrap, setWordWrap] = useState<boolean>(() => JSON.parse(localStorage.getItem('wordWrap') || 'false'))
+
+  const [loading, setLoading] = useState<boolean>(false)
+
+  const [alertState, setAlertState] = useState({
+    message: '',
+    severity: 'success' as 'error' | 'success',
+    open: false,
+  })
 
   const localSenderSettings = JSON.parse(localStorage.getItem('senderSettings') || '{}')
   const [senderSettings, setSenderSettings] = useState({
@@ -100,16 +91,26 @@ function App() {
     return response
   }
 
+  const setAlertOpen = (open: boolean) => {
+    setAlertState({
+      ...alertState,
+      open,
+    })
+  }
+
   const handleAlert = (message: string, severity: 'error' | 'success', error?: Error) => {
-    setAlertMessage(message)
-    setAlertSeverity(severity)
-    setAlertOpen(true)
+    setAlertState({
+      message,
+      severity,
+      open: true,
+    })
     if (error) console.error(error)
   }
 
   const handleError = (error: Error) => {
     handleAlert('An error occurred while processing your request.', 'error', error)
   }
+
   const handleResponse = (response: Response) => {
     if (!response.ok) {
       handleAlert('Email not sent successfully', 'error')
@@ -117,6 +118,7 @@ function App() {
     }
     handleAlert('Email sent successfully!', 'success')
   }
+
   const sendEmail = async () => {
     setLoading(true)
     const currentDateTime = new Date().toISOString().replace('T', ' ').split('.')[0]
@@ -239,9 +241,9 @@ function App() {
 
   return (
     <div className='App'>
-      <Snackbar open={alertOpen} autoHideDuration={4000} onClose={() => setAlertOpen(false)}>
-        <Alert onClose={() => setAlertOpen(false)} severity={alertSeverity}>
-          {alertMessage}
+      <Snackbar open={alertState.open} autoHideDuration={4000} onClose={() => setAlertOpen(false)}>
+        <Alert onClose={() => setAlertOpen(false)} severity={alertState.severity}>
+          {alertState.message}
         </Alert>
       </Snackbar>
 
