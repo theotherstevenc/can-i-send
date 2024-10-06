@@ -2,7 +2,7 @@
 import './App.css'
 import { useEffect, useState, useRef } from 'react'
 import { styled } from '@mui/material/styles'
-import { Checkbox, FormControlLabel, TextField, Box, Button, Snackbar, Alert, Backdrop, CircularProgress, Typography } from '@mui/material'
+import { TextField, Box, Button, Snackbar, Alert, Backdrop, CircularProgress, Typography } from '@mui/material'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import { defaults } from './util/defaults'
 import Split from 'react-split'
@@ -10,6 +10,7 @@ import Editor from '@monaco-editor/react'
 import { TagsInput } from 'react-tag-input-component'
 import { EDITOR_TYPE, EditorType, EmailData } from './util/types'
 import { getEditorsConfig } from './util/editorsConfig'
+import { OptionCheckBox } from './components/OptionCheckBox'
 
 function App() {
   const [activeEditor, setActiveEditor] = useState<string>(EDITOR_TYPE.HTML)
@@ -255,26 +256,13 @@ function App() {
           }}
         >
           <Box sx={{ flexGrow: 1 }}>
-            <FormControlLabel
-              control={<Checkbox checked={minifyHTML} onChange={(e) => setMinifyHTML(e.target.checked)} name='minifyHTML' color='primary' />}
-              label='Minify'
-            />
-
-            <FormControlLabel
-              control={<Checkbox checked={wordWrap} onChange={(e) => setWordWrap(e.target.checked)} name='wordWrap' color='primary' />}
-              label='Word wrap'
-            />
-
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={preventThreading}
-                  onChange={(e) => setPreventThreading(e.target.checked)}
-                  name='preventThreading'
-                  color='primary'
-                />
-              }
-              label='Prevent Threading'
+            <OptionCheckBox
+              minifyHTML={minifyHTML}
+              wordWrap={wordWrap}
+              preventThreading={preventThreading}
+              setMinifyHTML={setMinifyHTML}
+              setWordWrap={setWordWrap}
+              setPreventThreading={setPreventThreading}
             />
           </Box>
           <Box sx={{ flexGrow: 1 }}>
