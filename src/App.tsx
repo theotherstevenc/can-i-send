@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import './App.css'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { styled } from '@mui/material/styles'
 import { Checkbox, FormControlLabel, TextField, Box, Button, Snackbar, Alert, Backdrop, CircularProgress, Typography } from '@mui/material'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
@@ -19,7 +19,6 @@ function App() {
   const [email, setEmail] = useState<string[]>(JSON.parse(localStorage.getItem('email') || '["ex@abc.com", "ex@xyz.com"]'))
   const [subject, setSubject] = useState<string>(localStorage.getItem('subject') || '')
   const [html, setHtml] = useState<string>(defaults.html.trim())
-  const [htmlCopy, setHtmlCopy] = useState<string>(defaults.html.trim())
   const [text, setText] = useState<string>(defaults.text.trim())
   const [amp, setAmp] = useState<string>(defaults.amp.trim())
 
@@ -70,12 +69,14 @@ function App() {
     localStorage.setItem('senderSettings', JSON.stringify(senderSettings))
   }, [subject, editorSizes, sizes, email, minifyHTML, wordWrap, senderSettings])
 
+  const originalHtmlRef = useRef(html)
+
   useEffect(() => {
     if (minifyHTML) {
-      setHtmlCopy(html)
+      originalHtmlRef.current = html
       setHtml(customMinifyHtml(html))
     } else {
-      setHtml(htmlCopy)
+      setHtml(originalHtmlRef.current)
     }
   }, [minifyHTML])
 
