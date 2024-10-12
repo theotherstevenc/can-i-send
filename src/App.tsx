@@ -14,10 +14,14 @@ import { OptionCheckBox } from './components/OptionCheckBox'
 
 function App() {
   const [activeEditor, setActiveEditor] = useState<string>(EDITOR_TYPE.HTML)
-  const [editorSizes, setEditorSizes] = useState<number[]>(JSON.parse(localStorage.getItem('editorSizes') || '[50, 50]'))
+  const [editorSizes, setEditorSizes] = useState<number[]>(
+    JSON.parse(localStorage.getItem('editorSizes') || '[50, 50]'),
+  )
   const [sizes, setSizes] = useState<number[]>(JSON.parse(localStorage.getItem('sizes') || '[80, 20]'))
 
-  const [email, setEmail] = useState<string[]>(JSON.parse(localStorage.getItem('email') || '["ex@abc.com", "ex@xyz.com"]'))
+  const [email, setEmail] = useState<string[]>(
+    JSON.parse(localStorage.getItem('email') || '["ex@abc.com", "ex@xyz.com"]'),
+  )
   const [subject, setSubject] = useState<string>(localStorage.getItem('subject') || '')
   const [html, setHtml] = useState<string>(defaults.html.trim())
   const [text, setText] = useState<string>(defaults.text.trim())
@@ -199,8 +203,10 @@ function App() {
         body: JSON.stringify({ text }),
       })
       if (!response.ok) {
-        throw new Error('Network response was not ok')
+        const errorData = await response.json()
+        throw new Error(errorData.error)
       }
+
       const data = await response.json()
       return data.encrypted
     } catch (error) {
@@ -243,7 +249,11 @@ function App() {
           }}
         >
           <CircularProgress color='info' size='2.5rem' thickness={4} />
-          <Typography variant='h2' color='textPrimary' style={{ marginTop: '0', padding: '1rem', fontSize: '1.5rem', fontWeight: 500 }}>
+          <Typography
+            variant='h2'
+            color='textPrimary'
+            style={{ marginTop: '0', padding: '1rem', fontSize: '1.5rem', fontWeight: 500 }}
+          >
             Sending in Progress...
           </Typography>
         </Box>
@@ -327,22 +337,37 @@ function App() {
               gap: '.2rem',
             }}
           >
-            <Button variant={activeEditor === EDITOR_TYPE.HTML ? 'outlined' : 'contained'} onClick={() => handleEditorChange(EDITOR_TYPE.HTML)}>
+            <Button
+              variant={activeEditor === EDITOR_TYPE.HTML ? 'outlined' : 'contained'}
+              onClick={() => handleEditorChange(EDITOR_TYPE.HTML)}
+            >
               html
             </Button>
 
-            <Button variant={activeEditor === EDITOR_TYPE.TEXT ? 'outlined' : 'contained'} onClick={() => handleEditorChange(EDITOR_TYPE.TEXT)}>
+            <Button
+              variant={activeEditor === EDITOR_TYPE.TEXT ? 'outlined' : 'contained'}
+              onClick={() => handleEditorChange(EDITOR_TYPE.TEXT)}
+            >
               text
             </Button>
 
-            <Button variant={activeEditor === EDITOR_TYPE.AMP ? 'outlined' : 'contained'} onClick={() => handleEditorChange(EDITOR_TYPE.AMP)}>
+            <Button
+              variant={activeEditor === EDITOR_TYPE.AMP ? 'outlined' : 'contained'}
+              onClick={() => handleEditorChange(EDITOR_TYPE.AMP)}
+            >
               amp
             </Button>
 
             <Box sx={{ flexGrow: 1 }}>
               <Split className='split' sizes={sizes} onDragEnd={(sizes) => setSizes(sizes)}>
                 <TagsInput value={email} onChange={setEmail} />
-                <TextField variant='outlined' label='subject line' value={subject} size='small' onChange={(e) => setSubject(e.target.value)} />
+                <TextField
+                  variant='outlined'
+                  label='subject line'
+                  value={subject}
+                  size='small'
+                  onChange={(e) => setSubject(e.target.value)}
+                />
               </Split>
             </Box>
 
@@ -372,7 +397,7 @@ function App() {
                     },
                   }}
                 />
-              )
+              ),
           )}
         </div>
         <div className='workspace-preview'>
