@@ -35,6 +35,9 @@ app.post('/api/encrypt', async (req, res) => {
     if (!text) {
       return res.status(400).json({ error: 'Text is required' })
     }
+    if (!process.env.ENCRYPTION_KEY) {
+      return res.status(500).json({ error: 'Missing credentials' })
+    }
     const encrypted = encryptText(text, process.env.ENCRYPTION_KEY)
     res.json({ encrypted })
   } catch (error) {
@@ -117,5 +120,5 @@ app.listen(PORT, () =>
   made with ❤ by a 𝗥𝗘𝗕𝗘𝗟
   Server started...
   http://localhost:${PORT}
-`)
+`),
 )

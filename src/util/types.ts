@@ -21,3 +21,12 @@ export type EmailData = {
   pass: string
   from: string
 }
+
+export type OptionCheckBoxProps = {
+  minifyHTML: boolean
+  wordWrap: boolean
+  preventThreading: boolean
+  setMinifyHTML: (value: boolean) => void
+  setWordWrap: (value: boolean) => void
+  setPreventThreading: (value: boolean) => void
+}
