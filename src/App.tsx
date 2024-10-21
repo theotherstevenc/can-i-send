@@ -13,7 +13,7 @@ import { getEditorsConfig } from './util/editorsConfig'
 import { OptionCheckBox } from './components/OptionCheckBox'
 
 function App() {
-  const [activeEditor, setActiveEditor] = useState<string>(EDITOR_TYPE.HTML)
+  const [activeEditor, setActiveEditor] = useState<string>(localStorage.getItem('editor') || EDITOR_TYPE.HTML)
   const [editorSizes, setEditorSizes] = useState<number[]>(
     JSON.parse(localStorage.getItem('editorSizes') || '[50, 50]'),
   )
@@ -23,11 +23,13 @@ function App() {
     JSON.parse(localStorage.getItem('email') || '["ex@abc.com", "ex@xyz.com"]'),
   )
   const [subject, setSubject] = useState<string>(localStorage.getItem('subject') || '')
-  const [html, setHtml] = useState<string>(defaults.html.trim())
-  const [text, setText] = useState<string>(defaults.text.trim())
-  const [amp, setAmp] = useState<string>(defaults.amp.trim())
+  const [html, setHtml] = useState<string>(localStorage.getItem('html') || defaults.html.trim())
+  const [text, setText] = useState<string>(localStorage.getItem('text') || defaults.text.trim())
+  const [amp, setAmp] = useState<string>(localStorage.getItem('amp') || defaults.amp.trim())
 
-  const [preventThreading, setPreventThreading] = useState<boolean>(false)
+  const [preventThreading, setPreventThreading] = useState<boolean>(
+    JSON.parse(localStorage.getItem('preventThreading') || 'false'),
+  )
   const [minifyHTML, setMinifyHTML] = useState<boolean>(() => JSON.parse(localStorage.getItem('minifyHTML') || 'false'))
   const [wordWrap, setWordWrap] = useState<boolean>(() => JSON.parse(localStorage.getItem('wordWrap') || 'false'))
 
@@ -65,14 +67,32 @@ function App() {
   }
 
   useEffect(() => {
+    localStorage.setItem('html', html)
+    localStorage.setItem('text', text)
+    localStorage.setItem('amp', amp)
+    localStorage.setItem('editor', activeEditor)
     localStorage.setItem('subject', subject)
     localStorage.setItem('editorSizes', JSON.stringify(editorSizes))
     localStorage.setItem('sizes', JSON.stringify(sizes))
     localStorage.setItem('email', JSON.stringify(email))
     localStorage.setItem('minifyHTML', JSON.stringify(minifyHTML))
     localStorage.setItem('wordWrap', JSON.stringify(wordWrap))
+    localStorage.setItem('preventThreading', JSON.stringify(preventThreading))
     localStorage.setItem('senderSettings', JSON.stringify(senderSettings))
-  }, [subject, editorSizes, sizes, email, minifyHTML, wordWrap, senderSettings])
+  }, [
+    html,
+    text,
+    amp,
+    subject,
+    editorSizes,
+    sizes,
+    email,
+    minifyHTML,
+    wordWrap,
+    senderSettings,
+    preventThreading,
+    activeEditor,
+  ])
 
   const originalHtmlRef = useRef(html)
 
