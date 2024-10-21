@@ -1,8 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import './App.css'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { styled } from '@mui/material/styles'
-import { TextField, Box, Button, Snackbar, Alert, Backdrop, CircularProgress, Typography } from '@mui/material'
+import {
+  TextField,
+  Box,
+  Button,
+  Snackbar,
+  Alert,
+  Backdrop,
+  CircularProgress,
+  Typography,
+  Checkbox,
+  FormControlLabel,
+} from '@mui/material'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import { defaults } from './util/defaults'
 import Split from 'react-split'
@@ -10,7 +21,6 @@ import Editor from '@monaco-editor/react'
 import { TagsInput } from 'react-tag-input-component'
 import { EDITOR_TYPE, EditorType, EmailData } from './util/types'
 import { getEditorsConfig } from './util/editorsConfig'
-import { OptionCheckBox } from './components/OptionCheckBox'
 
 function App() {
   const [activeEditor, setActiveEditor] = useState<string>(localStorage.getItem('editor') || EDITOR_TYPE.HTML)
@@ -23,6 +33,7 @@ function App() {
     JSON.parse(localStorage.getItem('email') || '["ex@abc.com", "ex@xyz.com"]'),
   )
   const [subject, setSubject] = useState<string>(localStorage.getItem('subject') || '')
+  const [originalHtml, setOriginalHtml] = useState<string>('')
   const [html, setHtml] = useState<string>(localStorage.getItem('html') || defaults.html.trim())
   const [text, setText] = useState<string>(localStorage.getItem('text') || defaults.text.trim())
   const [amp, setAmp] = useState<string>(localStorage.getItem('amp') || defaults.amp.trim())
@@ -66,6 +77,17 @@ function App() {
       .replace(/<!--(?!\[if mso\]).*?-->/g, '') // Remove comments except conditional comments
   }
 
+  const handleMinifyHTML = (minify: boolean) => {
+    setMinifyHTML(minify)
+    if (minify) {
+      setOriginalHtml(html)
+      localStorage.setItem('originalHtml', originalHtml)
+      setHtml(customMinifyHtml(html))
+    } else {
+      setHtml(localStorage.getItem('originalHtml') || originalHtml)
+    }
+  }
+
   useEffect(() => {
     localStorage.setItem('html', html)
     localStorage.setItem('text', text)
@@ -93,17 +115,6 @@ function App() {
     preventThreading,
     activeEditor,
   ])
-
-  const originalHtmlRef = useRef(html)
-
-  useEffect(() => {
-    if (minifyHTML) {
-      originalHtmlRef.current = html
-      setHtml(customMinifyHtml(html))
-    } else {
-      setHtml(originalHtmlRef.current)
-    }
-  }, [minifyHTML])
 
   const sendEmailRequest = async (emailData: EmailData) => {
     const url = '/api/send'
@@ -286,13 +297,40 @@ function App() {
           }}
         >
           <Box sx={{ flexGrow: 1 }}>
-            <OptionCheckBox
-              minifyHTML={minifyHTML}
-              wordWrap={wordWrap}
-              preventThreading={preventThreading}
-              setMinifyHTML={setMinifyHTML}
-              setWordWrap={setWordWrap}
-              setPreventThreading={setPreventThreading}
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={minifyHTML}
+                  onChange={(e) => handleMinifyHTML(e.target.checked)}
+                  name='minifyHTML'
+                  color='primary'
+                />
+              }
+              label='Minify'
+            />
+
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={wordWrap}
+                  onChange={(e) => setWordWrap(e.target.checked)}
+                  name='wordWrap'
+                  color='primary'
+                />
+              }
+              label='Word wrap'
+            />
+
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={preventThreading}
+                  onChange={(e) => setPreventThreading(e.target.checked)}
+                  name='preventThreading'
+                  color='primary'
+                />
+              }
+              label='Prevent Threading'
             />
           </Box>
           <Box sx={{ flexGrow: 1 }}>
