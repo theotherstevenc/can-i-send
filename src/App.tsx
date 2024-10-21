@@ -33,7 +33,7 @@ function App() {
     JSON.parse(localStorage.getItem('email') || '["ex@abc.com", "ex@xyz.com"]'),
   )
   const [subject, setSubject] = useState<string>(localStorage.getItem('subject') || '')
-  const [originalHtml, setOriginalHtml] = useState<string>('')
+  const [originalHtml, setOriginalHtml] = useState<string>(localStorage.getItem('originalHtml') || '')
   const [html, setHtml] = useState<string>(localStorage.getItem('html') || defaults.html.trim())
   const [text, setText] = useState<string>(localStorage.getItem('text') || defaults.text.trim())
   const [amp, setAmp] = useState<string>(localStorage.getItem('amp') || defaults.amp.trim())
@@ -81,7 +81,7 @@ function App() {
     setMinifyHTML(minify)
     if (minify) {
       setOriginalHtml(html)
-      localStorage.setItem('originalHtml', originalHtml)
+      localStorage.setItem('originalHtml', html)
       setHtml(customMinifyHtml(html))
     } else {
       setHtml(localStorage.getItem('originalHtml') || originalHtml)
