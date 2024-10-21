@@ -4,6 +4,7 @@ dotenv.config()
 const PORT = process.env.PORT || 8080
 const bodyParserConfig = { limit: '50mb', extended: true }
 
+import basicAuth from 'express-basic-auth'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import CryptoJS from 'crypto-js'
@@ -13,6 +14,13 @@ import nodemailer from 'nodemailer'
 import { simpleParser } from 'mailparser'
 
 const app = express()
+
+app.use(
+  basicAuth({
+    users: { [process.env.AUTH_USER]: process.env.AUTH_PASS },
+    challenge: true,
+  }),
+)
 
 app.use(bodyParser.urlencoded(bodyParserConfig))
 app.use(bodyParser.json(bodyParserConfig))
