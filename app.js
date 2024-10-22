@@ -15,12 +15,14 @@ import { simpleParser } from 'mailparser'
 
 const app = express()
 
-app.use(
-  basicAuth({
-    users: { [process.env.AUTH_USER]: process.env.AUTH_PASS },
-    challenge: true,
-  }),
-)
+if (process.env.NODE_ENV !== 'development') {
+  app.use(
+    basicAuth({
+      users: { [process.env.AUTH_USER]: process.env.AUTH_PASS },
+      challenge: true,
+    })
+  )
+}
 
 app.use(bodyParser.urlencoded(bodyParserConfig))
 app.use(bodyParser.json(bodyParserConfig))
@@ -128,5 +130,5 @@ app.listen(PORT, () =>
   made with ❤ by a 𝗥𝗘𝗕𝗘𝗟
   Server started...
   http://localhost:${PORT}
-`),
+`)
 )
