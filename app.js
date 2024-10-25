@@ -103,12 +103,22 @@ const validateFileUpload = (req, res) => {
   return true
 }
 
+const getAmpContent = (parsed) => {
+  if (parsed && Array.isArray(parsed.attachments)) {
+    const ampAttachment = parsed.attachments.find((attachment) => attachment.contentType === 'text/x-amp-html')
+    if (ampAttachment) {
+      return ampAttachment.content.toString()
+    }
+  }
+}
+
 const parseFile = async (file) => {
   const parsed = await simpleParser(file.data)
+
   return {
     html: parsed.html || '',
     text: parsed.text || '',
-    amp: parsed.amp || '',
+    amp: getAmpContent(parsed) || '',
   }
 }
 
