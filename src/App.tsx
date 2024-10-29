@@ -1,8 +1,7 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import './App.css'
 import { useEffect, useState } from 'react'
 import { styled } from '@mui/material/styles'
-import { TextField, Box, Button, Snackbar, Alert, Backdrop, CircularProgress, Typography, Checkbox, FormControlLabel } from '@mui/material'
+import { TextField, Box, Button, Snackbar, Alert, Backdrop, CircularProgress, Checkbox, FormControlLabel } from '@mui/material'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import { defaults } from './util/defaults'
 import Split from 'react-split'
