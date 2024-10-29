@@ -6,7 +6,7 @@
 
 .editors,
 .split-container {
-  padding: 0.5rem;
+  margin: 0.5rem;
 }
 
 button,
@@ -48,4 +48,28 @@ button:hover {
 
 .rti--container {
   padding: 0 0.5rem !important;
+}
+
+.rti--input {
+  width: 0 !important;
+  flex-grow: 1;
+}
+
+.full-height {
+  height: 100%;
+}
+
+.full-height .MuiInputBase-root {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.full-height .MuiInputBase-input {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.full-height label {
+  top: -2px;
 }

@@ -2,18 +2,7 @@
 import './App.css'
 import { useEffect, useState } from 'react'
 import { styled } from '@mui/material/styles'
-import {
-  TextField,
-  Box,
-  Button,
-  Snackbar,
-  Alert,
-  Backdrop,
-  CircularProgress,
-  Typography,
-  Checkbox,
-  FormControlLabel,
-} from '@mui/material'
+import { TextField, Box, Button, Snackbar, Alert, Backdrop, CircularProgress, Typography, Checkbox, FormControlLabel } from '@mui/material'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import { defaults } from './util/defaults'
 import Split from 'react-split'
@@ -24,23 +13,17 @@ import { getEditorsConfig } from './util/editorsConfig'
 
 function App() {
   const [activeEditor, setActiveEditor] = useState<string>(localStorage.getItem('editor') || EDITOR_TYPE.HTML)
-  const [editorSizes, setEditorSizes] = useState<number[]>(
-    JSON.parse(localStorage.getItem('editorSizes') || '[50, 50]'),
-  )
+  const [editorSizes, setEditorSizes] = useState<number[]>(JSON.parse(localStorage.getItem('editorSizes') || '[50, 50]'))
   const [sizes, setSizes] = useState<number[]>(JSON.parse(localStorage.getItem('sizes') || '[80, 20]'))
 
-  const [email, setEmail] = useState<string[]>(
-    JSON.parse(localStorage.getItem('email') || '["ex@abc.com", "ex@xyz.com"]'),
-  )
+  const [email, setEmail] = useState<string[]>(JSON.parse(localStorage.getItem('email') || '["ex@abc.com", "ex@xyz.com"]'))
   const [subject, setSubject] = useState<string>(localStorage.getItem('subject') || '')
   const [originalHtml, setOriginalHtml] = useState<string>(localStorage.getItem('originalHtml') || '')
   const [html, setHtml] = useState<string>(localStorage.getItem('html') || defaults.html.trim())
   const [text, setText] = useState<string>(localStorage.getItem('text') || defaults.text.trim())
   const [amp, setAmp] = useState<string>(localStorage.getItem('amp') || defaults.amp.trim())
 
-  const [preventThreading, setPreventThreading] = useState<boolean>(
-    JSON.parse(localStorage.getItem('preventThreading') || 'false'),
-  )
+  const [preventThreading, setPreventThreading] = useState<boolean>(JSON.parse(localStorage.getItem('preventThreading') || 'false'))
   const [minifyHTML, setMinifyHTML] = useState<boolean>(() => JSON.parse(localStorage.getItem('minifyHTML') || 'false'))
   const [wordWrap, setWordWrap] = useState<boolean>(() => JSON.parse(localStorage.getItem('wordWrap') || 'false'))
 
@@ -101,20 +84,7 @@ function App() {
     localStorage.setItem('wordWrap', JSON.stringify(wordWrap))
     localStorage.setItem('preventThreading', JSON.stringify(preventThreading))
     localStorage.setItem('senderSettings', JSON.stringify(senderSettings))
-  }, [
-    html,
-    text,
-    amp,
-    subject,
-    editorSizes,
-    sizes,
-    email,
-    minifyHTML,
-    wordWrap,
-    senderSettings,
-    preventThreading,
-    activeEditor,
-  ])
+  }, [html, text, amp, subject, editorSizes, sizes, email, minifyHTML, wordWrap, senderSettings, preventThreading, activeEditor])
 
   const sendEmailRequest = async (emailData: EmailData) => {
     const url = '/api/send'
@@ -268,25 +238,15 @@ function App() {
         </Alert>
       </Snackbar>
 
-      <Backdrop open={loading} style={{ zIndex: 9999, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <Backdrop open={loading} style={{ zIndex: 9999 }}>
         <Box
           style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
             backgroundColor: 'InfoBackground',
-            padding: '1rem 1rem 0 1rem',
+            padding: '1rem',
             borderRadius: '.5rem',
           }}
         >
           <CircularProgress color='info' size='2.5rem' thickness={4} />
-          <Typography
-            variant='h2'
-            color='textPrimary'
-            style={{ marginTop: '0', padding: '1rem', fontSize: '1.5rem', fontWeight: 500 }}
-          >
-            Sending in Progress...
-          </Typography>
         </Box>
       </Backdrop>
 
@@ -298,26 +258,12 @@ function App() {
         >
           <Box sx={{ flexGrow: 1 }}>
             <FormControlLabel
-              control={
-                <Checkbox
-                  checked={minifyHTML}
-                  onChange={(e) => handleMinifyHTML(e.target.checked)}
-                  name='minifyHTML'
-                  color='primary'
-                />
-              }
+              control={<Checkbox checked={minifyHTML} onChange={(e) => handleMinifyHTML(e.target.checked)} name='minifyHTML' color='primary' />}
               label='Minify'
             />
 
             <FormControlLabel
-              control={
-                <Checkbox
-                  checked={wordWrap}
-                  onChange={(e) => setWordWrap(e.target.checked)}
-                  name='wordWrap'
-                  color='primary'
-                />
-              }
+              control={<Checkbox checked={wordWrap} onChange={(e) => setWordWrap(e.target.checked)} name='wordWrap' color='primary' />}
               label='Word wrap'
             />
 
@@ -333,7 +279,7 @@ function App() {
               label='Prevent Threading'
             />
           </Box>
-          <Box sx={{ flexGrow: 1 }}>
+          <Box sx={{ flexGrow: 1, display: 'inline-flex', gap: '0.375rem', flexWrap: 'wrap' }}>
             <TextField
               id='host'
               label='host'
@@ -395,24 +341,15 @@ function App() {
               gap: '.2rem',
             }}
           >
-            <Button
-              variant={activeEditor === EDITOR_TYPE.HTML ? 'outlined' : 'contained'}
-              onClick={() => handleEditorChange(EDITOR_TYPE.HTML)}
-            >
+            <Button variant={activeEditor === EDITOR_TYPE.HTML ? 'outlined' : 'contained'} onClick={() => handleEditorChange(EDITOR_TYPE.HTML)}>
               html
             </Button>
 
-            <Button
-              variant={activeEditor === EDITOR_TYPE.TEXT ? 'outlined' : 'contained'}
-              onClick={() => handleEditorChange(EDITOR_TYPE.TEXT)}
-            >
+            <Button variant={activeEditor === EDITOR_TYPE.TEXT ? 'outlined' : 'contained'} onClick={() => handleEditorChange(EDITOR_TYPE.TEXT)}>
               text
             </Button>
 
-            <Button
-              variant={activeEditor === EDITOR_TYPE.AMP ? 'outlined' : 'contained'}
-              onClick={() => handleEditorChange(EDITOR_TYPE.AMP)}
-            >
+            <Button variant={activeEditor === EDITOR_TYPE.AMP ? 'outlined' : 'contained'} onClick={() => handleEditorChange(EDITOR_TYPE.AMP)}>
               amp
             </Button>
 
@@ -420,6 +357,7 @@ function App() {
               <Split className='split' sizes={sizes} onDragEnd={(sizes) => setSizes(sizes)}>
                 <TagsInput value={email} onChange={setEmail} />
                 <TextField
+                  className='full-height'
                   variant='outlined'
                   label='subject line'
                   value={subject}
@@ -455,7 +393,7 @@ function App() {
                     },
                   }}
                 />
-              ),
+              )
           )}
         </div>
         <div className='workspace-preview'>
