@@ -1,14 +1,18 @@
 import './App.css'
 import { useEffect, useState } from 'react'
 import { styled } from '@mui/material/styles'
-import { TextField, Box, Button, Snackbar, Alert, Backdrop, CircularProgress, Checkbox, FormControlLabel } from '@mui/material'
+import { TextField, Box, Button, Checkbox, FormControlLabel } from '@mui/material'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import { defaults } from './util/defaults'
-import Split from 'react-split'
-import Editor from '@monaco-editor/react'
-import { TagsInput } from 'react-tag-input-component'
 import { EDITOR_TYPE, EditorType, EmailData } from './util/types'
 import { getEditorsConfig } from './util/editorsConfig'
+import SnackbarAlert from './components/SnackbarAlert'
+import BackdropProgress from './components/BackdropProgress'
+import WorkspaceEditorPreview from './components/WorkspaceEditorPreview'
+import EditorSelectorButtons from './components/EditorSelectorButtons'
+import EditorEmailListInput from './components/EditorEmailListInput'
+import EditorSendEmailButton from './components/EditorSendEmailButton'
+import { boxAppStyles, boxContentSettingsStyles, boxControlStyles, boxCustomSettingsStyles, boxSenderSettingsStyles } from './util/styles'
 
 function App() {
   const [activeEditor, setActiveEditor] = useState<string>(localStorage.getItem('editor') || EDITOR_TYPE.HTML)
@@ -230,176 +234,98 @@ function App() {
   })
 
   return (
-    <div className='App'>
-      <Snackbar open={alertState.open} autoHideDuration={4000} onClose={() => setAlertOpen(false)}>
-        <Alert onClose={() => setAlertOpen(false)} severity={alertState.severity}>
-          {alertState.message}
-        </Alert>
-      </Snackbar>
+    <Box sx={boxAppStyles}>
+      <SnackbarAlert alertState={alertState} setAlertOpen={setAlertOpen} />
+      <BackdropProgress loading={loading} />
 
-      <Backdrop open={loading} style={{ zIndex: 9999 }}>
-        <Box
-          style={{
-            backgroundColor: 'InfoBackground',
-            padding: '1rem',
-            borderRadius: '.5rem',
-          }}
-        >
-          <CircularProgress color='info' size='2.5rem' thickness={4} />
+      <Box sx={boxContentSettingsStyles}>
+        <Box sx={boxCustomSettingsStyles}>
+          <FormControlLabel
+            control={<Checkbox checked={minifyHTML} onChange={(e) => handleMinifyHTML(e.target.checked)} name='minifyHTML' color='primary' />}
+            label='Minify'
+          />
+
+          <FormControlLabel
+            control={<Checkbox checked={wordWrap} onChange={(e) => setWordWrap(e.target.checked)} name='wordWrap' color='primary' />}
+            label='Word wrap'
+          />
+
+          <FormControlLabel
+            control={
+              <Checkbox checked={preventThreading} onChange={(e) => setPreventThreading(e.target.checked)} name='preventThreading' color='primary' />
+            }
+            label='Prevent Threading'
+          />
         </Box>
-      </Backdrop>
+        <Box sx={boxSenderSettingsStyles}>
+          <TextField
+            id='host'
+            label='host'
+            value={senderSettings.host}
+            onChange={(e) => updateSenderSettings('host', e.target.value)}
+            variant='outlined'
+            size='small'
+          />
 
-      <div className='editors'>
-        <Box
-          sx={{
-            display: 'flex',
-          }}
-        >
-          <Box sx={{ flexGrow: 1 }}>
-            <FormControlLabel
-              control={<Checkbox checked={minifyHTML} onChange={(e) => handleMinifyHTML(e.target.checked)} name='minifyHTML' color='primary' />}
-              label='Minify'
-            />
+          <TextField
+            id='port'
+            label='port'
+            value={senderSettings.port}
+            onChange={(e) => updateSenderSettings('port', e.target.value)}
+            variant='outlined'
+            size='small'
+          />
 
-            <FormControlLabel
-              control={<Checkbox checked={wordWrap} onChange={(e) => setWordWrap(e.target.checked)} name='wordWrap' color='primary' />}
-              label='Word wrap'
-            />
+          <TextField
+            id='username'
+            label='username'
+            value={senderSettings.user}
+            onChange={(e) => updateSenderSettings('user', e.target.value)}
+            variant='outlined'
+            size='small'
+          />
 
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={preventThreading}
-                  onChange={(e) => setPreventThreading(e.target.checked)}
-                  name='preventThreading'
-                  color='primary'
-                />
-              }
-              label='Prevent Threading'
-            />
-          </Box>
-          <Box sx={{ flexGrow: 1, display: 'inline-flex', gap: '0.375rem', flexWrap: 'wrap' }}>
-            <TextField
-              id='host'
-              label='host'
-              value={senderSettings.host}
-              onChange={(e) => updateSenderSettings('host', e.target.value)}
-              variant='outlined'
-              size='small'
-            />
+          <TextField
+            id='pass'
+            label='password'
+            type='password'
+            value={senderSettings.pass}
+            onChange={(e) => updateSenderSettings('pass', e.target.value)}
+            onBlur={async (e) => updateSenderSettings('pass', await encryptString(e.target.value))}
+            variant='outlined'
+            size='small'
+          />
 
-            <TextField
-              id='port'
-              label='port'
-              value={senderSettings.port}
-              onChange={(e) => updateSenderSettings('port', e.target.value)}
-              variant='outlined'
-              size='small'
-            />
-
-            <TextField
-              id='username'
-              label='username'
-              value={senderSettings.user}
-              onChange={(e) => updateSenderSettings('user', e.target.value)}
-              variant='outlined'
-              size='small'
-            />
-
-            <TextField
-              id='pass'
-              label='password'
-              type='password'
-              value={senderSettings.pass}
-              onChange={(e) => updateSenderSettings('pass', e.target.value)}
-              onBlur={async (e) => updateSenderSettings('pass', await encryptString(e.target.value))}
-              variant='outlined'
-              size='small'
-            />
-
-            <TextField
-              id='from'
-              label='from'
-              value={senderSettings.from}
-              onChange={(e) => updateSenderSettings('from', e.target.value)}
-              variant='outlined'
-              size='small'
-            />
-          </Box>
-          <Button component='label' role={undefined} variant='contained' tabIndex={-1} startIcon={<CloudUploadIcon />}>
-            Upload + Convert EML
-            <VisuallyHiddenInput type='file' accept='.eml' onChange={(e) => handleFileUpload(e)} />
-          </Button>
+          <TextField
+            id='from'
+            label='from'
+            value={senderSettings.from}
+            onChange={(e) => updateSenderSettings('from', e.target.value)}
+            variant='outlined'
+            size='small'
+          />
         </Box>
-      </div>
-      <div className='controls'>
-        <div className='split-container'>
-          <Box
-            sx={{
-              display: 'flex',
-              gap: '.2rem',
-            }}
-          >
-            <Button variant={activeEditor === EDITOR_TYPE.HTML ? 'outlined' : 'contained'} onClick={() => handleEditorChange(EDITOR_TYPE.HTML)}>
-              html
-            </Button>
+        <Button component='label' role={undefined} variant='contained' tabIndex={-1} startIcon={<CloudUploadIcon />}>
+          Upload + Convert EML
+          <VisuallyHiddenInput type='file' accept='.eml' onChange={(e) => handleFileUpload(e)} />
+        </Button>
+      </Box>
 
-            <Button variant={activeEditor === EDITOR_TYPE.TEXT ? 'outlined' : 'contained'} onClick={() => handleEditorChange(EDITOR_TYPE.TEXT)}>
-              text
-            </Button>
+      <Box sx={boxControlStyles}>
+        <EditorSelectorButtons activeEditor={activeEditor} handleEditorChange={handleEditorChange} />
+        <EditorEmailListInput sizes={sizes} setSizes={setSizes} email={email} setEmail={setEmail} subject={subject} setSubject={setSubject} />
+        <EditorSendEmailButton sendEmail={sendEmail} />
+      </Box>
 
-            <Button variant={activeEditor === EDITOR_TYPE.AMP ? 'outlined' : 'contained'} onClick={() => handleEditorChange(EDITOR_TYPE.AMP)}>
-              amp
-            </Button>
-
-            <Box sx={{ flexGrow: 1 }}>
-              <Split className='split' sizes={sizes} onDragEnd={(sizes) => setSizes(sizes)}>
-                <TagsInput value={email} onChange={setEmail} />
-                <TextField
-                  className='full-height'
-                  variant='outlined'
-                  label='subject line'
-                  value={subject}
-                  size='small'
-                  onChange={(e) => setSubject(e.target.value)}
-                />
-              </Split>
-            </Box>
-
-            <Button variant='contained' color='primary' onClick={() => sendEmail()}>
-              Send Email
-            </Button>
-          </Box>
-        </div>
-      </div>
-      <Split className='split' sizes={editorSizes} onDragEnd={(editorSizes) => setEditorSizes(editorSizes)}>
-        <div className='workspace-editor'>
-          {editors.map(
-            (editor) =>
-              activeEditor === editor.type && (
-                <Editor
-                  key={editor.type}
-                  defaultLanguage={editor.language}
-                  defaultValue={editor.value}
-                  value={editor.value}
-                  onChange={editor.onChange}
-                  options={{
-                    readOnly: minifyHTML,
-                    wordWrap: wordWrap ? 'on' : 'off',
-                    lineNumbers: 'on',
-                    minimap: {
-                      enabled: false,
-                    },
-                  }}
-                />
-              )
-          )}
-        </div>
-        <div className='workspace-preview'>
-          {editors.map((editor) => activeEditor === editor.type && <iframe key={editor.type} srcDoc={editor.value} />)}
-        </div>
-      </Split>
-    </div>
+      <WorkspaceEditorPreview
+        editorSizes={editorSizes}
+        setEditorSizes={setEditorSizes}
+        editors={editors}
+        activeEditor={activeEditor}
+        minifyHTML={minifyHTML}
+        wordWrap={wordWrap}
+      />
+    </Box>
   )
 }
 
