@@ -1,5 +1,5 @@
 # .github/workflows/require-version-bump.yml
-name: require version bump
+name: Require Version Bump
 
 on:
   pull_request:
@@ -14,13 +14,27 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Verify package.json update
-        id: check_changes
+      - name: Install jq
+        run: sudo apt-get install -y jq
+
+      - name: Get base branch package.json
+        id: base_version
         run: |
-          # Check for changes in package.json
-          if git diff --name-only HEAD HEAD~1 | grep -q 'package.json'; then
-            echo "Package.json has been updated."
-          else
-            echo "::error::package.json has not been updated in this PR. Please update it before merging."
+          git fetch origin main
+          base_version=$(jq -r '.version' <(git show origin/main:package.json))
+          echo "base_version=$base_version" >> $GITHUB_ENV
+
+      - name: Get PR branch package.json
+        id: pr_version
+        run: |
+          pr_version=$(jq -r '.version' package.json)
+          echo "pr_version=$pr_version" >> $GITHUB_ENV
+
+      - name: Compare versions
+        run: |
+          if [ "${{ env.base_version }}" == "${{ env.pr_version }}" ]; then
+            echo "::error::package.json version has not been updated in this PR. Please update it before merging."
             exit 1
+          else
+            echo "package.json version has been updated."
           fi
