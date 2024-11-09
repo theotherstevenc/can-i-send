@@ -13,25 +13,27 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Get base branch package.json
-        id: base
-        run: |
-          git fetch origin main
-          git checkout origin/main -- package.json
-          cat package.json
-          echo "::set-output name=version::$(jq -r .version package.json)"
+      - name: Install jq
+        run: sudo apt-get install -y jq
 
-      - name: Get PR branch package.json
-        id: pr
+      - name: Get current package version on main
+        id: current-version
         run: |
-          cat package.json
-          echo "::set-output name=version::$(jq -r .version package.json)"
+          git fetch origin main:main
+          current_version=$(jq -r '.version' <(git show main:package.json))
+          echo "current_version=$current_version" >> $GITHUB_ENV
+
+      - name: Get package version on PR branch
+        id: pr-version
+        run: |
+          pr_version=$(jq -r '.version' package.json)
+          echo "pr_version=$pr_version" >> $GITHUB_ENV
 
       - name: Compare versions
         run: |
-          if [ "${{ steps.base.outputs.version }}" == "${{ steps.pr.outputs.version }}" ]; then
-            echo "Version has not been updated."
+          if [ "${{ env.current_version }}" == "${{ env.pr_version }}" ]; then
+            echo "Package version has not been updated."
             exit 1
           else
-            echo "Version has been updated."
+            echo "Package version has been updated."
           fi
