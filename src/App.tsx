@@ -1,18 +1,20 @@
 import './App.css'
 import { useEffect, useState } from 'react'
-import { styled } from '@mui/material/styles'
 import { TextField, Box, Button, Checkbox, FormControlLabel } from '@mui/material'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
+
 import { defaults } from './util/defaults'
 import { EDITOR_TYPE, EditorType, EmailData } from './util/types'
 import { getEditorsConfig } from './util/editorsConfig'
+import { boxAppStyles, boxContentSettingsStyles, boxControlStyles, boxCustomSettingsStyles, boxSenderSettingsStyles } from './util/styles'
+
 import SnackbarAlert from './components/SnackbarAlert'
 import BackdropProgress from './components/BackdropProgress'
 import WorkspaceEditorPreview from './components/WorkspaceEditorPreview'
 import EditorSelectorButtons from './components/EditorSelectorButtons'
 import EditorEmailListInput from './components/EditorEmailListInput'
 import EditorSendEmailButton from './components/EditorSendEmailButton'
-import { boxAppStyles, boxContentSettingsStyles, boxControlStyles, boxCustomSettingsStyles, boxSenderSettingsStyles } from './util/styles'
+import VisuallyHiddenInput from './styledComponents/VisuallyHiddenInput'
 
 function App() {
   const [activeEditor, setActiveEditor] = useState<string>(localStorage.getItem('editor') || EDITOR_TYPE.HTML)
@@ -31,7 +33,6 @@ function App() {
   const [wordWrap, setWordWrap] = useState<boolean>(() => JSON.parse(localStorage.getItem('wordWrap') || 'false'))
 
   const [loading, setLoading] = useState<boolean>(false)
-
   const [alertState, setAlertState] = useState({
     message: '',
     severity: 'success' as 'error' | 'success',
@@ -220,18 +221,6 @@ function App() {
   }
 
   const editors = getEditorsConfig(html, setHtml, text, setText, amp, setAmp)
-
-  const VisuallyHiddenInput = styled('input')({
-    clip: 'rect(0 0 0 0)',
-    clipPath: 'inset(50%)',
-    height: 1,
-    overflow: 'hidden',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    whiteSpace: 'nowrap',
-    width: 1,
-  })
 
   return (
     <Box sx={boxAppStyles}>
