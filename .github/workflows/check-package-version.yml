@@ -1,0 +1,37 @@
+name: Check Package Version
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  check-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Get base branch package.json
+        id: base
+        run: |
+          git fetch origin main
+          git checkout origin/main -- package.json
+          cat package.json
+          echo "::set-output name=version::$(jq -r .version package.json)"
+
+      - name: Get PR branch package.json
+        id: pr
+        run: |
+          cat package.json
+          echo "::set-output name=version::$(jq -r .version package.json)"
+
+      - name: Compare versions
+        run: |
+          if [ "${{ steps.base.outputs.version }}" == "${{ steps.pr.outputs.version }}" ]; then
+            echo "Version has not been updated."
+            exit 1
+          else
+            echo "Version has been updated."
+          fi
