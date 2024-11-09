@@ -10,7 +10,7 @@ export const defaults = {
     <meta name="x-apple-disable-message-reformatting">
     <meta name="color-scheme" content="light dark">
     <meta name="supported-color-schemes" content="light dark">
-    <title>Email title</title>
+    <title>can i send</title>
     <!--[if mso]>
     <noscript>
       <xml>
