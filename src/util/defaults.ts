@@ -10,7 +10,7 @@ export const defaults = {
     <meta name="x-apple-disable-message-reformatting">
     <meta name="color-scheme" content="light dark">
     <meta name="supported-color-schemes" content="light dark">
-    <title>Email title</title>
+    <title>html ⚡ 4email</title>
     <!--[if mso]>
     <noscript>
       <xml>
@@ -44,7 +44,7 @@ export const defaults = {
       <style amp4email-boilerplate>body{visibility:hidden}</style>
     </head>
     <body>
-      AMP4EMAIL
+      html ⚡ 4email
     </body>
   </html>
 `,
