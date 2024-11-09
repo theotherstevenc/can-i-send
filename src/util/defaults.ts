@@ -34,7 +34,7 @@ export const defaults = {
   </body>
 </html>
   `,
-  text: `Default plain text`,
+  text: `Default plain text version`,
   amp: `
   <!doctype html>
   <html ⚡4email data-css-strict>
