@@ -1,8 +1,10 @@
 import './App.css'
-import { useEffect, useContext } from 'react'
+import { useEffect, useState } from 'react'
 import { TextField, Box, Button, Checkbox, FormControlLabel } from '@mui/material'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 
+import { defaults } from './util/defaults'
+import { EDITOR_TYPE, EditorType, EmailData } from './util/types'
 import { getEditorsConfig } from './util/editorsConfig'
 import { boxAppStyles, boxContentSettingsStyles, boxControlStyles, boxCustomSettingsStyles, boxSenderSettingsStyles } from './util/styles'
 
@@ -13,47 +15,38 @@ import EditorSelectorButtons from './components/EditorSelectorButtons'
 import EditorEmailListInput from './components/EditorEmailListInput'
 import EditorSendEmailButton from './components/EditorSendEmailButton'
 import VisuallyHiddenInput from './styledComponents/VisuallyHiddenInput'
-import { AppContext } from './context/AppContext'
-import { EditorType, EmailData } from './util/types'
 
 function App() {
-  const context = useContext(AppContext)
+  const [activeEditor, setActiveEditor] = useState<string>(localStorage.getItem('editor') || EDITOR_TYPE.HTML)
+  const [editorSizes, setEditorSizes] = useState<number[]>(JSON.parse(localStorage.getItem('editorSizes') || '[50, 50]'))
+  const [sizes, setSizes] = useState<number[]>(JSON.parse(localStorage.getItem('sizes') || '[80, 20]'))
 
-  if (!context) {
-    throw new Error('useContext must be inside a Provider with a value')
-  }
+  const [email, setEmail] = useState<string[]>(JSON.parse(localStorage.getItem('email') || '["ex@abc.com", "ex@xyz.com"]'))
+  const [subject, setSubject] = useState<string>(localStorage.getItem('subject') || '')
+  const [originalHtml, setOriginalHtml] = useState<string>(localStorage.getItem('originalHtml') || '')
+  const [html, setHtml] = useState<string>(localStorage.getItem('html') || defaults.html.trim())
+  const [text, setText] = useState<string>(localStorage.getItem('text') || defaults.text.trim())
+  const [amp, setAmp] = useState<string>(localStorage.getItem('amp') || defaults.amp.trim())
 
-  const {
-    setActiveEditor,
-    senderSettings,
-    setSenderSettings,
-    preventThreading,
-    setPreventThreading,
-    minifyHTML,
-    setMinifyHTML,
-    wordWrap,
-    setWordWrap,
-    loading,
-    setLoading,
-    setAlertState,
-    setOriginalHtml,
-    html,
-    setHtml,
-    setEmail,
-    setSubject,
-    text,
-    originalHtml,
-    setText,
-    amp,
-    setAmp,
-    activeEditor,
-    subject,
-    editorSizes,
-    setEditorSizes,
-    sizes,
-    setSizes,
-    email,
-  } = context
+  const [preventThreading, setPreventThreading] = useState<boolean>(JSON.parse(localStorage.getItem('preventThreading') || 'false'))
+  const [minifyHTML, setMinifyHTML] = useState<boolean>(() => JSON.parse(localStorage.getItem('minifyHTML') || 'false'))
+  const [wordWrap, setWordWrap] = useState<boolean>(() => JSON.parse(localStorage.getItem('wordWrap') || 'false'))
+
+  const [loading, setLoading] = useState<boolean>(false)
+  const [alertState, setAlertState] = useState({
+    message: '',
+    severity: 'success' as 'error' | 'success',
+    open: false,
+  })
+
+  const localSenderSettings = JSON.parse(localStorage.getItem('senderSettings') || '{}')
+  const [senderSettings, setSenderSettings] = useState({
+    host: localSenderSettings.host || '',
+    port: localSenderSettings.port || '',
+    user: localSenderSettings.user || '',
+    pass: localSenderSettings.pass || '',
+    from: localSenderSettings.from || '',
+  })
 
   const updateSenderSettings = (key: string, value: string) => {
     setSenderSettings((prevSettings) => {
@@ -110,12 +103,12 @@ function App() {
     return response
   }
 
-  // const setAlertOpen = (open: boolean) => {
-  //   setAlertState({
-  //     ...alertState,
-  //     open,
-  //   })
-  // }
+  const setAlertOpen = (open: boolean) => {
+    setAlertState({
+      ...alertState,
+      open,
+    })
+  }
 
   const handleAlert = (message: string, severity: 'error' | 'success', error?: Error) => {
     setAlertState({
@@ -231,7 +224,7 @@ function App() {
 
   return (
     <Box sx={boxAppStyles}>
-      <SnackbarAlert />
+      <SnackbarAlert alertState={alertState} setAlertOpen={setAlertOpen} />
       <BackdropProgress loading={loading} />
 
       <Box sx={boxContentSettingsStyles}>

@@ -1,15 +1,23 @@
 import { Alert, Snackbar } from '@mui/material'
+import { useContext } from 'react'
+import { AppContext } from '../context/AppContext'
 
-interface SnackbarAlertProps {
-  alertState: {
-    open: boolean
-    severity: 'success' | 'error' | 'warning' | 'info'
-    message: string
+const SnackbarAlert = () => {
+  const context = useContext(AppContext)
+
+  if (!context) {
+    throw new Error('useContext must be inside a Provider with a value')
   }
-  setAlertOpen: (open: boolean) => void
-}
 
-const SnackbarAlert: React.FC<SnackbarAlertProps> = ({ alertState, setAlertOpen }) => {
+  const { alertState, setAlertState } = context
+
+  const setAlertOpen = (open: boolean) => {
+    setAlertState({
+      ...alertState,
+      open,
+    })
+  }
+
   return (
     <Snackbar open={alertState.open} autoHideDuration={4000} onClose={() => setAlertOpen(false)}>
       <Alert onClose={() => setAlertOpen(false)} severity={alertState.severity}>
