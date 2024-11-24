@@ -5,7 +5,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 
 import { defaults } from './util/defaults'
 import { EDITOR_TYPE, EditorType, EmailData } from './util/types'
-import { getEditorsConfig } from './util/editorsConfig'
+import { getEditorsConfig } from './helpers/editorsConfig'
 import { boxAppStyles, boxContentSettingsStyles, boxControlStyles, boxCustomSettingsStyles, boxSenderSettingsStyles } from './util/styles'
 
 import SnackbarAlert from './components/SnackbarAlert'

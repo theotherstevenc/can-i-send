@@ -1,6 +1,7 @@
 import React, { createContext, useState, ReactNode } from 'react'
 import { defaults } from '../util/defaults'
 import { EDITOR_TYPE } from '../util/types'
+import getInitialState from '../helpers/getInitialState'
 
 interface EditorContextProps {
   html: string
@@ -26,18 +27,6 @@ interface EditorContextProps {
 const EditorContext = createContext<EditorContextProps | undefined>(undefined)
 
 const EditorProvider = ({ children }: { children: ReactNode }) => {
-  const getInitialState = <T,>(key: string, defaultValue: T): T => {
-    const storedValue = localStorage.getItem(key)
-    if (storedValue !== null) {
-      try {
-        return JSON.parse(storedValue)
-      } catch {
-        return storedValue as unknown as T
-      }
-    }
-    return defaultValue
-  }
-
   const [html, setHtml] = useState<string>(getInitialState('html', defaults.html.trim()))
   const [text, setText] = useState<string>(getInitialState('text', defaults.text.trim()))
   const [amp, setAmp] = useState<string>(getInitialState('amp', defaults.amp.trim()))
