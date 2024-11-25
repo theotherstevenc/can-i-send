@@ -6,11 +6,13 @@ import WorkspaceEditorPreview from './components/WorkspaceEditorPreview-v2'
 import EditorSelectorButtons from './components/EditorSelectorButtons-v2'
 import EditorEmailListInput from './components/EditorEmailListInput-v2'
 import EditorSendEmailButton from './components/EditorSendEmailButton-v2'
+import SnackbarAlert from './components/SnackbarAlert'
 
 function App() {
   return (
     <Box sx={boxAppStyles}>
       <EditorProvider>
+        <SnackbarAlert />
         <Box sx={boxControlStyles}>
           <EditorSelectorButtons />
           <EditorEmailListInput />
