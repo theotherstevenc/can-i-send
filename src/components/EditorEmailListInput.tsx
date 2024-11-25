@@ -1,15 +1,10 @@
 import { Box, TextField } from '@mui/material'
 import Split from 'react-split'
 import { TagsInput } from 'react-tag-input-component'
-import { useContext } from 'react'
-import { EditorContext } from '../context/EditorContext'
+import useEditorContext from '../helpers/useEditorContext'
 
 const EditorEmailListInput = () => {
-  const context = useContext(EditorContext)
-
-  if (!context) throw new Error('useEditorContext must be used within an EditorProvider')
-
-  const { email, setEmail, subject, setSubject, sizes, setSizes } = context
+  const { email, setEmail, subject, setSubject, sizes, setSizes } = useEditorContext()
 
   return (
     <>

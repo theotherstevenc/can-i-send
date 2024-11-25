@@ -1,14 +1,9 @@
 import { Button } from '@mui/material'
 import { EDITOR_TYPE, EditorType } from '../util/types'
-import { EditorContext } from '../context/EditorContext'
-import { useContext } from 'react'
+import useEditorContext from '../helpers/useEditorContext'
 
 const EditorSelectorButtons = () => {
-  const context = useContext(EditorContext)
-
-  if (!context) throw new Error('useEditorContext must be used within an EditorProvider')
-
-  const { activeEditor, setActiveEditor } = context
+  const { activeEditor, setActiveEditor } = useEditorContext()
 
   const handleEditorChange = (editor: EditorType) => {
     setActiveEditor(editor)

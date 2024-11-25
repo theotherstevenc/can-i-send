@@ -1,13 +1,8 @@
 import { TextField } from '@mui/material'
-import { useContext } from 'react'
-import { EditorContext } from '../context/EditorContext'
+import useEditorContext from '../helpers/useEditorContext'
 
 const FormSenderSettingsInput = () => {
-  const context = useContext(EditorContext)
-
-  if (!context) throw new Error('useEditorContext must be used within an EditorProvider')
-
-  const { senderSettings, setSenderSettings } = context
+  const { senderSettings, setSenderSettings } = useEditorContext()
 
   const updateSenderSettings = (key: string, value: string) => {
     setSenderSettings((prevSettings) => {

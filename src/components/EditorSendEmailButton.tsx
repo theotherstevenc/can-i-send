@@ -1,14 +1,9 @@
 import { Button } from '@mui/material'
 import { EmailData } from '../util/types'
-import { useContext } from 'react'
-import { EditorContext } from '../context/EditorContext'
+import useEditorContext from '../helpers/useEditorContext'
 
 const EditorSendEmailButton = () => {
-  const context = useContext(EditorContext)
-
-  if (!context) throw new Error('useEditorContext must be used within an EditorProvider')
-
-  const { email, subject, html, text, amp, preventThreading, minifyHTML, senderSettings, setAlertState, setLoading } = context
+  const { email, subject, html, text, amp, preventThreading, minifyHTML, senderSettings, setAlertState, setLoading } = useEditorContext()
 
   const sendEmailRequest = async (emailData: EmailData) => {
     const url = '/api/send'

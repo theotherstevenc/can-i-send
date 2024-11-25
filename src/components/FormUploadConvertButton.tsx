@@ -1,13 +1,10 @@
 import { Button } from '@mui/material'
 import VisuallyHiddenInput from '../styledComponents/VisuallyHiddenInput'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
-import { useContext } from 'react'
-import { EditorContext } from '../context/EditorContext'
+import useEditorContext from '../helpers/useEditorContext'
 
 const FormUploadConvertButton = () => {
-  const context = useContext(EditorContext)
-  if (!context) throw new Error('useEditorContext must be used within an EditorProvider')
-  const { setHtml, setText, setAmp } = context
+  const { setHtml, setText, setAmp } = useEditorContext()
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]

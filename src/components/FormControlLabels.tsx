@@ -1,12 +1,9 @@
 import { Checkbox, FormControlLabel } from '@mui/material'
-import { useContext } from 'react'
-import { EditorContext } from '../context/EditorContext'
+import useEditorContext from '../helpers/useEditorContext'
 
 const FormControlLabels = () => {
-  const context = useContext(EditorContext)
-  if (!context) throw new Error('useEditorContext must be used within an EditorProvider')
-
-  const { html, setHtml, minifyHTML, setMinifyHTML, wordWrap, setWordWrap, preventThreading, setPreventThreading, originalHtml, setOriginalHtml } = context
+  const { html, setHtml, minifyHTML, setMinifyHTML, wordWrap, setWordWrap, preventThreading, setPreventThreading, originalHtml, setOriginalHtml } =
+    useEditorContext()
 
   const customMinifyHtml = (html: string): string => {
     return html

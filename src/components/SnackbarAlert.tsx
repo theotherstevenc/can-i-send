@@ -1,12 +1,8 @@
 import { Alert, Snackbar } from '@mui/material'
-import { useContext } from 'react'
-import { EditorContext } from '../context/EditorContext'
+import useEditorContext from '../helpers/useEditorContext'
 
 const SnackbarAlert = () => {
-  const context = useContext(EditorContext)
-  if (!context) throw new Error('useEditorContext must be used within an EditorProvider')
-
-  const { alertState, setAlertState } = context
+  const { alertState, setAlertState } = useEditorContext()
 
   const setAlertOpen = (open: boolean) => {
     setAlertState({

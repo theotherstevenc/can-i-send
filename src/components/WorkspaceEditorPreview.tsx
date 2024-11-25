@@ -2,8 +2,7 @@ import { Editor } from '@monaco-editor/react'
 import { Box } from '@mui/material'
 import Split from 'react-split'
 import { getEditorsConfig } from '../helpers/editorsConfig'
-import { useContext } from 'react'
-import { EditorContext } from '../context/EditorContext'
+import useEditorContext from '../helpers/useEditorContext'
 
 const styles = {
   workspacePreviewIframe: {
@@ -15,11 +14,7 @@ const styles = {
 }
 
 const WorkspaceEditorPreview = () => {
-  const context = useContext(EditorContext)
-
-  if (!context) throw new Error('useEditorContext must be used within an EditorProvider')
-
-  const { html, setHtml, text, setText, amp, setAmp, activeEditor, editorSizes, setEditorSizes, minifyHTML, wordWrap } = context
+  const { html, setHtml, text, setText, amp, setAmp, activeEditor, editorSizes, setEditorSizes, minifyHTML, wordWrap } = useEditorContext()
 
   const editors = getEditorsConfig(html, setHtml, text, setText, amp, setAmp)
 
@@ -48,9 +43,7 @@ const WorkspaceEditorPreview = () => {
         )}
       </Box>
       <Box>
-        {editors.map(
-          (editor) => activeEditor === editor.type && <iframe style={styles.workspacePreviewIframe} key={editor.type} srcDoc={editor.value} />
-        )}
+        {editors.map((editor) => activeEditor === editor.type && <iframe style={styles.workspacePreviewIframe} key={editor.type} srcDoc={editor.value} />)}
       </Box>
     </Split>
   )
