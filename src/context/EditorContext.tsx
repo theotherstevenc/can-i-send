@@ -22,6 +22,10 @@ interface EditorContextProps {
   setMinifyHTML: React.Dispatch<React.SetStateAction<boolean>>
   wordWrap: boolean
   setWordWrap: React.Dispatch<React.SetStateAction<boolean>>
+  email: string[]
+  setEmail: React.Dispatch<React.SetStateAction<string[]>>
+  subject: string
+  setSubject: React.Dispatch<React.SetStateAction<string>>
 }
 
 const EditorContext = createContext<EditorContextProps | undefined>(undefined)
@@ -38,6 +42,9 @@ const EditorProvider = ({ children }: { children: ReactNode }) => {
   const [preventThreading, setPreventThreading] = useState<boolean>(getInitialState('preventThreading', false))
   const [minifyHTML, setMinifyHTML] = useState<boolean>(getInitialState('minifyHTML', false))
   const [wordWrap, setWordWrap] = useState<boolean>(getInitialState('wordWrap', false))
+
+  const [email, setEmail] = useState<string[]>(getInitialState('email', ['ex@abc.com', 'ex@xyz.com']))
+  const [subject, setSubject] = useState<string>(getInitialState('subject', ''))
 
   return (
     <EditorContext.Provider
@@ -60,6 +67,10 @@ const EditorProvider = ({ children }: { children: ReactNode }) => {
         setMinifyHTML,
         wordWrap,
         setWordWrap,
+        email,
+        setEmail,
+        subject,
+        setSubject,
       }}
     >
       {children}
