@@ -26,6 +26,36 @@ interface EditorContextProps {
   setEmail: React.Dispatch<React.SetStateAction<string[]>>
   subject: string
   setSubject: React.Dispatch<React.SetStateAction<string>>
+  loading: boolean
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>
+  alertState: {
+    message: string
+    severity: 'error' | 'success'
+    open: boolean
+  }
+  setAlertState: React.Dispatch<
+    React.SetStateAction<{
+      message: string
+      severity: 'error' | 'success'
+      open: boolean
+    }>
+  >
+  senderSettings: {
+    host: string
+    port: string
+    user: string
+    pass: string
+    from: string
+  }
+  setSenderSettings: React.Dispatch<
+    React.SetStateAction<{
+      host: string
+      port: string
+      user: string
+      pass: string
+      from: string
+    }>
+  >
 }
 
 const EditorContext = createContext<EditorContextProps | undefined>(undefined)
@@ -45,6 +75,22 @@ const EditorProvider = ({ children }: { children: ReactNode }) => {
 
   const [email, setEmail] = useState<string[]>(getInitialState('email', ['ex@abc.com', 'ex@xyz.com']))
   const [subject, setSubject] = useState<string>(getInitialState('subject', ''))
+
+  const [loading, setLoading] = useState<boolean>(false)
+  const [alertState, setAlertState] = useState({
+    message: '',
+    severity: 'success' as 'error' | 'success',
+    open: false,
+  })
+
+  const localSenderSettings = JSON.parse(localStorage.getItem('senderSettings') || '{}')
+  const [senderSettings, setSenderSettings] = useState({
+    host: localSenderSettings.host || '',
+    port: localSenderSettings.port || '',
+    user: localSenderSettings.user || '',
+    pass: localSenderSettings.pass || '',
+    from: localSenderSettings.from || '',
+  })
 
   return (
     <EditorContext.Provider
@@ -71,6 +117,12 @@ const EditorProvider = ({ children }: { children: ReactNode }) => {
         setEmail,
         subject,
         setSubject,
+        loading,
+        setLoading,
+        alertState,
+        setAlertState,
+        senderSettings,
+        setSenderSettings,
       }}
     >
       {children}

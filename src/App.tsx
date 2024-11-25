@@ -5,6 +5,7 @@ import { EditorProvider } from './context/EditorContext'
 import WorkspaceEditorPreview from './components/WorkspaceEditorPreview-v2'
 import EditorSelectorButtons from './components/EditorSelectorButtons-v2'
 import EditorEmailListInput from './components/EditorEmailListInput-v2'
+import EditorSendEmailButton from './components/EditorSendEmailButton-v2'
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Box sx={boxControlStyles}>
           <EditorSelectorButtons />
           <EditorEmailListInput />
+          <EditorSendEmailButton />
         </Box>
         <WorkspaceEditorPreview />
       </EditorProvider>
