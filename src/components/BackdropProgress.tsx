@@ -1,8 +1,6 @@
 import { Backdrop, Box, CircularProgress } from '@mui/material'
-
-interface BackdropProgressProps {
-  loading: boolean
-}
+import { useContext } from 'react'
+import { EditorContext } from '../context/EditorContext'
 
 const BackdropStyles = {
   zIndex: 9999,
@@ -14,7 +12,11 @@ const BoxStyles = {
   borderRadius: '.5rem',
 }
 
-const BackdropProgress: React.FC<BackdropProgressProps> = ({ loading }) => {
+const BackdropProgress = () => {
+  const context = useContext(EditorContext)
+  if (!context) throw new Error('useEditorContext must be used within an EditorProvider')
+
+  const { loading } = context
   return (
     <Backdrop open={loading} style={BackdropStyles}>
       <Box style={BoxStyles}>
