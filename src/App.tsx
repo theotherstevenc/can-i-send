@@ -1,6 +1,6 @@
 import './App.css'
 import { Box } from '@mui/material'
-import { boxAppStyles, boxContentSettingsStyles, boxControlStyles, boxCustomSettingsStyles } from './util/styles'
+import { boxAppStyles, boxContentSettingsStyles, boxControlStyles, boxCustomSettingsStyles, boxSenderSettingsStyles } from './util/styles'
 import { EditorProvider } from './context/EditorContext'
 import WorkspaceEditorPreview from './components/WorkspaceEditorPreview'
 import EditorSelectorButtons from './components/EditorSelectorButtons'
@@ -9,6 +9,7 @@ import EditorSendEmailButton from './components/EditorSendEmailButton'
 import SnackbarAlert from './components/SnackbarAlert'
 import BackdropProgress from './components/BackdropProgress'
 import FormControlLabels from './components/FormControlLabels'
+import FormSenderSettingsInput from './components/FormSenderSettingsInput'
 
 function App() {
   return (
@@ -19,6 +20,9 @@ function App() {
         <Box sx={boxContentSettingsStyles}>
           <Box sx={boxCustomSettingsStyles}>
             <FormControlLabels />
+          </Box>
+          <Box sx={boxSenderSettingsStyles}>
+            <FormSenderSettingsInput />
           </Box>
         </Box>
         <Box sx={boxControlStyles}>
