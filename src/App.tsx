@@ -10,6 +10,7 @@ import SnackbarAlert from './components/SnackbarAlert'
 import BackdropProgress from './components/BackdropProgress'
 import FormControlLabels from './components/FormControlLabels'
 import FormSenderSettingsInput from './components/FormSenderSettingsInput'
+import FormUploadConvertButton from './components/FormUploadConvertButton'
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Box sx={boxSenderSettingsStyles}>
             <FormSenderSettingsInput />
           </Box>
+          <FormUploadConvertButton />
         </Box>
         <Box sx={boxControlStyles}>
           <EditorSelectorButtons />
