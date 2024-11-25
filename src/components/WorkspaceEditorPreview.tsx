@@ -1,22 +1,8 @@
 import { Editor } from '@monaco-editor/react'
 import { Box } from '@mui/material'
 import Split from 'react-split'
-
-interface EditorConfig {
-  type: string
-  language: string
-  value: string
-  onChange: (newValue: string | undefined) => void
-}
-
-interface WorkspaceEditorPreviewProps {
-  editorSizes: number[]
-  setEditorSizes: (editorSizes: number[]) => void
-  editors: EditorConfig[]
-  activeEditor: string
-  minifyHTML: boolean
-  wordWrap: boolean
-}
+import { getEditorsConfig } from '../helpers/editorsConfig'
+import useEditorContext from '../helpers/useEditorContext'
 
 const styles = {
   workspacePreviewIframe: {
@@ -27,14 +13,11 @@ const styles = {
   },
 }
 
-const WorkspaceEditorPreview: React.FC<WorkspaceEditorPreviewProps> = ({
-  editorSizes,
-  setEditorSizes,
-  editors,
-  activeEditor,
-  minifyHTML,
-  wordWrap,
-}) => {
+const WorkspaceEditorPreview = () => {
+  const { html, setHtml, text, setText, amp, setAmp, activeEditor, editorSizes, setEditorSizes, minifyHTML, wordWrap } = useEditorContext()
+
+  const editors = getEditorsConfig(html, setHtml, text, setText, amp, setAmp)
+
   return (
     <Split className='split' sizes={editorSizes} onDragEnd={(editorSizes) => setEditorSizes(editorSizes)}>
       <Box>
@@ -60,9 +43,7 @@ const WorkspaceEditorPreview: React.FC<WorkspaceEditorPreviewProps> = ({
         )}
       </Box>
       <Box>
-        {editors.map(
-          (editor) => activeEditor === editor.type && <iframe style={styles.workspacePreviewIframe} key={editor.type} srcDoc={editor.value} />
-        )}
+        {editors.map((editor) => activeEditor === editor.type && <iframe style={styles.workspacePreviewIframe} key={editor.type} srcDoc={editor.value} />)}
       </Box>
     </Split>
   )

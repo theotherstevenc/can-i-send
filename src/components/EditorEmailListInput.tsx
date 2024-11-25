@@ -1,17 +1,11 @@
 import { Box, TextField } from '@mui/material'
 import Split from 'react-split'
 import { TagsInput } from 'react-tag-input-component'
+import useEditorContext from '../helpers/useEditorContext'
 
-interface EditorEmailListInputProps {
-  sizes: number[]
-  setSizes: (sizes: number[]) => void
-  email: string[]
-  setEmail: (email: string[]) => void
-  subject: string
-  setSubject: (subject: string) => void
-}
+const EditorEmailListInput = () => {
+  const { email, setEmail, subject, setSubject, sizes, setSizes } = useEditorContext()
 
-const EditorEmailListInput: React.FC<EditorEmailListInputProps> = ({ sizes, setSizes, email, setEmail, subject, setSubject }) => {
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>

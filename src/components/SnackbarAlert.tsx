@@ -1,15 +1,16 @@
 import { Alert, Snackbar } from '@mui/material'
+import useEditorContext from '../helpers/useEditorContext'
 
-interface SnackbarAlertProps {
-  alertState: {
-    open: boolean
-    severity: 'success' | 'error' | 'warning' | 'info'
-    message: string
+const SnackbarAlert = () => {
+  const { alertState, setAlertState } = useEditorContext()
+
+  const setAlertOpen = (open: boolean) => {
+    setAlertState({
+      ...alertState,
+      open,
+    })
   }
-  setAlertOpen: (open: boolean) => void
-}
 
-const SnackbarAlert: React.FC<SnackbarAlertProps> = ({ alertState, setAlertOpen }) => {
   return (
     <Snackbar open={alertState.open} autoHideDuration={4000} onClose={() => setAlertOpen(false)}>
       <Alert onClose={() => setAlertOpen(false)} severity={alertState.severity}>

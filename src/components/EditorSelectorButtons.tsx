@@ -1,12 +1,14 @@
 import { Button } from '@mui/material'
 import { EDITOR_TYPE, EditorType } from '../util/types'
+import useEditorContext from '../helpers/useEditorContext'
 
-interface EditorSelectorButtonsProps {
-  activeEditor: string
-  handleEditorChange: (editorType: EditorType) => void
-}
+const EditorSelectorButtons = () => {
+  const { activeEditor, setActiveEditor } = useEditorContext()
 
-const EditorSelectorButtons: React.FC<EditorSelectorButtonsProps> = ({ activeEditor, handleEditorChange }) => {
+  const handleEditorChange = (editor: EditorType) => {
+    setActiveEditor(editor)
+  }
+
   return (
     <>
       <Button variant={activeEditor === EDITOR_TYPE.HTML ? 'outlined' : 'contained'} onClick={() => handleEditorChange(EDITOR_TYPE.HTML)}>
