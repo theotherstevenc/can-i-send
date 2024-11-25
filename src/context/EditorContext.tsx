@@ -6,6 +6,8 @@ import getInitialState from '../helpers/getInitialState'
 interface EditorContextProps {
   html: string
   setHtml: React.Dispatch<React.SetStateAction<string>>
+  originalHtml: string
+  setOriginalHtml: React.Dispatch<React.SetStateAction<string>>
   text: string
   setText: React.Dispatch<React.SetStateAction<string>>
   amp: string
@@ -65,6 +67,8 @@ const EditorProvider = ({ children }: { children: ReactNode }) => {
   const [text, setText] = useState<string>(getInitialState('text', defaults.text.trim()))
   const [amp, setAmp] = useState<string>(getInitialState('amp', defaults.amp.trim()))
 
+  const [originalHtml, setOriginalHtml] = useState<string>(getInitialState('originalHtml', ''))
+
   const [activeEditor, setActiveEditor] = useState<string>(getInitialState('editor', EDITOR_TYPE.HTML))
   const [editorSizes, setEditorSizes] = useState<number[]>(getInitialState('editorSizes', [50, 50]))
   const [sizes, setSizes] = useState<number[]>(getInitialState('sizes', [80, 20]))
@@ -97,6 +101,8 @@ const EditorProvider = ({ children }: { children: ReactNode }) => {
       value={{
         html,
         setHtml,
+        originalHtml,
+        setOriginalHtml,
         text,
         setText,
         amp,
