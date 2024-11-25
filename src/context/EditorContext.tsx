@@ -1,4 +1,4 @@
-import React, { createContext, useState, ReactNode } from 'react'
+import React, { createContext, useState, ReactNode, useEffect } from 'react'
 import { defaults } from '../util/defaults'
 import { EDITOR_TYPE } from '../util/types'
 import getInitialState from '../helpers/getInitialState'
@@ -94,6 +94,40 @@ const EditorProvider = ({ children }: { children: ReactNode }) => {
     user: localSenderSettings.user || '',
     pass: localSenderSettings.pass || '',
     from: localSenderSettings.from || '',
+  })
+
+  useEffect(() => {
+    localStorage.setItem('html', html)
+  })
+  useEffect(() => {
+    localStorage.setItem('text', text)
+  })
+  useEffect(() => {
+    localStorage.setItem('amp', amp)
+  })
+  useEffect(() => {
+    localStorage.setItem('originalHtml', originalHtml)
+  })
+  useEffect(() => {
+    localStorage.setItem('editor', activeEditor)
+  })
+  useEffect(() => {
+    localStorage.setItem('editorSizes', JSON.stringify(editorSizes))
+  })
+  useEffect(() => {
+    localStorage.setItem('sizes', JSON.stringify(sizes))
+  })
+  useEffect(() => {
+    localStorage.setItem('preventThreading', preventThreading.toString())
+  })
+  useEffect(() => {
+    localStorage.setItem('minifyHTML', minifyHTML.toString())
+  })
+  useEffect(() => {
+    localStorage.setItem('wordWrap', wordWrap.toString())
+  })
+  useEffect(() => {
+    localStorage.setItem('email', JSON.stringify(email))
   })
 
   return (

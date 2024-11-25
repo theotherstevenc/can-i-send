@@ -1,6 +1,7 @@
 export const boxControlStyles = {
   display: 'flex',
   gap: '.2rem',
+  margin: '0 0 0.5rem 0',
 }
 
 export const boxAppStyles = {
