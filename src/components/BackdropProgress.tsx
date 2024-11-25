@@ -17,6 +17,7 @@ const BackdropProgress = () => {
   if (!context) throw new Error('useEditorContext must be used within an EditorProvider')
 
   const { loading } = context
+
   return (
     <Backdrop open={loading} style={BackdropStyles}>
       <Box style={BoxStyles}>
