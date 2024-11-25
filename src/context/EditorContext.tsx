@@ -1,7 +1,7 @@
 import React, { createContext, useState, ReactNode, useEffect } from 'react'
 import { defaults } from '../util/defaults'
 import { EDITOR_TYPE } from '../util/types'
-import getInitialState from '../helpers/getInitialState'
+import usePersistentState from '../helpers/usePersistentState'
 
 interface EditorContextProps {
   html: string
@@ -63,22 +63,22 @@ interface EditorContextProps {
 const EditorContext = createContext<EditorContextProps | undefined>(undefined)
 
 const EditorProvider = ({ children }: { children: ReactNode }) => {
-  const [html, setHtml] = useState<string>(getInitialState('html', defaults.html.trim()))
-  const [text, setText] = useState<string>(getInitialState('text', defaults.text.trim()))
-  const [amp, setAmp] = useState<string>(getInitialState('amp', defaults.amp.trim()))
+  const [html, setHtml] = usePersistentState<string>('html', defaults.html.trim())
+  const [text, setText] = usePersistentState<string>('text', defaults.text.trim())
+  const [amp, setAmp] = usePersistentState<string>('amp', defaults.amp.trim())
 
-  const [originalHtml, setOriginalHtml] = useState<string>(getInitialState('originalHtml', ''))
+  const [originalHtml, setOriginalHtml] = usePersistentState<string>('originalHtml', '')
 
-  const [activeEditor, setActiveEditor] = useState<string>(getInitialState('editor', EDITOR_TYPE.HTML))
-  const [editorSizes, setEditorSizes] = useState<number[]>(getInitialState('editorSizes', [50, 50]))
-  const [sizes, setSizes] = useState<number[]>(getInitialState('sizes', [80, 20]))
+  const [activeEditor, setActiveEditor] = usePersistentState<string>('editor', EDITOR_TYPE.HTML)
+  const [editorSizes, setEditorSizes] = usePersistentState<number[]>('editorSizes', [50, 50])
+  const [sizes, setSizes] = usePersistentState<number[]>('sizes', [80, 20])
 
-  const [preventThreading, setPreventThreading] = useState<boolean>(getInitialState('preventThreading', false))
-  const [minifyHTML, setMinifyHTML] = useState<boolean>(getInitialState('minifyHTML', false))
-  const [wordWrap, setWordWrap] = useState<boolean>(getInitialState('wordWrap', false))
+  const [preventThreading, setPreventThreading] = usePersistentState<boolean>('preventThreading', false)
+  const [minifyHTML, setMinifyHTML] = usePersistentState<boolean>('minifyHTML', false)
+  const [wordWrap, setWordWrap] = usePersistentState<boolean>('wordWrap', false)
 
-  const [email, setEmail] = useState<string[]>(getInitialState('email', ['ex@abc.com', 'ex@xyz.com']))
-  const [subject, setSubject] = useState<string>(getInitialState('subject', ''))
+  const [email, setEmail] = usePersistentState<string[]>('email', ['ex@abc.com', 'ex@xyz.com'])
+  const [subject, setSubject] = usePersistentState<string>('subject', '')
 
   const [loading, setLoading] = useState<boolean>(false)
   const [alertState, setAlertState] = useState({
@@ -87,13 +87,12 @@ const EditorProvider = ({ children }: { children: ReactNode }) => {
     open: false,
   })
 
-  const localSenderSettings = JSON.parse(localStorage.getItem('senderSettings') || '{}')
-  const [senderSettings, setSenderSettings] = useState({
-    host: localSenderSettings.host || '',
-    port: localSenderSettings.port || '',
-    user: localSenderSettings.user || '',
-    pass: localSenderSettings.pass || '',
-    from: localSenderSettings.from || '',
+  const [senderSettings, setSenderSettings] = usePersistentState('senderSettings', {
+    host: '',
+    port: '',
+    user: '',
+    pass: '',
+    from: '',
   })
 
   useEffect(() => {
@@ -128,6 +127,9 @@ const EditorProvider = ({ children }: { children: ReactNode }) => {
   })
   useEffect(() => {
     localStorage.setItem('email', JSON.stringify(email))
+  })
+  useEffect(() => {
+    localStorage.setItem('senderSettings', JSON.stringify(senderSettings))
   })
 
   return (
