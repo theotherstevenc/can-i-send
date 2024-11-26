@@ -3,6 +3,9 @@ import VisuallyHiddenInput from '../styledComponents/VisuallyHiddenInput'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import useEditorContext from '../hooks/useEditorContext'
 
+const API_URL = '/api/upload'
+const HTTP_METHOD_POST = 'POST'
+
 const FormUploadConvertButton = () => {
   const { setHtml, setText, setAmp } = useEditorContext()
 
@@ -12,13 +15,12 @@ const FormUploadConvertButton = () => {
       const formData = new FormData()
       formData.append('file', file)
 
-      const url = '/api/upload'
       const options = {
-        method: 'POST',
+        method: HTTP_METHOD_POST,
         body: formData,
       }
 
-      const response = await fetch(url, options)
+      const response = await fetch(API_URL, options)
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)

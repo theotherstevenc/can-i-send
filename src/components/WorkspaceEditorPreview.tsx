@@ -14,6 +14,9 @@ const styles = {
 }
 
 const WorkspaceEditorPreview = () => {
+  const MOSAIC_OPTION_ON = 'on'
+  const MOSAIC_OPTION_OFF = 'off'
+
   const { html, setHtml, text, setText, amp, setAmp, activeEditor, editorSizes, setEditorSizes, minifyHTML, wordWrap } = useEditorContext()
 
   const editors = getEditorsConfig(html, setHtml, text, setText, amp, setAmp)
@@ -32,8 +35,8 @@ const WorkspaceEditorPreview = () => {
                 onChange={editor.onChange}
                 options={{
                   readOnly: minifyHTML,
-                  wordWrap: wordWrap ? 'on' : 'off',
-                  lineNumbers: 'on',
+                  wordWrap: wordWrap ? MOSAIC_OPTION_ON : MOSAIC_OPTION_OFF,
+                  lineNumbers: MOSAIC_OPTION_ON,
                   minimap: {
                     enabled: false,
                   },

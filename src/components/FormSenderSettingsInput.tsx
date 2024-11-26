@@ -1,6 +1,9 @@
 import { TextField } from '@mui/material'
 import useEditorContext from '../hooks/useEditorContext'
 
+const API_URL = '/api/encrypt'
+const HTTP_METHOD_POST = 'POST'
+
 const FormSenderSettingsInput = () => {
   const { senderSettings, setSenderSettings } = useEditorContext()
 
@@ -13,8 +16,8 @@ const FormSenderSettingsInput = () => {
   const encryptString = async (text: string): Promise<string> => {
     if (!text) return ''
     try {
-      const response = await fetch('/api/encrypt', {
-        method: 'POST',
+      const response = await fetch(API_URL, {
+        method: HTTP_METHOD_POST,
         headers: {
           'Content-Type': 'application/json',
         },
