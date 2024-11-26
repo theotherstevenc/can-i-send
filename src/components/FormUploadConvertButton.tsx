@@ -1,7 +1,7 @@
 import { Button } from '@mui/material'
 import VisuallyHiddenInput from '../styledComponents/VisuallyHiddenInput'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
-import useEditorContext from '../helpers/useEditorContext'
+import useEditorContext from '../hooks/useEditorContext'
 
 const FormUploadConvertButton = () => {
   const { setHtml, setText, setAmp } = useEditorContext()

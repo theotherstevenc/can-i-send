@@ -1,5 +1,5 @@
 import { TextField } from '@mui/material'
-import useEditorContext from '../helpers/useEditorContext'
+import useEditorContext from '../hooks/useEditorContext'
 
 const FormSenderSettingsInput = () => {
   const { senderSettings, setSenderSettings } = useEditorContext()
@@ -35,23 +35,9 @@ const FormSenderSettingsInput = () => {
 
   return (
     <>
-      <TextField
-        id='host'
-        label='host'
-        value={senderSettings.host}
-        onChange={(e) => updateSenderSettings('host', e.target.value)}
-        variant='outlined'
-        size='small'
-      />
+      <TextField id='host' label='host' value={senderSettings.host} onChange={(e) => updateSenderSettings('host', e.target.value)} variant='outlined' size='small' />
 
-      <TextField
-        id='port'
-        label='port'
-        value={senderSettings.port}
-        onChange={(e) => updateSenderSettings('port', e.target.value)}
-        variant='outlined'
-        size='small'
-      />
+      <TextField id='port' label='port' value={senderSettings.port} onChange={(e) => updateSenderSettings('port', e.target.value)} variant='outlined' size='small' />
 
       <TextField
         id='username'
@@ -73,14 +59,7 @@ const FormSenderSettingsInput = () => {
         size='small'
       />
 
-      <TextField
-        id='from'
-        label='from'
-        value={senderSettings.from}
-        onChange={(e) => updateSenderSettings('from', e.target.value)}
-        variant='outlined'
-        size='small'
-      />
+      <TextField id='from' label='from' value={senderSettings.from} onChange={(e) => updateSenderSettings('from', e.target.value)} variant='outlined' size='small' />
     </>
   )
 }

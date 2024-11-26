@@ -1,6 +1,6 @@
 import { Button } from '@mui/material'
-import { EDITOR_TYPE, EditorType } from '../util/types'
-import useEditorContext from '../helpers/useEditorContext'
+import { EDITOR_TYPE, EditorType } from '../types/types'
+import useEditorContext from '../hooks/useEditorContext'
 
 const EditorSelectorButtons = () => {
   const { activeEditor, setActiveEditor } = useEditorContext()

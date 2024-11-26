@@ -1,6 +1,6 @@
 import './App.css'
 import { Box } from '@mui/material'
-import { boxAppStyles, boxContentSettingsStyles, boxControlStyles, boxCustomSettingsStyles, boxSenderSettingsStyles } from './util/styles'
+import { boxAppStyles, boxContentSettingsStyles, boxControlStyles, boxCustomSettingsStyles, boxSenderSettingsStyles } from './styles/styles'
 import { EditorProvider } from './context/EditorContext'
 import {
   BackdropProgress,

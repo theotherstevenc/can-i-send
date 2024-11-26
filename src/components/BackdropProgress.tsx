@@ -1,5 +1,5 @@
 import { Backdrop, Box, CircularProgress } from '@mui/material'
-import useEditorContext from '../helpers/useEditorContext'
+import useEditorContext from '../hooks/useEditorContext'
 
 const BackdropStyles = {
   zIndex: 9999,

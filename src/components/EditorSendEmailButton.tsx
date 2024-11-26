@@ -1,6 +1,6 @@
 import { Button } from '@mui/material'
-import { EmailData } from '../util/types'
-import useEditorContext from '../helpers/useEditorContext'
+import { EmailData } from '../types/types'
+import useEditorContext from '../hooks/useEditorContext'
 
 const EditorSendEmailButton = () => {
   const { email, subject, html, text, amp, preventThreading, minifyHTML, senderSettings, setAlertState, setLoading } = useEditorContext()

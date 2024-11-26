@@ -1,8 +1,8 @@
 import { Editor } from '@monaco-editor/react'
 import { Box } from '@mui/material'
 import Split from 'react-split'
-import { getEditorsConfig } from '../helpers/editorsConfig'
-import useEditorContext from '../helpers/useEditorContext'
+import { getEditorsConfig } from '../config/editorsConfig'
+import useEditorContext from '../hooks/useEditorContext'
 
 const styles = {
   workspacePreviewIframe: {
@@ -42,9 +42,7 @@ const WorkspaceEditorPreview = () => {
             )
         )}
       </Box>
-      <Box>
-        {editors.map((editor) => activeEditor === editor.type && <iframe style={styles.workspacePreviewIframe} key={editor.type} srcDoc={editor.value} />)}
-      </Box>
+      <Box>{editors.map((editor) => activeEditor === editor.type && <iframe style={styles.workspacePreviewIframe} key={editor.type} srcDoc={editor.value} />)}</Box>
     </Split>
   )
 }

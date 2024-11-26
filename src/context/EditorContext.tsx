@@ -1,7 +1,7 @@
 import React, { createContext, useState, ReactNode, useEffect } from 'react'
-import { defaults } from '../util/defaults'
-import { EDITOR_TYPE } from '../util/types'
-import usePersistentState from '../helpers/usePersistentState'
+import { defaults } from '../config/defaults'
+import { EDITOR_TYPE } from '../types/types'
+import usePersistentState from '../hooks/usePersistentState'
 
 interface EditorContextProps {
   html: string
