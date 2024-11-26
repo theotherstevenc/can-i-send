@@ -1,21 +1,23 @@
 import './App.css'
 import { Box } from '@mui/material'
-import { boxAppStyles, boxContentSettingsStyles, boxControlStyles, boxCustomSettingsStyles, boxSenderSettingsStyles } from './util/styles'
+import { boxAppStyles, boxContentSettingsStyles, boxControlStyles, boxCustomSettingsStyles, boxSenderSettingsStyles } from './styles/styles'
 import { EditorProvider } from './context/EditorContext'
-import WorkspaceEditorPreview from './components/WorkspaceEditorPreview'
-import EditorSelectorButtons from './components/EditorSelectorButtons'
-import EditorEmailListInput from './components/EditorEmailListInput'
-import EditorSendEmailButton from './components/EditorSendEmailButton'
-import SnackbarAlert from './components/SnackbarAlert'
-import BackdropProgress from './components/BackdropProgress'
-import FormControlLabels from './components/FormControlLabels'
-import FormSenderSettingsInput from './components/FormSenderSettingsInput'
-import FormUploadConvertButton from './components/FormUploadConvertButton'
+import {
+  BackdropProgress,
+  EditorEmailListInput,
+  EditorSelectorButtons,
+  EditorSendEmailButton,
+  FormControlLabels,
+  FormSenderSettingsInput,
+  FormUploadConvertButton,
+  SnackbarAlert,
+  WorkspaceEditorPreview,
+} from './components'
 
 function App() {
   return (
-    <Box sx={boxAppStyles}>
-      <EditorProvider>
+    <EditorProvider>
+      <Box sx={boxAppStyles}>
         <SnackbarAlert />
         <BackdropProgress />
         <Box sx={boxContentSettingsStyles}>
@@ -33,8 +35,8 @@ function App() {
           <EditorSendEmailButton />
         </Box>
         <WorkspaceEditorPreview />
-      </EditorProvider>
-    </Box>
+      </Box>
+    </EditorProvider>
   )
 }
 

@@ -1,5 +1,5 @@
 import { Alert, Snackbar } from '@mui/material'
-import useEditorContext from '../helpers/useEditorContext'
+import useEditorContext from '../hooks/useEditorContext'
 
 const SnackbarAlert = () => {
   const { alertState, setAlertState } = useEditorContext()

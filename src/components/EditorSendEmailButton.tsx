@@ -1,20 +1,22 @@
 import { Button } from '@mui/material'
-import { EmailData } from '../util/types'
-import useEditorContext from '../helpers/useEditorContext'
+import { EmailData } from '../types/types'
+import useEditorContext from '../hooks/useEditorContext'
+
+const API_URL = '/api/send'
+const HTTP_METHOD_POST = 'POST'
 
 const EditorSendEmailButton = () => {
   const { email, subject, html, text, amp, preventThreading, minifyHTML, senderSettings, setAlertState, setLoading } = useEditorContext()
 
-  const sendEmailRequest = async (emailData: EmailData) => {
-    const url = '/api/send'
-    const options = {
-      method: 'POST',
+  const handleRequest = async (emailData: EmailData): Promise<Response> => {
+    const options: RequestInit = {
+      method: HTTP_METHOD_POST,
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(emailData),
     }
-    const response = await fetch(url, options)
+    const response = await fetch(API_URL, options)
     return response
   }
 
@@ -39,13 +41,25 @@ const EditorSendEmailButton = () => {
     handleAlert('Email sent successfully!', 'success')
   }
 
-  const sendEmail = async () => {
-    setLoading(true)
-    const currentDateTime = new Date().toISOString().replace('T', ' ').split('.')[0]
+  const getCurrentDateTime = (): string => {
+    return new Date().toISOString().replace('T', ' ').split('.')[0]
+  }
+
+  const createEmailData = (
+    email: string[],
+    subject: string,
+    html: string,
+    text: string,
+    amp: string,
+    preventThreading: boolean,
+    minifyHTML: boolean,
+    senderSettings: any
+  ): EmailData => {
+    const currentDateTime = getCurrentDateTime()
     const formattedSubject = preventThreading ? `${subject} ${currentDateTime}` : subject
     const { host, port, user, pass, from } = senderSettings
 
-    const emailData = {
+    return {
       testaddress: email,
       testsubject: formattedSubject,
       htmlversion: html,
@@ -59,11 +73,14 @@ const EditorSendEmailButton = () => {
       pass,
       from,
     }
+  }
 
-    console.log(emailData)
+  const emailData = createEmailData(email, subject, html, text, amp, preventThreading, minifyHTML, senderSettings)
 
+  const handleSend = async () => {
+    setLoading(true)
     try {
-      const response = await sendEmailRequest(emailData)
+      const response = await handleRequest(emailData)
       handleResponse(response)
     } catch (error) {
       handleError(error as Error)
@@ -73,7 +90,7 @@ const EditorSendEmailButton = () => {
   }
 
   return (
-    <Button variant='contained' color='primary' onClick={() => sendEmail()}>
+    <Button variant='contained' color='primary' onClick={() => handleSend()}>
       Send Email
     </Button>
   )

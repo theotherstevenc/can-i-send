@@ -1,5 +1,8 @@
 import { TextField } from '@mui/material'
-import useEditorContext from '../helpers/useEditorContext'
+import useEditorContext from '../hooks/useEditorContext'
+
+const API_URL = '/api/encrypt'
+const HTTP_METHOD_POST = 'POST'
 
 const FormSenderSettingsInput = () => {
   const { senderSettings, setSenderSettings } = useEditorContext()
@@ -13,8 +16,8 @@ const FormSenderSettingsInput = () => {
   const encryptString = async (text: string): Promise<string> => {
     if (!text) return ''
     try {
-      const response = await fetch('/api/encrypt', {
-        method: 'POST',
+      const response = await fetch(API_URL, {
+        method: HTTP_METHOD_POST,
         headers: {
           'Content-Type': 'application/json',
         },
@@ -35,23 +38,9 @@ const FormSenderSettingsInput = () => {
 
   return (
     <>
-      <TextField
-        id='host'
-        label='host'
-        value={senderSettings.host}
-        onChange={(e) => updateSenderSettings('host', e.target.value)}
-        variant='outlined'
-        size='small'
-      />
+      <TextField id='host' label='host' value={senderSettings.host} onChange={(e) => updateSenderSettings('host', e.target.value)} variant='outlined' size='small' />
 
-      <TextField
-        id='port'
-        label='port'
-        value={senderSettings.port}
-        onChange={(e) => updateSenderSettings('port', e.target.value)}
-        variant='outlined'
-        size='small'
-      />
+      <TextField id='port' label='port' value={senderSettings.port} onChange={(e) => updateSenderSettings('port', e.target.value)} variant='outlined' size='small' />
 
       <TextField
         id='username'
@@ -73,14 +62,7 @@ const FormSenderSettingsInput = () => {
         size='small'
       />
 
-      <TextField
-        id='from'
-        label='from'
-        value={senderSettings.from}
-        onChange={(e) => updateSenderSettings('from', e.target.value)}
-        variant='outlined'
-        size='small'
-      />
+      <TextField id='from' label='from' value={senderSettings.from} onChange={(e) => updateSenderSettings('from', e.target.value)} variant='outlined' size='small' />
     </>
   )
 }

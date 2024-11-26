@@ -1,9 +1,8 @@
 import { Checkbox, FormControlLabel } from '@mui/material'
-import useEditorContext from '../helpers/useEditorContext'
+import useEditorContext from '../hooks/useEditorContext'
 
 const FormControlLabels = () => {
-  const { html, setHtml, minifyHTML, setMinifyHTML, wordWrap, setWordWrap, preventThreading, setPreventThreading, originalHtml, setOriginalHtml } =
-    useEditorContext()
+  const { html, setHtml, minifyHTML, setMinifyHTML, wordWrap, setWordWrap, preventThreading, setPreventThreading, originalHtml, setOriginalHtml } = useEditorContext()
 
   const customMinifyHtml = (html: string): string => {
     return html
@@ -33,10 +32,7 @@ const FormControlLabels = () => {
         label='Minify'
       />
 
-      <FormControlLabel
-        control={<Checkbox checked={wordWrap} onChange={(e) => setWordWrap(e.target.checked)} name='wordWrap' color='primary' />}
-        label='Word wrap'
-      />
+      <FormControlLabel control={<Checkbox checked={wordWrap} onChange={(e) => setWordWrap(e.target.checked)} name='wordWrap' color='primary' />} label='Word wrap' />
 
       <FormControlLabel
         control={<Checkbox checked={preventThreading} onChange={(e) => setPreventThreading(e.target.checked)} name='preventThreading' color='primary' />}

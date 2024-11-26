@@ -1,4 +1,4 @@
-import { EDITOR_TYPE } from '../util/types'
+import { EDITOR_TYPE } from '../types/types'
 
 export const getEditorsConfig = (
   html: string,

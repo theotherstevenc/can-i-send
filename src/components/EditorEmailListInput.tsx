@@ -1,7 +1,7 @@
 import { Box, TextField } from '@mui/material'
 import Split from 'react-split'
 import { TagsInput } from 'react-tag-input-component'
-import useEditorContext from '../helpers/useEditorContext'
+import useEditorContext from '../hooks/useEditorContext'
 
 const EditorEmailListInput = () => {
   const { email, setEmail, subject, setSubject, sizes, setSizes } = useEditorContext()
@@ -17,7 +17,7 @@ const EditorEmailListInput = () => {
             label='subject line'
             value={subject}
             size='small'
-            onChange={(e) => setSubject(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSubject(e.target.value)}
           />
         </Split>
       </Box>
