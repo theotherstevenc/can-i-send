@@ -16,8 +16,8 @@ import {
 
 function App() {
   return (
-    <Box sx={boxAppStyles}>
-      <EditorProvider>
+    <EditorProvider>
+      <Box sx={boxAppStyles}>
         <SnackbarAlert />
         <BackdropProgress />
         <Box sx={boxContentSettingsStyles}>
@@ -35,8 +35,8 @@ function App() {
           <EditorSendEmailButton />
         </Box>
         <WorkspaceEditorPreview />
-      </EditorProvider>
-    </Box>
+      </Box>
+    </EditorProvider>
   )
 }
 
