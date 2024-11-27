@@ -3,11 +3,11 @@ import VisuallyHiddenInput from '../styledComponents/VisuallyHiddenInput'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import useEditorContext from '../hooks/useEditorContext'
 
-const API_URL = '/api/upload'
-const HTTP_METHOD_POST = 'POST'
-
 const FormUploadConvertButton = () => {
   const { setHtml, setText, setAmp } = useEditorContext()
+
+  const API_URL = '/api/upload'
+  const HTTP_METHOD_POST = 'POST'
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]

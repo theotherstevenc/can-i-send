@@ -1,5 +1,6 @@
 import './App.css'
 import { Box } from '@mui/material'
+
 import { boxAppStyles, boxContentSettingsStyles, boxControlStyles, boxCustomSettingsStyles, boxSenderSettingsStyles } from './styles/styles'
 import { EditorProvider } from './context/EditorContext'
 import {
@@ -11,7 +12,7 @@ import {
   FormSenderSettingsInput,
   FormUploadConvertButton,
   SnackbarAlert,
-  WorkspaceEditorPreview,
+  WorkspaceEditorContainer,
 } from './components'
 
 function App() {
@@ -34,7 +35,7 @@ function App() {
           <EditorEmailListInput />
           <EditorSendEmailButton />
         </Box>
-        <WorkspaceEditorPreview />
+        <WorkspaceEditorContainer />
       </Box>
     </EditorProvider>
   )

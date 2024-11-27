@@ -1,4 +1,6 @@
 export { default as WorkspaceEditorPreview } from './WorkspaceEditorPreview'
+export { default as WorkspaceEditorContainer } from './WorkspaceEditorContainer'
+export { default as WorkspaceFileBrowser } from './WorkspaceFileBrowser'
 export { default as EditorSelectorButtons } from './EditorSelectorButtons'
 export { default as EditorEmailListInput } from './EditorEmailListInput'
 export { default as EditorSendEmailButton } from './EditorSendEmailButton'
