@@ -20,7 +20,11 @@ button:hover {
   cursor: pointer;
 }
 
-.split {
+.split-container {
+  flex-grow: 1;
+}
+
+.split-component {
   display: flex;
   flex-direction: row;
   height: 100%;
@@ -46,21 +50,3 @@ button:hover {
   flex-grow: 1;
 }
 
-.full-height {
-  height: 100%;
-}
-
-.full-height .MuiInputBase-root {
-  height: 100%;
-  display: flex;
-  align-items: center;
-}
-
-.full-height .MuiInputBase-input {
-  height: 100%;
-  box-sizing: border-box;
-}
-
-.full-height label {
-  top: -2px;
-}

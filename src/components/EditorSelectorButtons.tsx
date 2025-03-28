@@ -1,28 +1,30 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Button } from '@mui/material'
-import { EDITOR_TYPE, EditorType } from '../types/types'
-import useEditorContext from '../hooks/useEditorContext'
+import { useAppContext } from '../context/AppContext'
+import manageFirestoreCollection from '../utils/manageFirestoreCollection'
 
 const BUTTON_VARIANT_OUTLINED = 'outlined'
 const BUTTON_VARIANT_CONTAINED = 'contained'
 
 const EditorSelectorButtons = () => {
-  const { activeEditor, setActiveEditor } = useEditorContext()
+  const { activeEditor, setActiveEditor } = useAppContext()
 
-  const handleEditorChange = (editor: EditorType) => {
-    setActiveEditor(editor)
+  const handleClick = (editorType: string) => {
+    setActiveEditor(editorType)
+    manageFirestoreCollection({ activeEditor: editorType })
   }
 
   return (
     <>
-      <Button variant={activeEditor === EDITOR_TYPE.HTML ? BUTTON_VARIANT_CONTAINED : BUTTON_VARIANT_OUTLINED} onClick={() => handleEditorChange(EDITOR_TYPE.HTML)}>
+      <Button variant={activeEditor === 'html' ? BUTTON_VARIANT_CONTAINED : BUTTON_VARIANT_OUTLINED} onClick={() => handleClick('html')}>
         html
       </Button>
 
-      <Button variant={activeEditor === EDITOR_TYPE.TEXT ? BUTTON_VARIANT_CONTAINED : BUTTON_VARIANT_OUTLINED} onClick={() => handleEditorChange(EDITOR_TYPE.TEXT)}>
+      <Button variant={activeEditor === 'text' ? BUTTON_VARIANT_CONTAINED : BUTTON_VARIANT_OUTLINED} onClick={() => handleClick('text')}>
         text
       </Button>
 
-      <Button variant={activeEditor === EDITOR_TYPE.AMP ? BUTTON_VARIANT_CONTAINED : BUTTON_VARIANT_OUTLINED} onClick={() => handleEditorChange(EDITOR_TYPE.AMP)}>
+      <Button variant={activeEditor === 'amp' ? BUTTON_VARIANT_CONTAINED : BUTTON_VARIANT_OUTLINED} onClick={() => handleClick('amp')}>
         amp
       </Button>
     </>
