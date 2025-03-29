@@ -38,9 +38,9 @@ app.use(
   })
 )
 
-app.get('/logout', (req, res) => {
-  res.set('WWW-Authenticate', 'Basic realm="Logout"')
-  return res.status(401).send('Logged out')
+app.get('/api/use-local-storage', (req, res) => {
+  const useLocalStorage = process.env.USE_LOCAL_STORAGE
+  res.json({ useLocalStorage })
 })
 
 app.get('/api/get-firestore-collection', async (req, res) => {

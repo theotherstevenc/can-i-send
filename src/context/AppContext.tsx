@@ -1,6 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { SenderSettings } from '../interfaces'
+import { storageFeatureFlag } from '../utils/storageFeatureFlag'
 
 interface AppContextProps {
   html: string
@@ -54,7 +55,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   useEffect(() => {
     const fetchFirestoreCollection = async () => {
-      const USE_LOCAL_STORAGE = true
+      const USE_LOCAL_STORAGE = await storageFeatureFlag()
 
       if (USE_LOCAL_STORAGE) {
         const persistentState = localStorage.getItem('persistentState')

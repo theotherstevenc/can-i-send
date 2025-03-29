@@ -1,5 +1,7 @@
+import { storageFeatureFlag } from './storageFeatureFlag'
+
 const managePersistentState = async (firestoreField: object) => {
-  const USE_LOCAL_STORAGE = true
+  const USE_LOCAL_STORAGE = await storageFeatureFlag()
 
   if (USE_LOCAL_STORAGE) {
     const existingData = JSON.parse(localStorage.getItem('persistentState') || '{}')
