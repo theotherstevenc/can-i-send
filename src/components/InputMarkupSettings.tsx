@@ -3,7 +3,7 @@ import { Box, Checkbox, FormControlLabel } from '@mui/material'
 import { useAppContext } from '../context/AppContext'
 import { useEffect } from 'react'
 import { customMinifier } from '../utils/customMinifier'
-import manageFirestoreCollection from '../utils/manageFirestoreCollection'
+import managePersistentState from '../utils/managePersistentState'
 
 const InputMarkupSettings = () => {
   const { setHtml, html, setOriginalHtml, originalHtml, isMinifyEnabled, setIsMinifyEnabled, isWordWrapEnabled, setIsWordWrapEnabled, isPreventThreadingEnabled, setIsPreventThreadingEnabled } =
@@ -25,7 +25,7 @@ const InputMarkupSettings = () => {
       default:
         break
     }
-    manageFirestoreCollection({ [name]: checked })
+    managePersistentState({ [name]: checked })
   }
 
   useEffect(() => {

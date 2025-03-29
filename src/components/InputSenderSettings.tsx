@@ -1,11 +1,10 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { Dispatch, SetStateAction } from 'react'
 import { Box, TextField } from '@mui/material'
 import { SenderSettings } from '../interfaces'
 import { useAppContext } from '../context/AppContext'
 import { InputSenderSettingsStyles } from '../styles/global.styles'
 import { encryptString } from '../utils/encryptString'
-import manageFirestoreCollection from '../utils/manageFirestoreCollection'
+import managePersistentState from '../utils/managePersistentState'
 
 const InputSenderSettings = () => {
   const { inputSenderSettings, setInputSenderSettings } = useAppContext() as {
@@ -25,7 +24,7 @@ const InputSenderSettings = () => {
     handleInputChange(id as keyof SenderSettings, processedValue)
 
     if (isBlur) {
-      manageFirestoreCollection({ ...inputSenderSettings, [id]: processedValue })
+      managePersistentState({ ...inputSenderSettings, [id]: processedValue })
     }
   }
 

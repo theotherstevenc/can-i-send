@@ -3,7 +3,7 @@ import { useState } from 'react'
 import Split from 'react-split'
 import { TagsInput } from 'react-tag-input-component'
 import { useAppContext } from '../context/AppContext'
-import manageFirestoreCollection from '../utils/manageFirestoreCollection'
+import managePersistentState from '../utils/managePersistentState'
 
 const InputEmailListSubjectLine = () => {
   const [sizes, setSizes] = useState<number[]>([50, 50])
@@ -14,12 +14,12 @@ const InputEmailListSubjectLine = () => {
   }
 
   const handleBlur = () => {
-    manageFirestoreCollection({ subject })
+    managePersistentState({ subject })
   }
 
   const handleEmailAddressesChange = (newEmailAddresses: string[]) => {
     setEmailAddresses(newEmailAddresses)
-    manageFirestoreCollection({ emailAddresses: newEmailAddresses })
+    managePersistentState({ emailAddresses: newEmailAddresses })
   }
 
   return (
