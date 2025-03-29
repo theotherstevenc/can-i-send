@@ -39,7 +39,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.get('/api/use-local-storage', (req, res) => {
-  const useLocalStorage = process.env.USE_LOCAL_STORAGE
+  const useLocalStorage = JSON.parse(process.env.USE_LOCAL_STORAGE)
   res.json({ useLocalStorage })
 })
 
