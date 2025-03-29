@@ -54,34 +54,52 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   useEffect(() => {
     const fetchFirestoreCollection = async () => {
-      const API_URL = '/api/get-firestore-collection'
-      try {
-        const response = await fetch(API_URL, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
+      const USE_LOCAL_STORAGE = true
 
-        if (!response.ok) {
-          throw new Error(`Error fetching Firestore collection: ${response.statusText}`)
+      if (USE_LOCAL_STORAGE) {
+        const persistentState = localStorage.getItem('persistentState')
+
+        if (persistentState) {
+          try {
+            const { subject, host, port, username, pass, from, isMinifyEnabled, isWordWrapEnabled, isPreventThreadingEnabled, activeEditor, emailAddresses } = JSON.parse(persistentState)
+
+            setSubject(subject)
+            setIsMinifyEnabled(isMinifyEnabled || false)
+            setIsWordWrapEnabled(isWordWrapEnabled || false)
+            setIsPreventThreadingEnabled(isPreventThreadingEnabled || false)
+            setActiveEditor(activeEditor)
+            setEmailAddresses(emailAddresses)
+            setInputSenderSettings({ host, port, username, pass, from })
+          } catch (error) {
+            console.error('Error parsing persistentState from localStorage:', error)
+          }
         }
-
-        const data = await response.json()
-        const { subject, host, port, username, pass, from, isMinifyEnabled, isWordWrapEnabled, isPreventThreadingEnabled, activeEditor, emailAddresses } = data
-
-        setSubject(subject)
-        setIsMinifyEnabled(isMinifyEnabled)
-        setIsWordWrapEnabled(isWordWrapEnabled)
-        setIsPreventThreadingEnabled(isPreventThreadingEnabled)
-        setActiveEditor(activeEditor)
-        setEmailAddresses(emailAddresses)
-        setInputSenderSettings({ host, port, username, pass, from })
-
-        return data
-      } catch (error) {
-        console.error('Error fetching Firestore collection:', error)
-        return null
+      } else {
+        const API_URL = '/api/get-firestore-collection'
+        try {
+          const response = await fetch(API_URL, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          })
+          if (!response.ok) {
+            throw new Error(`Error fetching Firestore collection: ${response.statusText}`)
+          }
+          const data = await response.json()
+          const { subject, host, port, username, pass, from, isMinifyEnabled, isWordWrapEnabled, isPreventThreadingEnabled, activeEditor, emailAddresses } = data
+          setSubject(subject)
+          setIsMinifyEnabled(isMinifyEnabled)
+          setIsWordWrapEnabled(isWordWrapEnabled)
+          setIsPreventThreadingEnabled(isPreventThreadingEnabled)
+          setActiveEditor(activeEditor)
+          setEmailAddresses(emailAddresses)
+          setInputSenderSettings({ host, port, username, pass, from })
+          return data
+        } catch (error) {
+          console.error('Error fetching Firestore collection:', error)
+          return null
+        }
       }
     }
 
