@@ -43,7 +43,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [activeEditor, setActiveEditor] = useState('')
 
   const [subject, setSubject] = useState<string>('')
-  const [emailAddresses, setEmailAddresses] = useState<string[]>(['s.collins@salesforce.com'])
+  const [emailAddresses, setEmailAddresses] = useState<string[]>([])
 
   const [inputSenderSettings, setInputSenderSettings] = useState<SenderSettings>({
     host: '',
@@ -69,7 +69,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             setIsWordWrapEnabled(isWordWrapEnabled || false)
             setIsPreventThreadingEnabled(isPreventThreadingEnabled || false)
             setActiveEditor(activeEditor)
-            setEmailAddresses(emailAddresses)
+            setEmailAddresses(Array.isArray(emailAddresses) ? emailAddresses : [])
             setInputSenderSettings({ host, port, username, pass, from })
           } catch (error) {
             console.error('Error parsing persistentState from localStorage:', error)
