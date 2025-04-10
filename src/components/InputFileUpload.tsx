@@ -16,9 +16,12 @@ const VisuallyHiddenInput = styled('input')({
 })
 
 const InputFileUpload = () => {
-  const { setHtml, setText, setAmp } = useAppContext()
+  const { setHtml, setText, setAmp, setIsMinifyEnabled, setIsWordWrapEnabled } = useAppContext()
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsMinifyEnabled(false)
+    setIsWordWrapEnabled(false)
+
     const API_URL = '/api/upload'
     const HTTP_METHOD_POST = 'POST'
 
