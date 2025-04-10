@@ -65,9 +65,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             const { subject, host, port, username, pass, from, isMinifyEnabled, isWordWrapEnabled, isPreventThreadingEnabled, activeEditor, emailAddresses } = JSON.parse(persistentState)
 
             setSubject(subject)
-            setIsMinifyEnabled(isMinifyEnabled || false)
-            setIsWordWrapEnabled(isWordWrapEnabled || false)
-            setIsPreventThreadingEnabled(isPreventThreadingEnabled || false)
+            setIsMinifyEnabled(isMinifyEnabled)
+            setIsWordWrapEnabled(isWordWrapEnabled)
+            setIsPreventThreadingEnabled(isPreventThreadingEnabled)
             setActiveEditor(activeEditor)
             setEmailAddresses(Array.isArray(emailAddresses) ? emailAddresses : [])
             setInputSenderSettings({ host, port, username, pass, from })
