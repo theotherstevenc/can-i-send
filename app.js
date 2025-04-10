@@ -82,6 +82,44 @@ app.post('/api/manage-firestore-collection', async (req, res) => {
   }
 })
 
+app.post('/api/create-new-file', async (req, res) => {
+  try {
+    const { fileName, boilerPlateMarkup } = req.body
+
+    if (!fileName) {
+      return res.status(400).json({ error: 'fileName is required' })
+    }
+
+    let parsedBoilerPlateMarkup = {}
+    if (boilerPlateMarkup) {
+      try {
+        parsedBoilerPlateMarkup = JSON.parse(boilerPlateMarkup)
+      } catch (error) {
+        return res.status(400).json({ error: 'Invalid boilerPlateMarkup format' })
+      }
+    }
+
+    const newFileData = {
+      fileName,
+      html: parsedBoilerPlateMarkup.html || '',
+      text: parsedBoilerPlateMarkup.text || '',
+      amp: parsedBoilerPlateMarkup.amp || '',
+      createdAt: new Date().toISOString(),
+    }
+
+    const newFileRef = await db.collection('workingFiles').add(newFileData)
+
+    return res.status(201).json({
+      success: true,
+      message: 'File successfully created',
+      id: newFileRef.id,
+    })
+  } catch (error) {
+    console.error('Error creating new file:', error)
+    return res.status(500).json({ error: 'Internal Server Error' })
+  }
+})
+
 const encryptText = (text, key) => {
   return CryptoJS.AES.encrypt(text, key).toString()
 }

@@ -1,18 +1,49 @@
 import { useState } from 'react'
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, IconButton } from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, IconButton, FormControlLabel, Checkbox } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import CloseIcon from '@mui/icons-material/Close'
+import { boilerPlateMarkup } from '../utils/bolierpateMarkup'
 
 const InputCreateNewFile = () => {
   const [open, setOpen] = useState(false)
   const [fileName, setFileName] = useState('')
+  const [isBoilerplateApplied, setIsBoilerplateApplied] = useState(false)
+
+  const handleChange = (_event: React.SyntheticEvent, checked: boolean) => {
+    setIsBoilerplateApplied(checked)
+  }
 
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (fileName.trim()) {
-      console.log('File name:', fileName)
-      setOpen(false)
+      try {
+        const requestBody: { fileName: string; boilerPlateMarkup?: string } = { fileName }
+
+        if (isBoilerplateApplied) {
+          requestBody.boilerPlateMarkup = JSON.stringify(boilerPlateMarkup)
+        }
+
+        const response = await fetch('/api/create-new-file', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(requestBody),
+        })
+
+        if (response.ok) {
+          setFileName('')
+          const data = await response.json()
+          console.log('File created successfully:', data)
+          setOpen(false)
+        } else {
+          const errorData = await response.json()
+          console.error('Error creating file:', errorData)
+        }
+      } catch (error) {
+        console.error('Error:', error)
+      }
     }
   }
 
@@ -52,6 +83,7 @@ const InputCreateNewFile = () => {
               }
             }}
           />
+          <FormControlLabel control={<Checkbox name='isBoilerplateApplied' color='primary' />} label='Apply Boilerplates' checked={isBoilerplateApplied} onChange={handleChange} />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color='secondary'>
