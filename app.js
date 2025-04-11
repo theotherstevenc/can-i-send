@@ -115,8 +115,6 @@ app.post('/api/manage-firestore-working-files-collection', async (req, res) => {
       return res.status(404).json({ error: 'Document not found' })
     }
 
-    console.log('doc', doc.data())
-
     if (!workingFileID) {
       return res.status(400).json({ error: 'workingFileID field is required' })
     }
@@ -130,6 +128,56 @@ app.post('/api/manage-firestore-working-files-collection', async (req, res) => {
   } catch (error) {
     console.error('Error updating sender settings:', error)
     res.status(500).json({ error: 'Internal Server Error' })
+  }
+})
+
+app.delete('/api/delete-working-file', async (req, res) => {
+  try {
+    const { workingFileID } = req.body
+    console.log('workingFileID', workingFileID)
+    if (!workingFileID) {
+      return res.status(400).json({ error: 'workingFileID is required' })
+    }
+
+    const workingFileRef = db.collection('workingFiles').doc(workingFileID)
+    const doc = await workingFileRef.get()
+
+    if (!doc.exists) {
+      return res.status(404).json({ error: 'Document not found' })
+    }
+
+    await workingFileRef.delete()
+    return res.status(200).json({ success: true, message: 'File successfully deleted' })
+  } catch (error) {
+    console.error('Error deleting working file:', error)
+    return res.status(500).json({ error: 'Internal Server Error' })
+  }
+})
+
+app.put('/api/update-working-file-name', async (req, res) => {
+  try {
+    const { workingFileID, fileName } = req.body
+
+    if (!workingFileID) {
+      return res.status(400).json({ error: 'workingFileID is required' })
+    }
+
+    if (!fileName) {
+      return res.status(400).json({ error: 'fileName is required' })
+    }
+
+    const workingFileRef = db.collection('workingFiles').doc(workingFileID)
+    const doc = await workingFileRef.get()
+
+    if (!doc.exists) {
+      return res.status(404).json({ error: 'Document not found' })
+    }
+
+    await workingFileRef.update({ fileName })
+    return res.status(200).json({ success: true, message: 'File name successfully updated' })
+  } catch (error) {
+    console.error('Error updating file name:', error)
+    return res.status(500).json({ error: 'Internal Server Error' })
   }
 })
 
