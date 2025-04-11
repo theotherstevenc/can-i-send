@@ -108,6 +108,7 @@ app.post('/api/manage-firestore-collection', async (req, res) => {
 app.post('/api/manage-firestore-working-files-collection', async (req, res) => {
   try {
     const { workingFileID, html, text, amp } = req.body
+
     const workingFileRef = db.collection('workingFiles').doc(workingFileID)
     const doc = await workingFileRef.get()
 
@@ -134,7 +135,7 @@ app.post('/api/manage-firestore-working-files-collection', async (req, res) => {
 app.delete('/api/delete-working-file', async (req, res) => {
   try {
     const { workingFileID } = req.body
-    console.log('workingFileID', workingFileID)
+
     if (!workingFileID) {
       return res.status(400).json({ error: 'workingFileID is required' })
     }

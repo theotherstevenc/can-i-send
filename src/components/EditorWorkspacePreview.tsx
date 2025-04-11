@@ -43,6 +43,7 @@ const EditorWorkspacePreview = () => {
   const editors = getEditorsConfig(html, setHtml, text, setText, amp, setAmp)
 
   useEffect(() => {
+    if (!workingFileID) return
     const handler = setTimeout(() => {
       console.log('save everything to this ID: ', workingFileID)
 

@@ -12,6 +12,8 @@ interface EditorContextProps {
   setAmp: (amp: string) => void
   workingFileID: string
   setWorkingFileID: (id: string) => void
+  numberOfWorkingFiles: number
+  setNumberOfWorkingFiles: (number: number) => void
 }
 
 const EditorContext = createContext<EditorContextProps | undefined>(undefined)
@@ -22,6 +24,7 @@ export const EditorProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [text, setText] = useState<string>('')
   const [amp, setAmp] = useState<string>('')
   const [workingFileID, setWorkingFileID] = useState<string>('')
+  const [numberOfWorkingFiles, setNumberOfWorkingFiles] = useState<number>(0)
 
   return (
     <EditorContext.Provider
@@ -36,6 +39,8 @@ export const EditorProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         setAmp,
         workingFileID,
         setWorkingFileID,
+        numberOfWorkingFiles,
+        setNumberOfWorkingFiles,
       }}>
       {children}
     </EditorContext.Provider>

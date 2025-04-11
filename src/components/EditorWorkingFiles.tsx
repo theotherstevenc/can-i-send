@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Box, Button } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { WorkingFile } from '../interfaces'
@@ -7,7 +8,7 @@ const BUTTON_VARIANT_OUTLINED = 'outlined'
 const BUTTON_VARIANT_CONTAINED = 'contained'
 
 const EditorWorkingFiles = () => {
-  const { setHtml, setText, setAmp, workingFileID, setWorkingFileID } = useEditorContext()
+  const { setHtml, setText, setAmp, workingFileID, setWorkingFileID, numberOfWorkingFiles, setNumberOfWorkingFiles } = useEditorContext()
 
   const [files, setFiles] = useState<WorkingFile[]>([])
 
@@ -19,7 +20,7 @@ const EditorWorkingFiles = () => {
       }
       const data = await response.json()
       setFiles(data)
-      console.log('Fetched files:', data)
+      setNumberOfWorkingFiles(data.length)
     } catch (err) {
       console.error('Error fetching files:', err)
     }
@@ -34,7 +35,7 @@ const EditorWorkingFiles = () => {
   }
   useEffect(() => {
     fetchFiles()
-  }, [])
+  }, [numberOfWorkingFiles])
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
