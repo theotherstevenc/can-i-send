@@ -2,6 +2,8 @@ import { Button } from '@mui/material'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import styled from '@emotion/styled'
 import { useAppContext } from '../context/AppContext'
+import { useEditorContext } from '../context/EditorContext'
+import { useRef } from 'react'
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -16,7 +18,9 @@ const VisuallyHiddenInput = styled('input')({
 })
 
 const InputFileUpload = () => {
-  const { setHtml, setText, setAmp, setIsMinifyEnabled, setIsWordWrapEnabled } = useAppContext()
+  const { setHtml, setText, setAmp } = useEditorContext()
+  const { setIsMinifyEnabled, setIsWordWrapEnabled } = useAppContext()
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsMinifyEnabled(false)
@@ -58,11 +62,20 @@ const InputFileUpload = () => {
     setAmp(data.amp)
   }
 
+  const handleButtonClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click()
+    }
+  }
+
   return (
-    <Button component='label' role={undefined} variant='contained' tabIndex={-1} startIcon={<CloudUploadIcon />}>
-      Upload + Convert EML
-      <VisuallyHiddenInput type='file' accept='.eml' onChange={(e) => handleFileUpload(e)} />
-    </Button>
+    <>
+      <Button variant='contained' startIcon={<CloudUploadIcon />} onClick={handleButtonClick}>
+        Upload + Convert EML
+      </Button>
+
+      <VisuallyHiddenInput ref={fileInputRef} type='file' accept='.eml' onChange={(e) => handleFileUpload(e)} />
+    </>
   )
 }
 

@@ -18,3 +18,11 @@ export interface EmailData {
   pass: string
   from: string
 }
+
+export interface WorkingFile {
+  id: string
+  fileName: string
+  html: string
+  text: string
+  amp: string
+}
