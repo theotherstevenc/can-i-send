@@ -3,6 +3,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { useState } from 'react'
 import { useEditorContext } from '../context/EditorContext'
+import { StyledIconButton } from './InputIconButton'
 
 const InputDeleteFile = () => {
   const { workingFileID, numberOfWorkingFiles, setNumberOfWorkingFiles } = useEditorContext()
@@ -38,9 +39,10 @@ const InputDeleteFile = () => {
 
   return (
     <>
-      <Button variant='contained' color='primary' startIcon={<DeleteIcon />} onClick={handleOpen}>
-        Delete File
-      </Button>
+      <StyledIconButton onClick={handleOpen} aria-label='Delete Project'>
+        <DeleteIcon />
+      </StyledIconButton>
+
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>
           Confirm Delete
@@ -56,7 +58,7 @@ const InputDeleteFile = () => {
           </IconButton>
         </DialogTitle>
         <DialogContent>
-          <DialogContentText>Are you sure you want to delete this file? This action cannot be undone.</DialogContentText>
+          <DialogContentText>Are you sure you want to delete this project? This action cannot be undone.</DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color='secondary'>

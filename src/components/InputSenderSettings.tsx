@@ -42,7 +42,7 @@ const InputSenderSettings = () => {
     <>
       <Box sx={InputSenderSettingsStyles}>
         <TextField id='host' label='host' variant='outlined' size='small' value={inputSenderSettings.host} onBlur={handleBlur} onChange={handleChange} />
-        <TextField id='port' label='port' variant='outlined' size='small' value={inputSenderSettings.port} onBlur={handleBlur} onChange={handleChange} />
+        <TextField id='port' label='port' variant='outlined' size='small' value={inputSenderSettings.port} onBlur={handleBlur} onChange={handleChange} sx={{ width: '70px' }} />
         <TextField id='username' label='username' variant='outlined' size='small' value={inputSenderSettings.username} onBlur={handleBlur} onChange={handleChange} />
         <TextField id='pass' label='password' type='password' variant='outlined' size='small' value={inputSenderSettings.pass} onBlur={handleBlur} onChange={handleChange} />
         <TextField id='from' label='from' variant='outlined' size='small' value={inputSenderSettings.from} onBlur={handleBlur} onChange={handleChange} />
