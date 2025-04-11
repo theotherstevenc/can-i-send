@@ -2,6 +2,7 @@ import { Button } from '@mui/material'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import styled from '@emotion/styled'
 import { useAppContext } from '../context/AppContext'
+import { useEditorContext } from '../context/EditorContext'
 import { useRef } from 'react'
 
 const VisuallyHiddenInput = styled('input')({
@@ -17,7 +18,8 @@ const VisuallyHiddenInput = styled('input')({
 })
 
 const InputFileUpload = () => {
-  const { setHtml, setText, setAmp, setIsMinifyEnabled, setIsWordWrapEnabled } = useAppContext()
+  const { setHtml, setText, setAmp } = useEditorContext()
+  const { setIsMinifyEnabled, setIsWordWrapEnabled } = useAppContext()
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -6,7 +6,7 @@ import EditorWorkingFiles from './EditorWorkingFiles'
 const EditorContainer = () => {
   return (
     <Split className='split-component' sizes={[10, 90]}>
-      <Box sx={{ backgroundColor: '#f0f0f0' }}>
+      <Box>
         <EditorWorkingFiles />
       </Box>
       <Box sx={{ flexGrow: 1 }}>

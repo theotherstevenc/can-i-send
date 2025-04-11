@@ -3,9 +3,11 @@ import { useAppContext } from '../context/AppContext'
 import { useState } from 'react'
 import { EmailData, SenderSettings } from '../interfaces'
 import { getCurrentDateTime } from '../utils/getCurrentDateTime'
+import { useEditorContext } from '../context/EditorContext'
 
 const EditorSendButton = () => {
-  const { html, text, amp, isPreventThreadingEnabled, subject, emailAddresses, inputSenderSettings } = useAppContext()
+  const { html, text, amp } = useEditorContext()
+  const { isPreventThreadingEnabled, subject, emailAddresses, inputSenderSettings } = useAppContext()
   const [open, setOpen] = useState(false)
   const [openBackdrop, setOpenBackdrop] = useState(false)
   const [isSendSuccessful, setIsSendSuccessful] = useState(true)

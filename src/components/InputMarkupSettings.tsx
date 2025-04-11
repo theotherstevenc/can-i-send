@@ -1,13 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Box, Checkbox, FormControlLabel } from '@mui/material'
 import { useAppContext } from '../context/AppContext'
+import { useEditorContext } from '../context/EditorContext'
 import { useEffect } from 'react'
 import { customMinifier } from '../utils/customMinifier'
 import managePersistentState from '../utils/managePersistentState'
 
 const InputMarkupSettings = () => {
-  const { setHtml, html, setOriginalHtml, originalHtml, isMinifyEnabled, setIsMinifyEnabled, isWordWrapEnabled, setIsWordWrapEnabled, isPreventThreadingEnabled, setIsPreventThreadingEnabled } =
-    useAppContext()
+  const { setHtml, html, setOriginalHtml, originalHtml } = useEditorContext()
+  const { isMinifyEnabled, setIsMinifyEnabled, isWordWrapEnabled, setIsWordWrapEnabled, isPreventThreadingEnabled, setIsPreventThreadingEnabled } = useAppContext()
 
   const handleChange = (event: React.SyntheticEvent, checked: boolean) => {
     const target = event.target as HTMLInputElement
