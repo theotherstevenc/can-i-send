@@ -105,6 +105,34 @@ app.post('/api/manage-firestore-collection', async (req, res) => {
   }
 })
 
+app.post('/api/manage-firestore-working-files-collection', async (req, res) => {
+  try {
+    const { workingFileID, html, text, amp } = req.body
+    const workingFileRef = db.collection('workingFiles').doc(workingFileID)
+    const doc = await workingFileRef.get()
+
+    if (!doc.exists) {
+      return res.status(404).json({ error: 'Document not found' })
+    }
+
+    console.log('doc', doc.data())
+
+    if (!workingFileID) {
+      return res.status(400).json({ error: 'workingFileID field is required' })
+    }
+
+    await workingFileRef.update({
+      html: html,
+      text: text,
+      amp: amp,
+    })
+    res.status(200).send({ success: true })
+  } catch (error) {
+    console.error('Error updating sender settings:', error)
+    res.status(500).json({ error: 'Internal Server Error' })
+  }
+})
+
 app.post('/api/create-new-file', async (req, res) => {
   try {
     const { fileName, boilerPlateMarkup } = req.body
