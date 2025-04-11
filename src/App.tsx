@@ -11,6 +11,8 @@ import InputMarkupSettings from './components/InputMarkupSettings'
 import InputSenderSettings from './components/InputSenderSettings'
 import EditorContainer from './components/EditorContainer'
 import { EditorProvider } from './context/EditorContext'
+import InputDeleteFile from './components/InputDeleteFile'
+import InputUpdateFiles from './components/InputUpdateFiles'
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
           <Box sx={boxStyles}>
             <InputMarkupSettings />
             <InputSenderSettings />
+            <InputUpdateFiles />
+            <InputDeleteFile />
             <InputCreateNewFile />
             <InputFileUpload />
           </Box>

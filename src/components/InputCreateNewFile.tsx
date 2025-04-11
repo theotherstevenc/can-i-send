@@ -3,8 +3,10 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, I
 import AddIcon from '@mui/icons-material/Add'
 import CloseIcon from '@mui/icons-material/Close'
 import { boilerPlateMarkup } from '../utils/bolierpateMarkup'
+import { useEditorContext } from '../context/EditorContext'
 
 const InputCreateNewFile = () => {
+  const { numberOfWorkingFiles, setNumberOfWorkingFiles } = useEditorContext()
   const [open, setOpen] = useState(false)
   const [fileName, setFileName] = useState('')
   const [isBoilerplateApplied, setIsBoilerplateApplied] = useState(false)
@@ -15,7 +17,9 @@ const InputCreateNewFile = () => {
 
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
+
   const handleConfirm = async () => {
+    setNumberOfWorkingFiles(numberOfWorkingFiles + 1)
     if (fileName.trim()) {
       try {
         const requestBody: { fileName: string; boilerPlateMarkup?: string } = { fileName }
