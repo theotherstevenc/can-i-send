@@ -44,8 +44,9 @@ app.get('/api/use-local-storage', (req, res) => {
 })
 
 app.get('/api/get-firestore-collection', async (req, res) => {
+  const { collection, document } = req.query
   try {
-    const settingsRef = db.collection('config').doc('editorSettings')
+    const settingsRef = db.collection(collection).doc(document)
     const doc = await settingsRef.get()
 
     if (!doc.exists) {
@@ -53,6 +54,28 @@ app.get('/api/get-firestore-collection', async (req, res) => {
     }
 
     return res.status(200).json(doc.data())
+  } catch (error) {
+    console.error('Error retrieving Firestore collection:', error)
+    return res.status(500).json({ error: 'Internal Server Error' })
+  }
+})
+
+app.get('/api/get-firestore-working-files-collection', async (req, res) => {
+  const { collection } = req.query
+  try {
+    const collectionRef = db.collection(collection)
+    const snapshot = await collectionRef.get()
+
+    if (snapshot.empty) {
+      return res.status(404).json({ error: 'No documents found in the collection' })
+    }
+
+    const documents = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }))
+
+    return res.status(200).json(documents)
   } catch (error) {
     console.error('Error retrieving Firestore collection:', error)
     return res.status(500).json({ error: 'Internal Server Error' })

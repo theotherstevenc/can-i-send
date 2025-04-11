@@ -77,8 +77,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         }
       } else {
         const API_URL = '/api/get-firestore-collection'
+        const params = new URLSearchParams({
+          collection: 'config',
+          document: 'editorSettings',
+        }).toString()
         try {
-          const response = await fetch(API_URL, {
+          const response = await fetch(API_URL + '?' + params, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
