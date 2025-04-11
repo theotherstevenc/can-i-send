@@ -4,14 +4,6 @@ import { SenderSettings } from '../interfaces'
 import { storageFeatureFlag } from '../utils/storageFeatureFlag'
 
 interface AppContextProps {
-  html: string
-  setHtml: (html: string) => void
-  originalHtml: string
-  setOriginalHtml: (html: string) => void
-  text: string
-  setText: (text: string) => void
-  amp: string
-  setAmp: (amp: string) => void
   isMinifyEnabled: boolean
   setIsMinifyEnabled: (isMinifyEnabled: boolean) => void
   isWordWrapEnabled: boolean
@@ -34,11 +26,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [isMinifyEnabled, setIsMinifyEnabled] = useState(false)
   const [isWordWrapEnabled, setIsWordWrapEnabled] = useState(false)
   const [isPreventThreadingEnabled, setIsPreventThreadingEnabled] = useState(false)
-
-  const [html, setHtml] = useState<string>('')
-  const [originalHtml, setOriginalHtml] = useState<string>('')
-  const [text, setText] = useState<string>('')
-  const [amp, setAmp] = useState<string>('')
 
   const [activeEditor, setActiveEditor] = useState('')
 
@@ -114,14 +101,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   return (
     <AppContext.Provider
       value={{
-        html,
-        setHtml,
-        originalHtml,
-        setOriginalHtml,
-        text,
-        setText,
-        amp,
-        setAmp,
         isMinifyEnabled,
         setIsMinifyEnabled,
         isWordWrapEnabled,

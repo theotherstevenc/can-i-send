@@ -10,24 +10,27 @@ import InputFileUpload from './components/InputFileUpload'
 import InputMarkupSettings from './components/InputMarkupSettings'
 import InputSenderSettings from './components/InputSenderSettings'
 import EditorContainer from './components/EditorContainer'
+import { EditorProvider } from './context/EditorContext'
 
 function App() {
   return (
     <>
-      <ThemeProvider theme={theme}>
-        <Box sx={boxStyles}>
-          <InputMarkupSettings />
-          <InputSenderSettings />
-          <InputCreateNewFile />
-          <InputFileUpload />
-        </Box>
-        <Box sx={boxStyles}>
-          <EditorSelectorButtons />
-          <InputEmailListSubjectLine />
-          <EditorSendButton />
-        </Box>
-        <EditorContainer />
-      </ThemeProvider>
+      <EditorProvider>
+        <ThemeProvider theme={theme}>
+          <Box sx={boxStyles}>
+            <InputMarkupSettings />
+            <InputSenderSettings />
+            <InputCreateNewFile />
+            <InputFileUpload />
+          </Box>
+          <Box sx={boxStyles}>
+            <EditorSelectorButtons />
+            <InputEmailListSubjectLine />
+            <EditorSendButton />
+          </Box>
+          <EditorContainer />
+        </ThemeProvider>
+      </EditorProvider>
     </>
   )
 }
