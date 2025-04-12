@@ -1,6 +1,5 @@
 import './App.css'
 import { Box, ThemeProvider } from '@mui/material'
-import { boxStyles } from './styles/global.styles'
 import { theme } from './styles/global.theme'
 import EditorSelectorButtons from './components/EditorSelectorButtons'
 import EditorSendButton from './components/EditorSendButton'
@@ -19,15 +18,22 @@ function App() {
     <>
       <EditorProvider>
         <ThemeProvider theme={theme}>
-          <Box sx={boxStyles}>
-            <InputMarkupSettings />
-            <InputSenderSettings />
-            <InputUpdateFiles />
-            <InputDeleteFile />
-            <InputCreateNewFile />
-            <InputFileUpload />
+          <Box sx={{ display: 'flex', margin: '0 0 0.5rem 0' }}>
+            <Box>
+              <InputMarkupSettings />
+            </Box>
+            <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', gap: '0.175rem', flexWrap: 'wrap' }}>
+              <InputSenderSettings />
+            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.175rem' }}>
+              <InputUpdateFiles />
+              <InputDeleteFile />
+              <InputCreateNewFile />
+              <InputFileUpload />
+            </Box>
           </Box>
-          <Box sx={boxStyles}>
+
+          <Box sx={{ display: 'flex', gap: '0.175rem', margin: '0 0 0.25rem 0' }}>
             <EditorSelectorButtons />
             <InputEmailListSubjectLine />
             <EditorSendButton />
