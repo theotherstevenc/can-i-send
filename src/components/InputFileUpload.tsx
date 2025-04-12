@@ -18,7 +18,7 @@ const VisuallyHiddenInput = styled('input')({
 })
 
 const InputFileUpload = () => {
-  const { setHtml, setText, setAmp } = useEditorContext()
+  const { setHtml, setText, setAmp, workingFileID } = useEditorContext()
   const { setIsMinifyEnabled, setIsWordWrapEnabled } = useAppContext()
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -60,6 +60,24 @@ const InputFileUpload = () => {
     setHtml(data.html)
     setText(data.text)
     setAmp(data.amp)
+
+    const COLLECTION = 'workingFiles'
+    const DOCUMENT = workingFileID
+    const firestoreObj = { html: data.html, text: data.text, amp: data.amp }
+    const ACTION = 'update'
+    try {
+      fetch('/api/update-editor', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ COLLECTION, DOCUMENT, ACTION, firestoreObj }),
+      })
+    } catch (error) {
+      console.error('Error updating markup settings:', error)
+    }
+
+    e.target.value = ''
   }
 
   const handleButtonClick = () => {
