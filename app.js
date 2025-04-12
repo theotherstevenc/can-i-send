@@ -38,11 +38,6 @@ if (process.env.NODE_ENV === 'development') {
   )
 }
 
-app.get('/api/use-local-storage', (req, res) => {
-  const useLocalStorage = JSON.parse(process.env.USE_LOCAL_STORAGE)
-  res.json({ useLocalStorage })
-})
-
 app.post('/api/get-collection', async (req, res) => {
   const { COLLECTION, DOCUMENT } = req.body
 
