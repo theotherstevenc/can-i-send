@@ -63,17 +63,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           }
         }
       } else {
-        const API_URL = '/api/get-firestore-collection'
-        const params = new URLSearchParams({
-          collection: 'config',
-          document: 'editorSettings',
-        }).toString()
+        const API_URL = '/api/get-collection'
+        const HTTP_METHOD_POST = 'POST'
+        const COLLECTION = 'config'
+        const DOCUMENT = 'editorSettings'
+
         try {
-          const response = await fetch(API_URL + '?' + params, {
-            method: 'GET',
+          const response = await fetch(API_URL, {
+            method: HTTP_METHOD_POST,
             headers: {
               'Content-Type': 'application/json',
             },
+            body: JSON.stringify({ COLLECTION, DOCUMENT }),
           })
           if (!response.ok) {
             throw new Error(`Error fetching Firestore collection: ${response.statusText}`)

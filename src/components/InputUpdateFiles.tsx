@@ -18,13 +18,19 @@ const InputUpdateFiles = () => {
     setNumberOfWorkingFiles(numberOfWorkingFiles + 1)
 
     if (fileName.trim()) {
+      const API_URL = '/api/update-editor'
+      const HTTP_METHOD_POST = 'POST'
+      const COLLECTION = 'workingFiles'
+      const DOCUMENT = workingFileID
+      const ACTION = 'update'
+      const firestoreObj = { fileName }
       try {
-        const response = await fetch('/api/update-working-file-name', {
-          method: 'PUT',
+        const response = await fetch(API_URL, {
+          method: HTTP_METHOD_POST,
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ fileName, workingFileID }),
+          body: JSON.stringify({ DOCUMENT, COLLECTION, ACTION, firestoreObj }),
         })
 
         if (response.ok) {

@@ -43,19 +43,24 @@ const EditorWorkspacePreview = () => {
   const editors = getEditorsConfig(html, setHtml, text, setText, amp, setAmp)
 
   useEffect(() => {
-    if (!workingFileID) return
+    if (!workingFileID) {
+      return
+    }
     const handler = setTimeout(() => {
-      console.log('save everything to this ID: ', workingFileID)
+      console.log('save everything to ID: ', workingFileID)
 
-      const API_URL = '/api/manage-firestore-working-files-collection'
+      const API_URL = '/api/update-editor'
       const HTTP_METHOD_POST = 'POST'
+      const COLLECTION = 'workingFiles'
+      const DOCUMENT = workingFileID
+      const firestoreObj = { html, text, amp }
       try {
         fetch(API_URL, {
           method: HTTP_METHOD_POST,
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ workingFileID, html, text, amp }),
+          body: JSON.stringify({ COLLECTION, DOCUMENT, firestoreObj }),
         })
       } catch (error) {
         console.error('Error updating markup settings:', error)

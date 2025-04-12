@@ -17,12 +17,18 @@ const InputDeleteFile = () => {
     setNumberOfWorkingFiles(numberOfWorkingFiles - 1)
 
     try {
-      const response = await fetch('/api/delete-working-file', {
-        method: 'DELETE',
+      const API_URL = '/api/update-editor'
+      const HTTP_METHOD_POST = 'POST'
+      const COLLECTION = 'workingFiles'
+      const DOCUMENT = workingFileID
+      const ACTION = 'delete'
+
+      const response = await fetch(API_URL, {
+        method: HTTP_METHOD_POST,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ workingFileID }),
+        body: JSON.stringify({ DOCUMENT, COLLECTION, ACTION }),
       })
 
       if (!response.ok) {

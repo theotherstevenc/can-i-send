@@ -43,142 +43,65 @@ app.get('/api/use-local-storage', (req, res) => {
   res.json({ useLocalStorage })
 })
 
-app.get('/api/get-firestore-collection', async (req, res) => {
-  const { collection, document } = req.query
+app.post('/api/get-collection', async (req, res) => {
+  const { COLLECTION, DOCUMENT } = req.body
+
   try {
-    const settingsRef = db.collection(collection).doc(document)
-    const doc = await settingsRef.get()
+    let settingsRef
 
-    if (!doc.exists) {
-      return res.status(404).json({ error: 'Document not found' })
+    if (DOCUMENT) {
+      settingsRef = db.collection(COLLECTION).doc(DOCUMENT)
+      const doc = await settingsRef.get()
+
+      if (!doc.exists) {
+        return res.status(404).json({ error: 'Document not found' + COLLECTION })
+      }
+
+      return res.status(200).json(doc.data())
+    } else {
+      settingsRef = db.collection(COLLECTION)
+      const snapshot = await settingsRef.get()
+
+      if (snapshot.empty) {
+        return res.status(404).json({ error: 'No documents found' })
+      }
+      const documents = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+      return res.status(200).json(documents)
     }
-
-    return res.status(200).json(doc.data())
   } catch (error) {
     console.error('Error retrieving Firestore collection:', error)
     return res.status(500).json({ error: 'Internal Server Error' })
   }
 })
 
-app.get('/api/get-firestore-working-files-collection', async (req, res) => {
-  const { collection } = req.query
+app.post('/api/update-editor', async (req, res) => {
   try {
-    const collectionRef = db.collection(collection)
-    const snapshot = await collectionRef.get()
+    const { DOCUMENT, COLLECTION, ACTION, firestoreObj } = req.body
 
-    if (snapshot.empty) {
-      return res.status(404).json({ error: 'No documents found in the collection' })
+    if (!DOCUMENT || !COLLECTION) {
+      return res.status(400).json({ error: '[Firestore object], document, and collection fields are required' })
     }
 
-    const documents = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }))
-
-    return res.status(200).json(documents)
-  } catch (error) {
-    console.error('Error retrieving Firestore collection:', error)
-    return res.status(500).json({ error: 'Internal Server Error' })
-  }
-})
-
-app.post('/api/manage-firestore-collection', async (req, res) => {
-  try {
-    const settingsRef = db.collection('config').doc('editorSettings')
+    const settingsRef = db.collection(COLLECTION).doc(DOCUMENT)
     const doc = await settingsRef.get()
 
     if (!doc.exists) {
       return res.status(404).json({ error: 'Document not found' })
     }
 
-    const { firestoreField } = req.body
-
-    if (!firestoreField) {
-      return res.status(400).json({ error: 'Firestore field is required' })
+    if (ACTION === 'delete') {
+      await settingsRef.delete()
+      return res.status(200).json({ success: true, message: 'Document deleted successfully' })
+    }
+    if (ACTION === 'update') {
+      await settingsRef.update(firestoreObj)
+      return res.status(200).json({ success: true, message: 'Document updated successfully' })
     }
 
-    await settingsRef.update(firestoreField)
     res.status(200).send({ success: true })
   } catch (error) {
     console.error('Error updating sender settings:', error)
     res.status(500).json({ error: 'Internal Server Error' })
-  }
-})
-
-app.post('/api/manage-firestore-working-files-collection', async (req, res) => {
-  try {
-    const { workingFileID, html, text, amp } = req.body
-
-    const workingFileRef = db.collection('workingFiles').doc(workingFileID)
-    const doc = await workingFileRef.get()
-
-    if (!doc.exists) {
-      return res.status(404).json({ error: 'Document not found' })
-    }
-
-    if (!workingFileID) {
-      return res.status(400).json({ error: 'workingFileID field is required' })
-    }
-
-    await workingFileRef.update({
-      html: html,
-      text: text,
-      amp: amp,
-    })
-    res.status(200).send({ success: true })
-  } catch (error) {
-    console.error('Error updating sender settings:', error)
-    res.status(500).json({ error: 'Internal Server Error' })
-  }
-})
-
-app.delete('/api/delete-working-file', async (req, res) => {
-  try {
-    const { workingFileID } = req.body
-
-    if (!workingFileID) {
-      return res.status(400).json({ error: 'workingFileID is required' })
-    }
-
-    const workingFileRef = db.collection('workingFiles').doc(workingFileID)
-    const doc = await workingFileRef.get()
-
-    if (!doc.exists) {
-      return res.status(404).json({ error: 'Document not found' })
-    }
-
-    await workingFileRef.delete()
-    return res.status(200).json({ success: true, message: 'File successfully deleted' })
-  } catch (error) {
-    console.error('Error deleting working file:', error)
-    return res.status(500).json({ error: 'Internal Server Error' })
-  }
-})
-
-app.put('/api/update-working-file-name', async (req, res) => {
-  try {
-    const { workingFileID, fileName } = req.body
-
-    if (!workingFileID) {
-      return res.status(400).json({ error: 'workingFileID is required' })
-    }
-
-    if (!fileName) {
-      return res.status(400).json({ error: 'fileName is required' })
-    }
-
-    const workingFileRef = db.collection('workingFiles').doc(workingFileID)
-    const doc = await workingFileRef.get()
-
-    if (!doc.exists) {
-      return res.status(404).json({ error: 'Document not found' })
-    }
-
-    await workingFileRef.update({ fileName })
-    return res.status(200).json({ success: true, message: 'File name successfully updated' })
-  } catch (error) {
-    console.error('Error updating file name:', error)
-    return res.status(500).json({ error: 'Internal Server Error' })
   }
 })
 
