@@ -6,7 +6,7 @@ import { useEditorContext } from '../context/EditorContext'
 import { StyledIconButton } from './InputIconButton'
 
 const InputDeleteFile = () => {
-  const { workingFileID, numberOfWorkingFiles, setNumberOfWorkingFiles, setHtml, setText, setAmp } = useEditorContext()
+  const { workingFileID, numberOfWorkingFiles, setNumberOfWorkingFiles, setHtml, setText, setAmp, workingFileName } = useEditorContext()
   const [open, setOpen] = useState(false)
 
   const handleOpen = () => setOpen(true)
@@ -70,7 +70,9 @@ const InputDeleteFile = () => {
           </IconButton>
         </DialogTitle>
         <DialogContent>
-          <DialogContentText>Are you sure you want to delete this project? This action cannot be undone.</DialogContentText>
+          <DialogContentText>
+            Are you sure you want to delete <strong>{workingFileName}</strong>? This action cannot be undone.
+          </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color='secondary'>

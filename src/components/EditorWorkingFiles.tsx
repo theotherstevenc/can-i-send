@@ -8,7 +8,7 @@ const BUTTON_VARIANT_OUTLINED = 'outlined'
 const BUTTON_VARIANT_CONTAINED = 'contained'
 
 const EditorWorkingFiles = () => {
-  const { setHtml, setText, setAmp, workingFileID, setWorkingFileID, numberOfWorkingFiles, setNumberOfWorkingFiles } = useEditorContext()
+  const { setHtml, setText, setAmp, workingFileID, setWorkingFileID, numberOfWorkingFiles, setNumberOfWorkingFiles, setWorkingFileName } = useEditorContext()
 
   const [files, setFiles] = useState<WorkingFile[]>([])
 
@@ -44,6 +44,7 @@ const EditorWorkingFiles = () => {
     setText(file.text)
     setAmp(file.amp)
     setWorkingFileID(file.id)
+    setWorkingFileName(file.fileName)
   }
   useEffect(() => {
     fetchFiles()

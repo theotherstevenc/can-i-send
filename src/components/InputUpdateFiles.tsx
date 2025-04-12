@@ -6,7 +6,7 @@ import { useEditorContext } from '../context/EditorContext'
 import { StyledIconButton } from './InputIconButton'
 
 const InputUpdateFiles = () => {
-  const { workingFileID, setNumberOfWorkingFiles, numberOfWorkingFiles } = useEditorContext()
+  const { workingFileID, setNumberOfWorkingFiles, numberOfWorkingFiles, workingFileName, setWorkingFileName } = useEditorContext()
   const [open, setOpen] = useState(false)
   const [fileName, setFileName] = useState('')
 
@@ -75,8 +75,11 @@ const InputUpdateFiles = () => {
             label='Project Name'
             type='text'
             fullWidth
-            value={fileName}
-            onChange={(e) => setFileName(e.target.value)}
+            value={fileName || workingFileName}
+            onChange={(e) => {
+              setFileName(e.target.value)
+              setWorkingFileName(e.target.value)
+            }}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
                 e.preventDefault()
