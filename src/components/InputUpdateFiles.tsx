@@ -6,7 +6,7 @@ import { useEditorContext } from '../context/EditorContext'
 import { StyledIconButton } from './InputIconButton'
 
 const InputUpdateFiles = () => {
-  const { workingFileID, setNumberOfWorkingFiles, numberOfWorkingFiles } = useEditorContext()
+  const { workingFileID, setNumberOfWorkingFiles, numberOfWorkingFiles, workingFileName, setWorkingFileName } = useEditorContext()
   const [open, setOpen] = useState(false)
   const [fileName, setFileName] = useState('')
 
@@ -18,13 +18,19 @@ const InputUpdateFiles = () => {
     setNumberOfWorkingFiles(numberOfWorkingFiles + 1)
 
     if (fileName.trim()) {
+      const API_URL = '/api/update-editor'
+      const HTTP_METHOD_POST = 'POST'
+      const COLLECTION = 'workingFiles'
+      const DOCUMENT = workingFileID
+      const ACTION = 'update'
+      const firestoreObj = { fileName }
       try {
-        const response = await fetch('/api/update-working-file-name', {
-          method: 'PUT',
+        const response = await fetch(API_URL, {
+          method: HTTP_METHOD_POST,
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ fileName, workingFileID }),
+          body: JSON.stringify({ DOCUMENT, COLLECTION, ACTION, firestoreObj }),
         })
 
         if (response.ok) {
@@ -69,8 +75,11 @@ const InputUpdateFiles = () => {
             label='Project Name'
             type='text'
             fullWidth
-            value={fileName}
-            onChange={(e) => setFileName(e.target.value)}
+            value={fileName || workingFileName}
+            onChange={(e) => {
+              setFileName(e.target.value)
+              setWorkingFileName(e.target.value)
+            }}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
                 e.preventDefault()

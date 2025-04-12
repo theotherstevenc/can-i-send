@@ -9,17 +9,23 @@ const InputEmailListSubjectLine = () => {
   const [sizes, setSizes] = useState<number[]>([50, 50])
   const { subject, setSubject, emailAddresses, setEmailAddresses } = useAppContext()
 
+  const COLLECTION = 'config'
+  const DOCUMENT = 'editorSettings'
+  const ACTION = 'update'
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSubject(e.target.value)
   }
 
   const handleBlur = () => {
-    managePersistentState({ subject })
+    const firestoreObj = { subject }
+    managePersistentState(COLLECTION, DOCUMENT, ACTION, firestoreObj)
   }
 
   const handleEmailAddressesChange = (newEmailAddresses: string[]) => {
+    const firestoreObj = { emailAddresses: newEmailAddresses }
     setEmailAddresses(newEmailAddresses)
-    managePersistentState({ emailAddresses: newEmailAddresses })
+    managePersistentState(COLLECTION, DOCUMENT, ACTION, firestoreObj)
   }
 
   return (

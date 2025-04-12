@@ -3,6 +3,8 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import styled from '@emotion/styled'
 import { useAppContext } from '../context/AppContext'
 import { useEditorContext } from '../context/EditorContext'
+import managePersistentState from '../utils/managePersistentState'
+
 import { useRef } from 'react'
 
 const VisuallyHiddenInput = styled('input')({
@@ -18,7 +20,7 @@ const VisuallyHiddenInput = styled('input')({
 })
 
 const InputFileUpload = () => {
-  const { setHtml, setText, setAmp } = useEditorContext()
+  const { setHtml, setText, setAmp, workingFileID } = useEditorContext()
   const { setIsMinifyEnabled, setIsWordWrapEnabled } = useAppContext()
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -60,6 +62,15 @@ const InputFileUpload = () => {
     setHtml(data.html)
     setText(data.text)
     setAmp(data.amp)
+
+    const COLLECTION = 'workingFiles'
+    const DOCUMENT = workingFileID
+    const firestoreObj = { html: data.html, text: data.text, amp: data.amp }
+    const ACTION = 'update'
+
+    managePersistentState(COLLECTION, DOCUMENT, ACTION, firestoreObj)
+
+    e.target.value = ''
   }
 
   const handleButtonClick = () => {

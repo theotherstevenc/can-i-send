@@ -9,8 +9,14 @@ const EditorSelectorButtons = () => {
   const { activeEditor, setActiveEditor } = useAppContext()
 
   const handleClick = (editorType: string) => {
+    const COLLECTION = 'config'
+    const DOCUMENT = 'editorSettings'
+    const ACTION = 'update'
+
+    const firestoreObj = { activeEditor: editorType }
+
     setActiveEditor(editorType)
-    managePersistentState({ activeEditor: editorType })
+    managePersistentState(COLLECTION, DOCUMENT, ACTION, firestoreObj)
   }
 
   return (

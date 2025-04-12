@@ -7,6 +7,7 @@ import { useAppContext } from '../context/AppContext'
 import { useEditorContext } from '../context/EditorContext'
 
 import { workspaceEditorStyles, workspacePreviewIframeStyles } from '../styles/global.styles'
+import managePersistentState from '../utils/managePersistentState'
 
 const EditorWorkspacePreview = () => {
   const { html, setHtml, text, setText, amp, setAmp, workingFileID } = useEditorContext()
@@ -43,23 +44,18 @@ const EditorWorkspacePreview = () => {
   const editors = getEditorsConfig(html, setHtml, text, setText, amp, setAmp)
 
   useEffect(() => {
-    if (!workingFileID) return
+    if (!workingFileID) {
+      return
+    }
     const handler = setTimeout(() => {
-      console.log('save everything to this ID: ', workingFileID)
+      console.log('save everything to ID: ', workingFileID)
 
-      const API_URL = '/api/manage-firestore-working-files-collection'
-      const HTTP_METHOD_POST = 'POST'
-      try {
-        fetch(API_URL, {
-          method: HTTP_METHOD_POST,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ workingFileID, html, text, amp }),
-        })
-      } catch (error) {
-        console.error('Error updating markup settings:', error)
-      }
+      const COLLECTION = 'workingFiles'
+      const DOCUMENT = workingFileID
+      const ACTION = 'update'
+      const firestoreObj = { html, text, amp }
+
+      managePersistentState(COLLECTION, DOCUMENT, ACTION, firestoreObj)
     }, DEBOUNCE_DELAY)
 
     return () => {

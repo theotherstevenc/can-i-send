@@ -8,13 +8,25 @@ const BUTTON_VARIANT_OUTLINED = 'outlined'
 const BUTTON_VARIANT_CONTAINED = 'contained'
 
 const EditorWorkingFiles = () => {
-  const { setHtml, setText, setAmp, workingFileID, setWorkingFileID, numberOfWorkingFiles, setNumberOfWorkingFiles } = useEditorContext()
+  const { setHtml, setText, setAmp, workingFileID, setWorkingFileID, numberOfWorkingFiles, setNumberOfWorkingFiles, setWorkingFileName } = useEditorContext()
 
   const [files, setFiles] = useState<WorkingFile[]>([])
 
   const fetchFiles = async () => {
+    const API_URL = '/api/get-collection'
+    const HTTP_METHOD_POST = 'POST'
+    const COLLECTION = 'workingFiles'
+
     try {
-      const response = await fetch('/api/get-firestore-working-files-collection?collection=workingFiles')
+      const response = await fetch(API_URL, {
+        method: HTTP_METHOD_POST,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          COLLECTION,
+        }),
+      })
       if (!response.ok) {
         throw new Error('Failed to fetch files')
       }
@@ -32,6 +44,7 @@ const EditorWorkingFiles = () => {
     setText(file.text)
     setAmp(file.amp)
     setWorkingFileID(file.id)
+    setWorkingFileName(file.fileName)
   }
   useEffect(() => {
     fetchFiles()

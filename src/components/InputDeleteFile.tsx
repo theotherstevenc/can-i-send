@@ -6,7 +6,7 @@ import { useEditorContext } from '../context/EditorContext'
 import { StyledIconButton } from './InputIconButton'
 
 const InputDeleteFile = () => {
-  const { workingFileID, numberOfWorkingFiles, setNumberOfWorkingFiles } = useEditorContext()
+  const { workingFileID, numberOfWorkingFiles, setNumberOfWorkingFiles, setHtml, setText, setAmp, workingFileName } = useEditorContext()
   const [open, setOpen] = useState(false)
 
   const handleOpen = () => setOpen(true)
@@ -17,17 +17,27 @@ const InputDeleteFile = () => {
     setNumberOfWorkingFiles(numberOfWorkingFiles - 1)
 
     try {
-      const response = await fetch('/api/delete-working-file', {
-        method: 'DELETE',
+      const API_URL = '/api/update-editor'
+      const HTTP_METHOD_POST = 'POST'
+      const COLLECTION = 'workingFiles'
+      const DOCUMENT = workingFileID
+      const ACTION = 'delete'
+
+      const response = await fetch(API_URL, {
+        method: HTTP_METHOD_POST,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ workingFileID }),
+        body: JSON.stringify({ DOCUMENT, COLLECTION, ACTION }),
       })
 
       if (!response.ok) {
         throw new Error('Failed to delete file')
       }
+
+      setHtml('')
+      setText('')
+      setAmp('')
 
       console.log('File deleted successfully')
     } catch (error) {
@@ -60,7 +70,9 @@ const InputDeleteFile = () => {
           </IconButton>
         </DialogTitle>
         <DialogContent>
-          <DialogContentText>Are you sure you want to delete this project? This action cannot be undone.</DialogContentText>
+          <DialogContentText>
+            Are you sure you want to delete <strong>{workingFileName}</strong>? This action cannot be undone.
+          </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color='secondary'>
