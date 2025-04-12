@@ -49,7 +49,7 @@ app.post('/api/get-collection', async (req, res) => {
       const doc = await settingsRef.get()
 
       if (!doc.exists) {
-        return res.status(404).json({ error: 'Document not found' + COLLECTION })
+        return res.status(404).json({ error: 'Document not found: ' + COLLECTION })
       }
 
       return res.status(200).json(doc.data())
