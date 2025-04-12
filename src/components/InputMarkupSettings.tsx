@@ -26,7 +26,13 @@ const InputMarkupSettings = () => {
       default:
         break
     }
-    managePersistentState({ [name]: checked })
+
+    const COLLECTION = 'config'
+    const DOCUMENT = 'editorSettings'
+    const ACTION = 'update'
+
+    const firestoreObj = { [name]: checked }
+    managePersistentState(COLLECTION, DOCUMENT, ACTION, firestoreObj)
   }
 
   useEffect(() => {

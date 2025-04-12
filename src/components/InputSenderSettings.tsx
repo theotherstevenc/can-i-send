@@ -11,6 +11,10 @@ const InputSenderSettings = () => {
     setInputSenderSettings: Dispatch<SetStateAction<SenderSettings>>
   }
 
+  const COLLECTION = 'config'
+  const DOCUMENT = 'editorSettings'
+  const ACTION = 'update'
+
   const handleInputChange = (id: keyof SenderSettings, value: string) => {
     setInputSenderSettings((prev: SenderSettings) => ({
       ...prev,
@@ -23,7 +27,8 @@ const InputSenderSettings = () => {
     handleInputChange(id as keyof SenderSettings, processedValue)
 
     if (isBlur) {
-      managePersistentState({ ...inputSenderSettings, [id]: processedValue })
+      const firestoreObj = { ...inputSenderSettings, [id]: processedValue }
+      managePersistentState(COLLECTION, DOCUMENT, ACTION, firestoreObj)
     }
   }
 

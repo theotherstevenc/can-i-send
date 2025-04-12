@@ -3,6 +3,8 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import styled from '@emotion/styled'
 import { useAppContext } from '../context/AppContext'
 import { useEditorContext } from '../context/EditorContext'
+import managePersistentState from '../utils/managePersistentState'
+
 import { useRef } from 'react'
 
 const VisuallyHiddenInput = styled('input')({
@@ -65,17 +67,8 @@ const InputFileUpload = () => {
     const DOCUMENT = workingFileID
     const firestoreObj = { html: data.html, text: data.text, amp: data.amp }
     const ACTION = 'update'
-    try {
-      fetch('/api/update-editor', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ COLLECTION, DOCUMENT, ACTION, firestoreObj }),
-      })
-    } catch (error) {
-      console.error('Error updating markup settings:', error)
-    }
+
+    managePersistentState(COLLECTION, DOCUMENT, ACTION, firestoreObj)
 
     e.target.value = ''
   }

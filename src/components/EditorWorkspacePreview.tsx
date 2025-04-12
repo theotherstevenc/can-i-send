@@ -7,6 +7,7 @@ import { useAppContext } from '../context/AppContext'
 import { useEditorContext } from '../context/EditorContext'
 
 import { workspaceEditorStyles, workspacePreviewIframeStyles } from '../styles/global.styles'
+import managePersistentState from '../utils/managePersistentState'
 
 const EditorWorkspacePreview = () => {
   const { html, setHtml, text, setText, amp, setAmp, workingFileID } = useEditorContext()
@@ -49,22 +50,12 @@ const EditorWorkspacePreview = () => {
     const handler = setTimeout(() => {
       console.log('save everything to ID: ', workingFileID)
 
-      const API_URL = '/api/update-editor'
-      const HTTP_METHOD_POST = 'POST'
       const COLLECTION = 'workingFiles'
       const DOCUMENT = workingFileID
+      const ACTION = 'update'
       const firestoreObj = { html, text, amp }
-      try {
-        fetch(API_URL, {
-          method: HTTP_METHOD_POST,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ COLLECTION, DOCUMENT, firestoreObj }),
-        })
-      } catch (error) {
-        console.error('Error updating markup settings:', error)
-      }
+
+      managePersistentState(COLLECTION, DOCUMENT, ACTION, firestoreObj)
     }, DEBOUNCE_DELAY)
 
     return () => {

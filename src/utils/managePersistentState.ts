@@ -1,9 +1,7 @@
-const managePersistentState = async (firestoreObj: object) => {
+const managePersistentState = async (COLLECTION: string, DOCUMENT: string, ACTION: string, firestoreObj: object) => {
   const API_URL = '/api/update-editor'
   const HTTP_METHOD_POST = 'POST'
-  const COLLECTION = 'config'
-  const DOCUMENT = 'editorSettings'
-  const ACTION = 'update'
+
   try {
     fetch(API_URL, {
       method: HTTP_METHOD_POST,
