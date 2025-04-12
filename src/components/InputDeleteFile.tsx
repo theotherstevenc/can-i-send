@@ -6,7 +6,7 @@ import { useEditorContext } from '../context/EditorContext'
 import { StyledIconButton } from './InputIconButton'
 
 const InputDeleteFile = () => {
-  const { workingFileID, numberOfWorkingFiles, setNumberOfWorkingFiles } = useEditorContext()
+  const { workingFileID, numberOfWorkingFiles, setNumberOfWorkingFiles, setHtml, setText, setAmp } = useEditorContext()
   const [open, setOpen] = useState(false)
 
   const handleOpen = () => setOpen(true)
@@ -34,6 +34,10 @@ const InputDeleteFile = () => {
       if (!response.ok) {
         throw new Error('Failed to delete file')
       }
+
+      setHtml('')
+      setText('')
+      setAmp('')
 
       console.log('File deleted successfully')
     } catch (error) {
