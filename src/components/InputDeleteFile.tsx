@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton } from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Tooltip } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { useState } from 'react'
@@ -39,9 +39,11 @@ const InputDeleteFile = () => {
 
   return (
     <>
-      <StyledIconButton onClick={handleOpen} aria-label='Delete Project'>
-        <DeleteIcon />
-      </StyledIconButton>
+      <Tooltip title='Delete Project'>
+        <StyledIconButton onClick={handleOpen} aria-label='Delete Project'>
+          <DeleteIcon />
+        </StyledIconButton>
+      </Tooltip>
 
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>

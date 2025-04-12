@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, IconButton } from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, IconButton, Tooltip } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import EditIcon from '@mui/icons-material/Edit'
 import { useState } from 'react'
@@ -42,9 +42,11 @@ const InputUpdateFiles = () => {
 
   return (
     <>
-      <StyledIconButton onClick={handleOpen} aria-label='Rename Project'>
-        <EditIcon />
-      </StyledIconButton>
+      <Tooltip title='Rename Project'>
+        <StyledIconButton onClick={handleOpen} aria-label='Rename Project'>
+          <EditIcon />
+        </StyledIconButton>
+      </Tooltip>
 
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth='sm'>
         <DialogTitle>

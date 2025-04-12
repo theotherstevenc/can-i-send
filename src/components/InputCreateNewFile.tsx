@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, IconButton, FormControlLabel, Checkbox } from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, IconButton, FormControlLabel, Checkbox, Tooltip } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import CloseIcon from '@mui/icons-material/Close'
 import { boilerPlateMarkup } from '../utils/bolierpateMarkup'
@@ -54,9 +54,11 @@ const InputCreateNewFile = () => {
 
   return (
     <>
-      <StyledIconButton onClick={handleOpen} aria-label='Create New Project'>
-        <AddIcon />
-      </StyledIconButton>
+      <Tooltip title='Create New Project'>
+        <StyledIconButton onClick={handleOpen} aria-label='Create New Project'>
+          <AddIcon />
+        </StyledIconButton>
+      </Tooltip>
 
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth='sm'>
         <DialogTitle>
