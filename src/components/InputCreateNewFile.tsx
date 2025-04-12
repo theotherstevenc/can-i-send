@@ -4,6 +4,7 @@ import AddIcon from '@mui/icons-material/Add'
 import CloseIcon from '@mui/icons-material/Close'
 import { boilerPlateMarkup } from '../utils/bolierpateMarkup'
 import { useEditorContext } from '../context/EditorContext'
+import { StyledIconButton } from './InputIconButton'
 
 const InputCreateNewFile = () => {
   const { numberOfWorkingFiles, setNumberOfWorkingFiles } = useEditorContext()
@@ -53,13 +54,13 @@ const InputCreateNewFile = () => {
 
   return (
     <>
-      <Button variant='contained' color='primary' startIcon={<AddIcon />} onClick={handleOpen}>
-        Create New File
-      </Button>
+      <StyledIconButton onClick={handleOpen} aria-label='Create New Project'>
+        <AddIcon />
+      </StyledIconButton>
 
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth='sm'>
         <DialogTitle>
-          Create New File
+          Create New Project
           <IconButton
             aria-label='close'
             onClick={handleClose}
@@ -75,7 +76,7 @@ const InputCreateNewFile = () => {
           <TextField
             autoFocus
             margin='dense'
-            label='File Name'
+            label='Project Name'
             type='text'
             fullWidth
             value={fileName}
@@ -87,7 +88,12 @@ const InputCreateNewFile = () => {
               }
             }}
           />
-          <FormControlLabel control={<Checkbox name='isBoilerplateApplied' color='primary' />} label='Apply Boilerplates' checked={isBoilerplateApplied} onChange={handleChange} />
+          <FormControlLabel
+            control={<Checkbox name='isBoilerplateApplied' color='primary' />}
+            label='Apply placeholder boilerplates for html, text, amp'
+            checked={isBoilerplateApplied}
+            onChange={handleChange}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color='secondary'>

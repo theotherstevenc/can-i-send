@@ -1,4 +1,4 @@
-import { Button } from '@mui/material'
+import { IconButton } from '@mui/material'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import styled from '@emotion/styled'
 import { useAppContext } from '../context/AppContext'
@@ -70,9 +70,21 @@ const InputFileUpload = () => {
 
   return (
     <>
-      <Button variant='contained' startIcon={<CloudUploadIcon />} onClick={handleButtonClick}>
-        Upload + Convert EML
-      </Button>
+      <IconButton
+        color='primary'
+        onClick={handleButtonClick}
+        aria-label='Upload + Convert EML'
+        sx={{
+          padding: '6px 16px', // Default padding for buttons
+          borderRadius: '4px', // Default border radius for buttons
+          backgroundColor: 'primary.main', // Default background color
+          color: 'white', // Default text color
+          '&:hover': {
+            backgroundColor: 'primary.dark', // Default hover color
+          },
+        }}>
+        <CloudUploadIcon />
+      </IconButton>
 
       <VisuallyHiddenInput ref={fileInputRef} type='file' accept='.eml' onChange={(e) => handleFileUpload(e)} />
     </>

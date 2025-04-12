@@ -3,6 +3,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import EditIcon from '@mui/icons-material/Edit'
 import { useState } from 'react'
 import { useEditorContext } from '../context/EditorContext'
+import { StyledIconButton } from './InputIconButton'
 
 const InputUpdateFiles = () => {
   const { workingFileID, setNumberOfWorkingFiles, numberOfWorkingFiles } = useEditorContext()
@@ -41,12 +42,13 @@ const InputUpdateFiles = () => {
 
   return (
     <>
-      <Button variant='contained' color='primary' startIcon={<EditIcon />} onClick={handleOpen}>
-        Rename File
-      </Button>
+      <StyledIconButton onClick={handleOpen} aria-label='Rename Project'>
+        <EditIcon />
+      </StyledIconButton>
+
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth='sm'>
         <DialogTitle>
-          Create New File
+          Rename Project
           <IconButton
             aria-label='close'
             onClick={handleClose}
@@ -62,7 +64,7 @@ const InputUpdateFiles = () => {
           <TextField
             autoFocus
             margin='dense'
-            label='File Name'
+            label='Project Name'
             type='text'
             fullWidth
             value={fileName}
