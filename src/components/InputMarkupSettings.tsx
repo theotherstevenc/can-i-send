@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Box, Checkbox, FormControlLabel } from '@mui/material'
+import { Checkbox, FormControlLabel } from '@mui/material'
 import { useAppContext } from '../context/AppContext'
 import { useEditorContext } from '../context/EditorContext'
 import { useEffect } from 'react'
@@ -40,16 +40,9 @@ const InputMarkupSettings = () => {
 
   return (
     <>
-      <Box
-        sx={{
-          flexGrow: 1,
-        }}>
-        <FormControlLabel control={<Checkbox name='isMinifyEnabled' color='primary' />} label='Minify' checked={isMinifyEnabled} onChange={handleChange} />
-
-        <FormControlLabel control={<Checkbox name='isWordWrapEnabled' color='primary' />} label='Word wrap' checked={isWordWrapEnabled} onChange={handleChange} />
-
-        <FormControlLabel control={<Checkbox name='isPreventThreadingEnabled' color='primary' />} label='Prevent Threading' checked={isPreventThreadingEnabled} onChange={handleChange} />
-      </Box>
+      <FormControlLabel control={<Checkbox name='isMinifyEnabled' color='primary' />} label='Minify' checked={isMinifyEnabled} onChange={handleChange} />
+      <FormControlLabel control={<Checkbox name='isWordWrapEnabled' color='primary' />} label='Word wrap' checked={isWordWrapEnabled} onChange={handleChange} />
+      <FormControlLabel control={<Checkbox name='isPreventThreadingEnabled' color='primary' />} label='Prevent Threading' checked={isPreventThreadingEnabled} onChange={handleChange} />
     </>
   )
 }
