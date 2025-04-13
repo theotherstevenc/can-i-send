@@ -31,13 +31,17 @@ const EditorWorkspacePreview = () => {
       type: 'text',
       language: 'text',
       value: text,
-      onChange: (newValue: string | undefined) => setText(newValue || ''),
+      onChange: (newValue: string | undefined) => {
+        setText(newValue || '')
+      },
     },
     {
       type: 'amp',
       language: 'html',
       value: amp,
-      onChange: (newValue: string | undefined) => setAmp(newValue || ''),
+      onChange: (newValue: string | undefined) => {
+        setAmp(newValue || '')
+      },
     },
   ]
 
@@ -47,6 +51,8 @@ const EditorWorkspacePreview = () => {
     if (!workingFileID) {
       return
     }
+
+    // TODO: extrapolate handler function
     const handler = setTimeout(() => {
       console.log('save everything to ID: ', workingFileID)
 

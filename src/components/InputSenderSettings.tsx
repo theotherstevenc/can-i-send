@@ -6,6 +6,7 @@ import { encryptString } from '../utils/encryptString'
 import managePersistentState from '../utils/managePersistentState'
 
 const InputSenderSettings = () => {
+  // refactor to improve readability?
   const { inputSenderSettings, setInputSenderSettings } = useAppContext() as {
     inputSenderSettings: SenderSettings
     setInputSenderSettings: Dispatch<SetStateAction<SenderSettings>>
@@ -15,6 +16,7 @@ const InputSenderSettings = () => {
   const DOCUMENT = 'editorSettings'
   const ACTION = 'update'
 
+  // refactor to improve readability?
   const handleInputChange = (id: keyof SenderSettings, value: string) => {
     setInputSenderSettings((prev: SenderSettings) => ({
       ...prev,
@@ -23,6 +25,7 @@ const InputSenderSettings = () => {
   }
 
   const handleInput = async (id: string, value: string, isBlur: boolean) => {
+    // refactor to improve ease of readability?
     const processedValue = id === 'pass' && isBlur ? await encryptString(value) : value
     handleInputChange(id as keyof SenderSettings, processedValue)
 
@@ -43,6 +46,7 @@ const InputSenderSettings = () => {
   }
 
   return (
+    // refactor to reduce repetition?
     <>
       <TextField id='host' label='host' variant='outlined' size='small' value={inputSenderSettings.host} onBlur={handleBlur} onChange={handleChange} />
       <TextField id='port' label='port' variant='outlined' size='small' value={inputSenderSettings.port} onBlur={handleBlur} onChange={handleChange} sx={{ width: '70px' }} />

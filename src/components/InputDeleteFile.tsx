@@ -13,7 +13,9 @@ const InputDeleteFile = () => {
   const handleClose = () => setOpen(false)
 
   const handleDeleteFile = async () => {
-    if (!workingFileID) return
+    if (!workingFileID) {
+      return
+    }
     setNumberOfWorkingFiles(numberOfWorkingFiles - 1)
 
     try {
@@ -35,6 +37,7 @@ const InputDeleteFile = () => {
         throw new Error('Failed to delete file')
       }
 
+      // TODO : refactor resetting state
       setHtml('')
       setText('')
       setAmp('')

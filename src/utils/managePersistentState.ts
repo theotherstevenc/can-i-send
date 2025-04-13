@@ -1,3 +1,6 @@
+//TODO: rename to better describe the functionality
+// it is not directly updating state
+// rather it is updating the firestore document
 const managePersistentState = async (COLLECTION: string, DOCUMENT: string, ACTION: string, firestoreObj: object) => {
   const API_URL = '/api/update-editor'
   const HTTP_METHOD_POST = 'POST'

@@ -36,6 +36,7 @@ const InputMarkupSettings = () => {
   }
 
   useEffect(() => {
+    // extracting the minify logic
     if (isMinifyEnabled) {
       setOriginalHtml(html)
       setHtml(customMinifier(html))
