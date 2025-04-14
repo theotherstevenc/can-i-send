@@ -3,7 +3,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import styled from '@emotion/styled'
 import { useAppContext } from '../context/AppContext'
 import { useEditorContext } from '../context/EditorContext'
-import managePersistentState from '../utils/managePersistentState'
+import { updateStore } from '../utils/updateStore'
 
 import { useRef } from 'react'
 
@@ -69,7 +69,7 @@ const InputFileUpload = () => {
     const firestoreObj = { html: data.html, text: data.text, amp: data.amp }
     const ACTION = 'update'
 
-    managePersistentState(COLLECTION, DOCUMENT, ACTION, firestoreObj)
+    updateStore(COLLECTION, DOCUMENT, ACTION, firestoreObj)
 
     e.target.value = ''
   }

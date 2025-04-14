@@ -7,7 +7,7 @@ import { useAppContext } from '../context/AppContext'
 import { useEditorContext } from '../context/EditorContext'
 
 import { workspaceEditorStyles, workspacePreviewIframeStyles } from '../styles/global.styles'
-import managePersistentState from '../utils/managePersistentState'
+import { updateStore } from '../utils/updateStore'
 
 const EditorWorkspacePreview = () => {
   const { html, setHtml, text, setText, amp, setAmp, workingFileID, numberOfWorkingFiles, setNumberOfWorkingFiles } = useEditorContext()
@@ -52,8 +52,7 @@ const EditorWorkspacePreview = () => {
       return
     }
 
-    // TODO: extrapolate handler function
-    const handler = setTimeout(() => {
+    const debouceSave = setTimeout(() => {
       console.log(workingFileID + ':saved')
 
       const COLLECTION = 'workingFiles'
@@ -62,11 +61,11 @@ const EditorWorkspacePreview = () => {
       const firestoreObj = { html, text, amp }
 
       setNumberOfWorkingFiles(numberOfWorkingFiles + 1)
-      managePersistentState(COLLECTION, DOCUMENT, ACTION, firestoreObj)
+      updateStore(COLLECTION, DOCUMENT, ACTION, firestoreObj)
     }, DEBOUNCE_DELAY)
 
     return () => {
-      clearTimeout(handler)
+      clearTimeout(debouceSave)
     }
   }, [html, text, amp])
 

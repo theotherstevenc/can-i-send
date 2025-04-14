@@ -1,6 +1,6 @@
 import { Button } from '@mui/material'
 import { useAppContext } from '../context/AppContext'
-import managePersistentState from '../utils/managePersistentState'
+import { updateStore } from '../utils/updateStore'
 
 const BUTTON_VARIANT_OUTLINED = 'outlined'
 const BUTTON_VARIANT_CONTAINED = 'contained'
@@ -16,7 +16,7 @@ const EditorSelectorButtons = () => {
     const firestoreObj = { activeEditor: editorType }
 
     setActiveEditor(editorType)
-    managePersistentState(COLLECTION, DOCUMENT, ACTION, firestoreObj)
+    updateStore(COLLECTION, DOCUMENT, ACTION, firestoreObj)
   }
 
   return (

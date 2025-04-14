@@ -3,7 +3,7 @@ import { TextField } from '@mui/material'
 import { SenderSettings } from '../interfaces'
 import { useAppContext } from '../context/AppContext'
 import { encryptString } from '../utils/encryptString'
-import managePersistentState from '../utils/managePersistentState'
+import { updateStore } from '../utils/updateStore'
 
 const InputSenderSettings = () => {
   // refactor to improve readability?
@@ -31,7 +31,7 @@ const InputSenderSettings = () => {
 
     if (isBlur) {
       const firestoreObj = { ...inputSenderSettings, [id]: processedValue }
-      managePersistentState(COLLECTION, DOCUMENT, ACTION, firestoreObj)
+      updateStore(COLLECTION, DOCUMENT, ACTION, firestoreObj)
     }
   }
 
