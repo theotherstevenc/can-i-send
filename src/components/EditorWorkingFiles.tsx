@@ -39,10 +39,6 @@ const EditorWorkingFiles = () => {
   }
 
   const handleClick = async (file: WorkingFile) => {
-    // TODO: review to this fetch
-    // it was created to ensure the file is up to date
-    // it may be causing performance issues
-    await fetchFiles()
     setHtml(file.html)
     setText(file.text)
     setAmp(file.amp)

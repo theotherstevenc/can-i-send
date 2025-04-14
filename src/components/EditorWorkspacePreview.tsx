@@ -10,7 +10,7 @@ import { workspaceEditorStyles, workspacePreviewIframeStyles } from '../styles/g
 import managePersistentState from '../utils/managePersistentState'
 
 const EditorWorkspacePreview = () => {
-  const { html, setHtml, text, setText, amp, setAmp, workingFileID } = useEditorContext()
+  const { html, setHtml, text, setText, amp, setAmp, workingFileID, numberOfWorkingFiles, setNumberOfWorkingFiles } = useEditorContext()
   const { isMinifyEnabled, isWordWrapEnabled, activeEditor } = useAppContext()
   const [editorSizes, setEditorSizes] = useState<number[]>([50, 50])
 
@@ -54,13 +54,14 @@ const EditorWorkspacePreview = () => {
 
     // TODO: extrapolate handler function
     const handler = setTimeout(() => {
-      console.log('save everything to ID: ', workingFileID)
+      console.log(workingFileID + ':saved')
 
       const COLLECTION = 'workingFiles'
       const DOCUMENT = workingFileID
       const ACTION = 'update'
       const firestoreObj = { html, text, amp }
 
+      setNumberOfWorkingFiles(numberOfWorkingFiles + 1)
       managePersistentState(COLLECTION, DOCUMENT, ACTION, firestoreObj)
     }, DEBOUNCE_DELAY)
 
