@@ -59,7 +59,6 @@ const InputFileUpload = () => {
 
     const data = JSON.parse(text)
 
-    // TODO: refactor this to use a single function?
     setHtml(data.html)
     setText(data.text)
     setAmp(data.amp)

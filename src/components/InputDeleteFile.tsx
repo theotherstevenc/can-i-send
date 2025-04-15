@@ -37,12 +37,9 @@ const InputDeleteFile = () => {
         throw new Error('Failed to delete file')
       }
 
-      // TODO : refactor resetting state
       setHtml('')
       setText('')
       setAmp('')
-
-      console.log('File deleted successfully')
     } catch (error) {
       console.error('Error deleting file:', error)
     } finally {
