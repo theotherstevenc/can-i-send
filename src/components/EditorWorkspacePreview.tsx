@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Editor } from '@monaco-editor/react'
-import { Box } from '@mui/material'
 import { useEffect, useState } from 'react'
+import { Box } from '@mui/material'
+import { Editor } from '@monaco-editor/react'
 import Split from 'react-split'
+
 import { useAppContext } from '../context/AppContext'
 import { useEditorContext } from '../context/EditorContext'
 

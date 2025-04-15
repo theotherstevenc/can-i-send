@@ -7,7 +7,7 @@ import { useEditorContext } from '../context/EditorContext'
 import { StyledIconButton } from './InputIconButton'
 
 const InputCreateNewFile = () => {
-  const { numberOfWorkingFiles, setNumberOfWorkingFiles } = useEditorContext()
+  const { numberOfWorkingFiles, setNumberOfWorkingFiles, setWorkingFileID, setWorkingFileName } = useEditorContext()
   const [open, setOpen] = useState(false)
   const [fileName, setFileName] = useState('')
   const [isBoilerplateApplied, setIsBoilerplateApplied] = useState(false)
@@ -20,10 +20,8 @@ const InputCreateNewFile = () => {
   const handleClose = () => setOpen(false)
 
   const handleConfirm = async () => {
-    setNumberOfWorkingFiles(numberOfWorkingFiles + 1)
     if (fileName.trim()) {
       try {
-        // create interface for request body
         const requestBody: { fileName: string; boilerPlateMarkup?: string } = { fileName }
 
         if (isBoilerplateApplied) {
@@ -38,18 +36,21 @@ const InputCreateNewFile = () => {
           body: JSON.stringify(requestBody),
         })
 
+        const responseData = await response.json()
+
         if (response.ok) {
           setFileName('')
-          const data = await response.json()
-          console.log('File created successfully:', data)
+          setWorkingFileID(responseData.id)
+          setWorkingFileName(fileName)
           setOpen(false)
         } else {
-          const errorData = await response.json()
-          console.error('Error creating file:', errorData)
+          console.error('Error creating file:', responseData)
         }
       } catch (error) {
         console.error('Error:', error)
       }
+
+      setNumberOfWorkingFiles(numberOfWorkingFiles + 1)
     }
   }
 

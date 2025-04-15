@@ -6,7 +6,7 @@ import { useEditorContext } from '../context/EditorContext'
 import { StyledIconButton } from './InputIconButton'
 
 const InputDeleteFile = () => {
-  const { workingFileID, numberOfWorkingFiles, setNumberOfWorkingFiles, setHtml, setText, setAmp, workingFileName } = useEditorContext()
+  const { workingFileID, setWorkingFileID, numberOfWorkingFiles, setNumberOfWorkingFiles, setHtml, setText, setAmp, workingFileName } = useEditorContext()
   const [open, setOpen] = useState(false)
 
   const handleOpen = () => setOpen(true)
@@ -16,7 +16,6 @@ const InputDeleteFile = () => {
     if (!workingFileID) {
       return
     }
-    setNumberOfWorkingFiles(numberOfWorkingFiles - 1)
 
     try {
       const API_URL = '/api/update-editor'
@@ -40,6 +39,8 @@ const InputDeleteFile = () => {
       setHtml('')
       setText('')
       setAmp('')
+      setWorkingFileID('')
+      setNumberOfWorkingFiles(numberOfWorkingFiles - 1)
     } catch (error) {
       console.error('Error deleting file:', error)
     } finally {
