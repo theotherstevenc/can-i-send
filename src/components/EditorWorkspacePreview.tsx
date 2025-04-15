@@ -52,7 +52,7 @@ const EditorWorkspacePreview = () => {
       return
     }
 
-    const debouceSave = setTimeout(() => {
+    const debounceSave = setTimeout(() => {
       console.log(workingFileID + ':saved')
 
       const COLLECTION = 'workingFiles'
@@ -65,7 +65,7 @@ const EditorWorkspacePreview = () => {
     }, DEBOUNCE_DELAY)
 
     return () => {
-      clearTimeout(debouceSave)
+      clearTimeout(debounceSave)
     }
   }, [html, text, amp])
 
