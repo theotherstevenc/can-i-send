@@ -39,7 +39,6 @@ const EditorWorkingFiles = () => {
   }
 
   const handleClick = async (file: WorkingFile) => {
-    await fetchFiles()
     setHtml(file.html)
     setText(file.text)
     setAmp(file.amp)
@@ -49,6 +48,9 @@ const EditorWorkingFiles = () => {
   useEffect(() => {
     fetchFiles()
   }, [numberOfWorkingFiles])
+  // TODO: refactor this dependency array logic.
+  // it does not need to be number of working files.
+  // it is an arbitrary value that triggers a refetch/rerender.
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, padding: 0.5 }}>

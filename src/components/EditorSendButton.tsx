@@ -55,6 +55,7 @@ const EditorSendButton = () => {
     setIsSendSuccessful(true)
   }
 
+  // refactor to improve readability?
   const handleClick = async () => {
     setOpenBackdrop(true)
 

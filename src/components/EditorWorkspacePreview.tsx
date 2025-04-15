@@ -7,10 +7,10 @@ import { useAppContext } from '../context/AppContext'
 import { useEditorContext } from '../context/EditorContext'
 
 import { workspaceEditorStyles, workspacePreviewIframeStyles } from '../styles/global.styles'
-import managePersistentState from '../utils/managePersistentState'
+import { updateStore } from '../utils/updateStore'
 
 const EditorWorkspacePreview = () => {
-  const { html, setHtml, text, setText, amp, setAmp, workingFileID } = useEditorContext()
+  const { html, setHtml, text, setText, amp, setAmp, workingFileID, numberOfWorkingFiles, setNumberOfWorkingFiles } = useEditorContext()
   const { isMinifyEnabled, isWordWrapEnabled, activeEditor } = useAppContext()
   const [editorSizes, setEditorSizes] = useState<number[]>([50, 50])
 
@@ -31,13 +31,17 @@ const EditorWorkspacePreview = () => {
       type: 'text',
       language: 'text',
       value: text,
-      onChange: (newValue: string | undefined) => setText(newValue || ''),
+      onChange: (newValue: string | undefined) => {
+        setText(newValue || '')
+      },
     },
     {
       type: 'amp',
       language: 'html',
       value: amp,
-      onChange: (newValue: string | undefined) => setAmp(newValue || ''),
+      onChange: (newValue: string | undefined) => {
+        setAmp(newValue || '')
+      },
     },
   ]
 
@@ -47,19 +51,21 @@ const EditorWorkspacePreview = () => {
     if (!workingFileID) {
       return
     }
-    const handler = setTimeout(() => {
-      console.log('save everything to ID: ', workingFileID)
+
+    const debounceSave = setTimeout(() => {
+      console.log(workingFileID + ':saved')
 
       const COLLECTION = 'workingFiles'
       const DOCUMENT = workingFileID
       const ACTION = 'update'
       const firestoreObj = { html, text, amp }
 
-      managePersistentState(COLLECTION, DOCUMENT, ACTION, firestoreObj)
+      setNumberOfWorkingFiles(numberOfWorkingFiles + 1)
+      updateStore(COLLECTION, DOCUMENT, ACTION, firestoreObj)
     }, DEBOUNCE_DELAY)
 
     return () => {
-      clearTimeout(handler)
+      clearTimeout(debounceSave)
     }
   }, [html, text, amp])
 

@@ -23,6 +23,7 @@ const InputCreateNewFile = () => {
     setNumberOfWorkingFiles(numberOfWorkingFiles + 1)
     if (fileName.trim()) {
       try {
+        // create interface for request body
         const requestBody: { fileName: string; boilerPlateMarkup?: string } = { fileName }
 
         if (isBoilerplateApplied) {

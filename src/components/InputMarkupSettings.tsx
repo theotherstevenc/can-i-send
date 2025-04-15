@@ -4,7 +4,7 @@ import { useAppContext } from '../context/AppContext'
 import { useEditorContext } from '../context/EditorContext'
 import { useEffect } from 'react'
 import { customMinifier } from '../utils/customMinifier'
-import managePersistentState from '../utils/managePersistentState'
+import { updateStore } from '../utils/updateStore'
 
 const InputMarkupSettings = () => {
   const { setHtml, html, setOriginalHtml, originalHtml } = useEditorContext()
@@ -32,10 +32,11 @@ const InputMarkupSettings = () => {
     const ACTION = 'update'
 
     const firestoreObj = { [name]: checked }
-    managePersistentState(COLLECTION, DOCUMENT, ACTION, firestoreObj)
+    updateStore(COLLECTION, DOCUMENT, ACTION, firestoreObj)
   }
 
   useEffect(() => {
+    // extracting the minify logic
     if (isMinifyEnabled) {
       setOriginalHtml(html)
       setHtml(customMinifier(html))
