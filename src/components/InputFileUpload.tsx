@@ -67,9 +67,11 @@ const InputFileUpload = () => {
     const firestoreObj = { html: data.html, text: data.text, amp: data.amp }
     const ACTION = 'update'
 
-    updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj)
-
-    e.target.value = ''
+    try {
+      await updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj)
+    } catch (error) {
+      console.error('Failed to update store:', error)
+    }
   }
 
   const handleButtonClick = () => {
