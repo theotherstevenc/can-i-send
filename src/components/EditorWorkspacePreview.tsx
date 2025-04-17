@@ -54,12 +54,14 @@ const EditorWorkspacePreview = () => {
     }
 
     const debounceSave = setTimeout(async () => {
+      const API_URL = '/api/update-editor'
+      const HTTP_METHOD = 'POST'
       const COLLECTION = 'workingFiles'
       const DOCUMENT = workingFileID
       const ACTION = 'update'
       const firestoreObj = { html, text, amp }
 
-      await updateStore(COLLECTION, DOCUMENT, ACTION, firestoreObj)
+      await updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj)
       setNumberOfWorkingFiles((prev) => prev + 1)
     }, DEBOUNCE_DELAY)
 

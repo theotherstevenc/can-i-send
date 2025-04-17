@@ -4,9 +4,10 @@ import EditIcon from '@mui/icons-material/Edit'
 import { useState } from 'react'
 import { useEditorContext } from '../context/EditorContext'
 import { StyledIconButton } from './InputIconButton'
+import { updateStore } from '../utils/updateStore'
 
 const InputUpdateFiles = () => {
-  const { workingFileID, setNumberOfWorkingFiles, numberOfWorkingFiles, workingFileName, setWorkingFileName } = useEditorContext()
+  const { workingFileID, workingFileName, setWorkingFileName, setNumberOfWorkingFiles } = useEditorContext()
   const [open, setOpen] = useState(false)
   const [fileName, setFileName] = useState('')
 
@@ -15,33 +16,23 @@ const InputUpdateFiles = () => {
 
   const handleConfirm = async () => {
     if (!workingFileID) return
-    setNumberOfWorkingFiles(numberOfWorkingFiles + 1)
 
     if (fileName.trim()) {
       const API_URL = '/api/update-editor'
-      const HTTP_METHOD_POST = 'POST'
+      const HTTP_METHOD = 'POST'
       const COLLECTION = 'workingFiles'
       const DOCUMENT = workingFileID
       const ACTION = 'update'
       const firestoreObj = { fileName }
-      try {
-        const response = await fetch(API_URL, {
-          method: HTTP_METHOD_POST,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ DOCUMENT, COLLECTION, ACTION, firestoreObj }),
-        })
 
-        if (response.ok) {
-          setFileName('')
-          setOpen(false)
-        } else {
-          const errorData = await response.json()
-          console.error('Error updating file:', errorData)
-        }
-      } catch (error) {
-        console.error('Error:', error)
+      const result = await updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj)
+
+      if (result.success) {
+        setNumberOfWorkingFiles((prev) => prev + 1)
+        setFileName('')
+        setOpen(false)
+      } else {
+        console.error('Failed to update file:', result.message)
       }
     }
   }
