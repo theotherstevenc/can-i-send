@@ -35,7 +35,7 @@ const InputDeleteFile = () => {
       setText('')
       setAmp('')
       setWorkingFileID('')
-      setNumberOfWorkingFiles((prev) => prev + 1)
+      setNumberOfWorkingFiles((prev) => prev - 1)
     } catch (error) {
       console.error('Error deleting file:', error)
     } finally {
