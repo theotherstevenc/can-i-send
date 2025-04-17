@@ -7,7 +7,7 @@ import { useEditorContext } from '../context/EditorContext'
 import { StyledIconButton } from './InputIconButton'
 
 const InputCreateNewFile = () => {
-  const { numberOfWorkingFiles, setNumberOfWorkingFiles, setWorkingFileID, setWorkingFileName } = useEditorContext()
+  const { setNumberOfWorkingFiles, setWorkingFileID, setWorkingFileName, setHtml, setText, setAmp } = useEditorContext()
   const [open, setOpen] = useState(false)
   const [fileName, setFileName] = useState('')
   const [isBoilerplateApplied, setIsBoilerplateApplied] = useState(false)
@@ -42,6 +42,10 @@ const InputCreateNewFile = () => {
           setFileName('')
           setWorkingFileID(responseData.id)
           setWorkingFileName(fileName)
+          setHtml(boilerPlateMarkup.html || '')
+          setText(boilerPlateMarkup.text || '')
+          setAmp(boilerPlateMarkup.amp || '')
+          setNumberOfWorkingFiles((prev) => prev + 1)
           setOpen(false)
         } else {
           console.error('Error creating file:', responseData)
@@ -49,8 +53,6 @@ const InputCreateNewFile = () => {
       } catch (error) {
         console.error('Error:', error)
       }
-
-      setNumberOfWorkingFiles(numberOfWorkingFiles + 1)
     }
   }
 
