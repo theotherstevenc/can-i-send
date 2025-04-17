@@ -28,9 +28,6 @@ const InputFileUpload = () => {
     setIsMinifyEnabled(false)
     setIsWordWrapEnabled(false)
 
-    const API_URL = '/api/upload'
-    const HTTP_METHOD_POST = 'POST'
-
     const file = e.target.files?.[0]
 
     if (!file) {
@@ -42,10 +39,10 @@ const InputFileUpload = () => {
     formData.append('file', file)
 
     const options = {
-      method: HTTP_METHOD_POST,
+      method: 'POST',
       body: formData,
     }
-    const response = await fetch(API_URL, options)
+    const response = await fetch('/api/upload', options)
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
@@ -63,12 +60,14 @@ const InputFileUpload = () => {
     setText(data.text)
     setAmp(data.amp)
 
+    const API_URL = '/api/update-editor'
+    const HTTP_METHOD = 'POST'
     const COLLECTION = 'workingFiles'
     const DOCUMENT = workingFileID
     const firestoreObj = { html: data.html, text: data.text, amp: data.amp }
     const ACTION = 'update'
 
-    updateStore(COLLECTION, DOCUMENT, ACTION, firestoreObj)
+    updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj)
 
     e.target.value = ''
   }
