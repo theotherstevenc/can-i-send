@@ -9,6 +9,8 @@ const InputEmailListSubjectLine = () => {
   const [sizes, setSizes] = useState<number[]>([50, 50])
   const { subject, setSubject, emailAddresses, setEmailAddresses } = useAppContext()
 
+  const API_URL = '/api/update-editor'
+  const HTTP_METHOD = 'POST'
   const COLLECTION = 'config'
   const DOCUMENT = 'editorSettings'
   const ACTION = 'update'
@@ -19,13 +21,13 @@ const InputEmailListSubjectLine = () => {
 
   const handleBlur = () => {
     const firestoreObj = { subject }
-    updateStore(COLLECTION, DOCUMENT, ACTION, firestoreObj)
+    updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj)
   }
 
   const handleEmailAddressesChange = (newEmailAddresses: string[]) => {
     const firestoreObj = { emailAddresses: newEmailAddresses }
     setEmailAddresses(newEmailAddresses)
-    updateStore(COLLECTION, DOCUMENT, ACTION, firestoreObj)
+    updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj)
   }
 
   return (

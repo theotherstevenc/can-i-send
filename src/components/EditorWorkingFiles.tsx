@@ -38,13 +38,14 @@ const EditorWorkingFiles = () => {
     }
   }
 
-  const handleClick = async (file: WorkingFile) => {
+  const handleClick = (file: WorkingFile) => {
     setHtml(file.html)
     setText(file.text)
     setAmp(file.amp)
     setWorkingFileID(file.id)
     setWorkingFileName(file.fileName)
   }
+
   useEffect(() => {
     fetchFiles()
   }, [numberOfWorkingFiles])
