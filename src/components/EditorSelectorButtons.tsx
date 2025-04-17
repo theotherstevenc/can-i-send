@@ -9,6 +9,8 @@ const EditorSelectorButtons = () => {
   const { activeEditor, setActiveEditor } = useAppContext()
 
   const handleClick = (editorType: string) => {
+    const API_URL = '/api/update-editor'
+    const HTTP_METHOD = 'POST'
     const COLLECTION = 'config'
     const DOCUMENT = 'editorSettings'
     const ACTION = 'update'
@@ -16,7 +18,7 @@ const EditorSelectorButtons = () => {
     const firestoreObj = { activeEditor: editorType }
 
     setActiveEditor(editorType)
-    updateStore(COLLECTION, DOCUMENT, ACTION, firestoreObj)
+    updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj)
   }
 
   return (
