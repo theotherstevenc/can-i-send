@@ -4,9 +4,10 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import { useState } from 'react'
 import { useEditorContext } from '../context/EditorContext'
 import { StyledIconButton } from './InputIconButton'
+import { updateStore } from '../utils/updateStore'
 
 const InputDeleteFile = () => {
-  const { workingFileID, setWorkingFileID, numberOfWorkingFiles, setNumberOfWorkingFiles, setHtml, setText, setAmp, workingFileName } = useEditorContext()
+  const { workingFileID, setWorkingFileID, setHtml, setText, setAmp, workingFileName, setNumberOfWorkingFiles } = useEditorContext()
   const [open, setOpen] = useState(false)
 
   const handleOpen = () => setOpen(true)
@@ -19,20 +20,14 @@ const InputDeleteFile = () => {
 
     try {
       const API_URL = '/api/update-editor'
-      const HTTP_METHOD_POST = 'POST'
+      const HTTP_METHOD = 'POST'
       const COLLECTION = 'workingFiles'
       const DOCUMENT = workingFileID
       const ACTION = 'delete'
 
-      const response = await fetch(API_URL, {
-        method: HTTP_METHOD_POST,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ DOCUMENT, COLLECTION, ACTION }),
-      })
+      const response = await updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD)
 
-      if (!response.ok) {
+      if (!response.success) {
         throw new Error('Failed to delete file')
       }
 
@@ -40,7 +35,7 @@ const InputDeleteFile = () => {
       setText('')
       setAmp('')
       setWorkingFileID('')
-      setNumberOfWorkingFiles(numberOfWorkingFiles - 1)
+      setNumberOfWorkingFiles((prev) => prev + 1)
     } catch (error) {
       console.error('Error deleting file:', error)
     } finally {

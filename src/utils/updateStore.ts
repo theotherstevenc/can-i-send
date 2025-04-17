@@ -1,4 +1,4 @@
-export const updateStore = async (COLLECTION: string, DOCUMENT: string, ACTION: string, API_URL: string, HTTP_METHOD: string, firestoreObj: object) => {
+export const updateStore = async (COLLECTION: string, DOCUMENT: string, ACTION: string, API_URL: string, HTTP_METHOD: string, firestoreObj?: object) => {
   try {
     const response = await fetch(API_URL, {
       method: HTTP_METHOD,

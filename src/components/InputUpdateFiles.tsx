@@ -25,14 +25,14 @@ const InputUpdateFiles = () => {
       const ACTION = 'update'
       const firestoreObj = { fileName }
 
-      const result = await updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj)
+      const response = await updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj)
 
-      if (result.success) {
+      if (response.success) {
         setNumberOfWorkingFiles((prev) => prev + 1)
         setFileName('')
         setOpen(false)
       } else {
-        console.error('Failed to update file:', result.message)
+        console.error('Failed to update file:', response.message)
       }
     }
   }
