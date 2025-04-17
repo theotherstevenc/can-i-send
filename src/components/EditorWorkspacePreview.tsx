@@ -11,7 +11,7 @@ import { workspaceEditorStyles, workspacePreviewIframeStyles } from '../styles/g
 import { updateStore } from '../utils/updateStore'
 
 const EditorWorkspacePreview = () => {
-  const { html, setHtml, text, setText, amp, setAmp, workingFileID, numberOfWorkingFiles, setNumberOfWorkingFiles } = useEditorContext()
+  const { html, setHtml, text, setText, amp, setAmp, workingFileID, setNumberOfWorkingFiles } = useEditorContext()
   const { isMinifyEnabled, isWordWrapEnabled, activeEditor } = useAppContext()
   const [editorSizes, setEditorSizes] = useState<number[]>([50, 50])
 
@@ -53,16 +53,14 @@ const EditorWorkspacePreview = () => {
       return
     }
 
-    const debounceSave = setTimeout(() => {
-      console.log(workingFileID + ':saved')
-
+    const debounceSave = setTimeout(async () => {
       const COLLECTION = 'workingFiles'
       const DOCUMENT = workingFileID
       const ACTION = 'update'
       const firestoreObj = { html, text, amp }
 
-      setNumberOfWorkingFiles(numberOfWorkingFiles + 1)
-      updateStore(COLLECTION, DOCUMENT, ACTION, firestoreObj)
+      await updateStore(COLLECTION, DOCUMENT, ACTION, firestoreObj)
+      setNumberOfWorkingFiles((prev) => prev + 1)
     }, DEBOUNCE_DELAY)
 
     return () => {

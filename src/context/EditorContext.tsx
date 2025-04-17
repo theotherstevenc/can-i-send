@@ -15,7 +15,7 @@ interface EditorContextProps {
   workingFileName: string
   setWorkingFileName: (name: string) => void
   numberOfWorkingFiles: number
-  setNumberOfWorkingFiles: (number: number) => void
+  setNumberOfWorkingFiles: React.Dispatch<React.SetStateAction<number>>
 }
 
 const EditorContext = createContext<EditorContextProps | undefined>(undefined)
