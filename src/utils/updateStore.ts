@@ -1,10 +1,7 @@
-export const updateStore = async (COLLECTION: string, DOCUMENT: string, ACTION: string, firestoreObj: object) => {
-  const API_URL = '/api/update-editor'
-  const HTTP_METHOD_POST = 'POST'
-
+export const updateStore = async (COLLECTION: string, DOCUMENT: string, ACTION: string, API_URL: string, HTTP_METHOD: string, firestoreObj: object) => {
   try {
     const response = await fetch(API_URL, {
-      method: HTTP_METHOD_POST,
+      method: HTTP_METHOD,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -13,8 +10,13 @@ export const updateStore = async (COLLECTION: string, DOCUMENT: string, ACTION: 
 
     if (response.ok) {
       console.log(DOCUMENT + ' :saved')
+      return { success: true }
+    } else {
+      const errorData = await response.json()
+      return { success: false, message: errorData.message }
     }
   } catch (error) {
-    console.error('Error updating markup settings:', error)
+    console.error('Error in updateStore:', error)
+    return { success: false, message: 'Network error' }
   }
 }
