@@ -12,6 +12,8 @@ const InputSenderSettings = () => {
     setInputSenderSettings: Dispatch<SetStateAction<SenderSettings>>
   }
 
+  const API_URL = '/api/update-editor'
+  const HTTP_METHOD = 'POST'
   const COLLECTION = 'config'
   const DOCUMENT = 'editorSettings'
   const ACTION = 'update'
@@ -31,7 +33,7 @@ const InputSenderSettings = () => {
 
     if (isBlur) {
       const firestoreObj = { ...inputSenderSettings, [id]: processedValue }
-      updateStore(COLLECTION, DOCUMENT, ACTION, firestoreObj)
+      updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj)
     }
   }
 
