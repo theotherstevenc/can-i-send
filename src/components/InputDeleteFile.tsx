@@ -7,7 +7,7 @@ import { StyledIconButton } from './InputIconButton'
 import { updateStore } from '../utils/updateStore'
 
 const InputDeleteFile = () => {
-  const { workingFileID, setWorkingFileID, setHtml, setText, setAmp, workingFileName, setWorkingFileName, setDeleteFlag, setTriggerFetch } = useEditorContext()
+  const { workingFileID, setWorkingFileID, setHtml, setText, setAmp, workingFileName, setWorkingFileName, setTriggerFetch } = useEditorContext()
   const [open, setOpen] = useState(false)
 
   const handleOpen = () => {
@@ -38,7 +38,6 @@ const InputDeleteFile = () => {
         throw new Error('Failed to delete file')
       }
 
-      setDeleteFlag(true)
       setHtml('')
       setText('')
       setAmp('')

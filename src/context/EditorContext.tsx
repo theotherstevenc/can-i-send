@@ -16,8 +16,6 @@ interface EditorContextProps {
   setWorkingFileName: (name: string) => void
   triggerFetch: boolean
   setTriggerFetch: React.Dispatch<React.SetStateAction<boolean>>
-  deleteFlag: boolean
-  setDeleteFlag: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const EditorContext = createContext<EditorContextProps | undefined>(undefined)
@@ -29,7 +27,6 @@ export const EditorProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [amp, setAmp] = useState<string>('')
   const [workingFileID, setWorkingFileID] = useState<string>('')
   const [workingFileName, setWorkingFileName] = useState<string>('')
-  const [deleteFlag, setDeleteFlag] = useState<boolean>(false)
   const [triggerFetch, setTriggerFetch] = useState<boolean>(false)
 
   return (
@@ -49,8 +46,6 @@ export const EditorProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         setWorkingFileName,
         triggerFetch,
         setTriggerFetch,
-        deleteFlag,
-        setDeleteFlag,
       }}>
       {children}
     </EditorContext.Provider>
