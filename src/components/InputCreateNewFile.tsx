@@ -24,6 +24,7 @@ const InputCreateNewFile = () => {
   const handleConfirm = async () => {
     setIsMinifyEnabled(false)
     setIsWordWrapEnabled(false)
+    //TODO: refactor this to a shared function
     if (fileName.trim()) {
       try {
         const requestBody: { fileName: string; boilerPlateMarkup?: string } = { fileName }
