@@ -10,7 +10,12 @@ const InputDeleteFile = () => {
   const { workingFileID, setWorkingFileID, setHtml, setText, setAmp, workingFileName, setNumberOfWorkingFiles } = useEditorContext()
   const [open, setOpen] = useState(false)
 
-  const handleOpen = () => setOpen(true)
+  const handleOpen = () => {
+    if (!workingFileID) {
+      return
+    }
+    setOpen(true)
+  }
   const handleClose = () => setOpen(false)
 
   const handleDeleteFile = async () => {

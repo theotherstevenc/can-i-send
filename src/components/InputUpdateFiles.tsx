@@ -11,7 +11,12 @@ const InputUpdateFiles = () => {
   const [open, setOpen] = useState(false)
   const [fileName, setFileName] = useState('')
 
-  const handleOpen = () => setOpen(true)
+  const handleOpen = () => {
+    if (!workingFileID) {
+      return
+    }
+    setOpen(true)
+  }
   const handleClose = () => setOpen(false)
 
   const handleConfirm = async () => {
