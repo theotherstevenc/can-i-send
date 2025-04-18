@@ -5,8 +5,10 @@ import CloseIcon from '@mui/icons-material/Close'
 import { boilerPlateMarkup } from '../utils/bolierpateMarkup'
 import { useEditorContext } from '../context/EditorContext'
 import { StyledIconButton } from './InputIconButton'
+import { useAppContext } from '../context/AppContext'
 
 const InputCreateNewFile = () => {
+  const { setIsMinifyEnabled, setIsWordWrapEnabled } = useAppContext()
   const { setNumberOfWorkingFiles, setWorkingFileID, setWorkingFileName, setHtml, setText, setAmp } = useEditorContext()
   const [open, setOpen] = useState(false)
   const [fileName, setFileName] = useState('')
@@ -20,6 +22,8 @@ const InputCreateNewFile = () => {
   const handleClose = () => setOpen(false)
 
   const handleConfirm = async () => {
+    setIsMinifyEnabled(false)
+    setIsWordWrapEnabled(false)
     if (fileName.trim()) {
       try {
         const requestBody: { fileName: string; boilerPlateMarkup?: string } = { fileName }
