@@ -11,7 +11,7 @@ import { workspaceEditorStyles, workspacePreviewIframeStyles } from '../styles/g
 import { updateStore } from '../utils/updateStore'
 
 const EditorWorkspacePreview = () => {
-  const { html, setHtml, text, setText, amp, setAmp, workingFileID, setNumberOfWorkingFiles } = useEditorContext()
+  const { html, setHtml, text, setText, amp, setAmp, workingFileID, setTriggerFetch } = useEditorContext()
   const { isMinifyEnabled, isWordWrapEnabled, activeEditor } = useAppContext()
   const [editorSizes, setEditorSizes] = useState<number[]>([50, 50])
 
@@ -61,8 +61,9 @@ const EditorWorkspacePreview = () => {
       const ACTION = 'update'
       const firestoreObj = { html, text, amp }
 
-      await updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj)
-      setNumberOfWorkingFiles((prev) => prev + 1)
+      await updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj, () => {
+        setTriggerFetch((prev) => !prev)
+      })
     }, DEBOUNCE_DELAY)
 
     return () => {

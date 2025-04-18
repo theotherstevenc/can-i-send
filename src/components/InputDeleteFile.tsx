@@ -7,10 +7,15 @@ import { StyledIconButton } from './InputIconButton'
 import { updateStore } from '../utils/updateStore'
 
 const InputDeleteFile = () => {
-  const { workingFileID, setWorkingFileID, setHtml, setText, setAmp, workingFileName, setNumberOfWorkingFiles } = useEditorContext()
+  const { workingFileID, setWorkingFileID, setHtml, setText, setAmp, workingFileName, setWorkingFileName, setTriggerFetch } = useEditorContext()
   const [open, setOpen] = useState(false)
 
-  const handleOpen = () => setOpen(true)
+  const handleOpen = () => {
+    if (!workingFileID) {
+      return
+    }
+    setOpen(true)
+  }
   const handleClose = () => setOpen(false)
 
   const handleDeleteFile = async () => {
@@ -25,7 +30,9 @@ const InputDeleteFile = () => {
       const DOCUMENT = workingFileID
       const ACTION = 'delete'
 
-      const response = await updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD)
+      const response = await updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, {}, () => {
+        setTriggerFetch((prev) => !prev)
+      })
 
       if (!response.success) {
         throw new Error('Failed to delete file')
@@ -35,7 +42,7 @@ const InputDeleteFile = () => {
       setText('')
       setAmp('')
       setWorkingFileID('')
-      setNumberOfWorkingFiles((prev) => prev - 1)
+      setWorkingFileName('')
     } catch (error) {
       console.error('Error deleting file:', error)
     } finally {

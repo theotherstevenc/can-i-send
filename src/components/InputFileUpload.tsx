@@ -3,7 +3,6 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import styled from '@emotion/styled'
 import { useAppContext } from '../context/AppContext'
 import { useEditorContext } from '../context/EditorContext'
-import { updateStore } from '../utils/updateStore'
 
 import { useRef } from 'react'
 
@@ -20,7 +19,7 @@ const VisuallyHiddenInput = styled('input')({
 })
 
 const InputFileUpload = () => {
-  const { setHtml, setText, setAmp, workingFileID } = useEditorContext()
+  const { setHtml, setText, setAmp, setWorkingFileID, setWorkingFileName, setTriggerFetch } = useEditorContext()
   const { setIsMinifyEnabled, setIsWordWrapEnabled } = useAppContext()
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -54,23 +53,40 @@ const InputFileUpload = () => {
       throw new Error('Empty response body')
     }
 
-    const data = JSON.parse(text)
+    const isBoilerplateApplied = true
+    const fileName = file.name.replace(/\.[^/.]+$/, '')
 
-    setHtml(data.html)
-    setText(data.text)
-    setAmp(data.amp)
-
-    const API_URL = '/api/update-editor'
-    const HTTP_METHOD = 'POST'
-    const COLLECTION = 'workingFiles'
-    const DOCUMENT = workingFileID
-    const firestoreObj = { html: data.html, text: data.text, amp: data.amp }
-    const ACTION = 'update'
+    const boilerPlateMarkup = JSON.parse(text)
 
     try {
-      await updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj)
+      const requestBody: { fileName: string; boilerPlateMarkup?: string } = { fileName }
+
+      if (isBoilerplateApplied) {
+        requestBody.boilerPlateMarkup = JSON.stringify(boilerPlateMarkup)
+      }
+
+      const response = await fetch('/api/create-new-file', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      })
+
+      const responseData = await response.json()
+
+      if (response.ok) {
+        setWorkingFileID(responseData.id)
+        setWorkingFileName(fileName)
+        setHtml(boilerPlateMarkup.html || '')
+        setText(boilerPlateMarkup.text || '')
+        setAmp(boilerPlateMarkup.amp || '')
+        setTriggerFetch((prev) => !prev)
+      } else {
+        console.error('Error creating file:', responseData)
+      }
     } catch (error) {
-      console.error('Failed to update store:', error)
+      console.error('Error:', error)
     }
   }
 

@@ -5,9 +5,11 @@ import CloseIcon from '@mui/icons-material/Close'
 import { boilerPlateMarkup } from '../utils/bolierpateMarkup'
 import { useEditorContext } from '../context/EditorContext'
 import { StyledIconButton } from './InputIconButton'
+import { useAppContext } from '../context/AppContext'
 
 const InputCreateNewFile = () => {
-  const { setNumberOfWorkingFiles, setWorkingFileID, setWorkingFileName, setHtml, setText, setAmp } = useEditorContext()
+  const { setIsMinifyEnabled, setIsWordWrapEnabled } = useAppContext()
+  const { setWorkingFileID, setWorkingFileName, setHtml, setText, setAmp, setTriggerFetch } = useEditorContext()
   const [open, setOpen] = useState(false)
   const [fileName, setFileName] = useState('')
   const [isBoilerplateApplied, setIsBoilerplateApplied] = useState(false)
@@ -20,6 +22,8 @@ const InputCreateNewFile = () => {
   const handleClose = () => setOpen(false)
 
   const handleConfirm = async () => {
+    setIsMinifyEnabled(false)
+    setIsWordWrapEnabled(false)
     if (fileName.trim()) {
       try {
         const requestBody: { fileName: string; boilerPlateMarkup?: string } = { fileName }
@@ -45,7 +49,8 @@ const InputCreateNewFile = () => {
           setHtml(boilerPlateMarkup.html || '')
           setText(boilerPlateMarkup.text || '')
           setAmp(boilerPlateMarkup.amp || '')
-          setNumberOfWorkingFiles((prev) => prev + 1)
+          setTriggerFetch((prev) => !prev)
+
           setOpen(false)
         } else {
           console.error('Error creating file:', responseData)

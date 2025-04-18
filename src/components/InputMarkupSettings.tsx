@@ -32,8 +32,8 @@ const InputMarkupSettings = () => {
     const COLLECTION = 'config'
     const DOCUMENT = 'editorSettings'
     const ACTION = 'update'
-
     const firestoreObj = { [name]: checked }
+
     updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj)
   }
 

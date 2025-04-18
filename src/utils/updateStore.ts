@@ -1,4 +1,4 @@
-export const updateStore = async (COLLECTION: string, DOCUMENT: string, ACTION: string, API_URL: string, HTTP_METHOD: string, firestoreObj?: object) => {
+export const updateStore = async (COLLECTION: string, DOCUMENT: string, ACTION: string, API_URL: string, HTTP_METHOD: string, firestoreObj?: object, onSuccessCallback?: () => void) => {
   try {
     const response = await fetch(API_URL, {
       method: HTTP_METHOD,
@@ -9,7 +9,9 @@ export const updateStore = async (COLLECTION: string, DOCUMENT: string, ACTION: 
     })
 
     if (response.ok) {
-      console.log(DOCUMENT + ' :saved')
+      if (onSuccessCallback) {
+        onSuccessCallback()
+      }
       return { success: true }
     } else {
       const errorData = await response.json()
