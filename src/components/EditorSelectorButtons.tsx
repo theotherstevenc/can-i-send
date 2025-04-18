@@ -14,7 +14,6 @@ const EditorSelectorButtons = () => {
     const COLLECTION = 'config'
     const DOCUMENT = 'editorSettings'
     const ACTION = 'update'
-
     const firestoreObj = { activeEditor: editorType }
 
     setActiveEditor(editorType)
