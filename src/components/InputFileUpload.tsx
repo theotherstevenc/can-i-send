@@ -53,6 +53,7 @@ const InputFileUpload = () => {
       throw new Error('Empty response body')
     }
 
+    //TODO: refactor this to a shared function
     const isBoilerplateApplied = true
     const fileName = file.name.replace(/\.[^/.]+$/, '')
 
