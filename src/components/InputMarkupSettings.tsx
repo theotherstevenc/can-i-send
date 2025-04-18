@@ -27,12 +27,14 @@ const InputMarkupSettings = () => {
         break
     }
 
+    const API_URL = '/api/update-editor'
+    const HTTP_METHOD = 'POST'
     const COLLECTION = 'config'
     const DOCUMENT = 'editorSettings'
     const ACTION = 'update'
 
     const firestoreObj = { [name]: checked }
-    updateStore(COLLECTION, DOCUMENT, ACTION, firestoreObj)
+    updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj)
   }
 
   useEffect(() => {
