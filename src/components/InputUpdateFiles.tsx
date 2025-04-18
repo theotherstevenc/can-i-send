@@ -7,7 +7,7 @@ import { StyledIconButton } from './InputIconButton'
 import { updateStore } from '../utils/updateStore'
 
 const InputUpdateFiles = () => {
-  const { workingFileID, workingFileName, setWorkingFileName, setNumberOfWorkingFiles } = useEditorContext()
+  const { workingFileID, workingFileName, setWorkingFileName, setTriggerFetch } = useEditorContext()
   const [open, setOpen] = useState(false)
   const [fileName, setFileName] = useState('')
 
@@ -30,10 +30,11 @@ const InputUpdateFiles = () => {
       const ACTION = 'update'
       const firestoreObj = { fileName }
 
-      const response = await updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj)
+      const response = await updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj, () => {
+        setTriggerFetch((prev) => !prev)
+      })
 
       if (response.success) {
-        setNumberOfWorkingFiles((prev) => prev + 1)
         setFileName('')
         setOpen(false)
       } else {

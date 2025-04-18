@@ -8,7 +8,7 @@ const BUTTON_VARIANT_OUTLINED = 'outlined'
 const BUTTON_VARIANT_CONTAINED = 'contained'
 
 const EditorWorkingFiles = () => {
-  const { setHtml, setText, setAmp, workingFileID, setWorkingFileID, numberOfWorkingFiles, setNumberOfWorkingFiles, setWorkingFileName } = useEditorContext()
+  const { setHtml, setText, setAmp, workingFileID, setWorkingFileID, setWorkingFileName, triggerFetch } = useEditorContext()
 
   const [files, setFiles] = useState<WorkingFile[]>([])
 
@@ -27,12 +27,10 @@ const EditorWorkingFiles = () => {
           COLLECTION,
         }),
       })
-      if (!response.ok) {
-        throw new Error('Failed to fetch files')
-      }
+
       const data = await response.json()
+
       setFiles(data)
-      setNumberOfWorkingFiles(data.length)
     } catch (err) {
       console.error('Error fetching files:', err)
     }
@@ -48,18 +46,16 @@ const EditorWorkingFiles = () => {
 
   useEffect(() => {
     fetchFiles()
-  }, [numberOfWorkingFiles])
-  // TODO: refactor this dependency array logic.
-  // it does not need to be number of working files.
-  // it is an arbitrary value that triggers a refetch/rerender.
+  }, [triggerFetch])
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, padding: 0.5 }}>
-      {files.map((file) => (
-        <Button variant={workingFileID === file.id ? BUTTON_VARIANT_CONTAINED : BUTTON_VARIANT_OUTLINED} onClick={() => handleClick(file)} key={file.id}>
-          {file.fileName}
-        </Button>
-      ))}
+      {files.length > 0 &&
+        files.map((file) => (
+          <Button variant={workingFileID === file.id ? BUTTON_VARIANT_CONTAINED : BUTTON_VARIANT_OUTLINED} onClick={() => handleClick(file)} key={file.id}>
+            {file.fileName}
+          </Button>
+        ))}
     </Box>
   )
 }

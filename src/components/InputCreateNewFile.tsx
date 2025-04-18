@@ -9,7 +9,7 @@ import { useAppContext } from '../context/AppContext'
 
 const InputCreateNewFile = () => {
   const { setIsMinifyEnabled, setIsWordWrapEnabled } = useAppContext()
-  const { setNumberOfWorkingFiles, setWorkingFileID, setWorkingFileName, setHtml, setText, setAmp } = useEditorContext()
+  const { setWorkingFileID, setWorkingFileName, setHtml, setText, setAmp, setTriggerFetch } = useEditorContext()
   const [open, setOpen] = useState(false)
   const [fileName, setFileName] = useState('')
   const [isBoilerplateApplied, setIsBoilerplateApplied] = useState(false)
@@ -49,7 +49,8 @@ const InputCreateNewFile = () => {
           setHtml(boilerPlateMarkup.html || '')
           setText(boilerPlateMarkup.text || '')
           setAmp(boilerPlateMarkup.amp || '')
-          setNumberOfWorkingFiles((prev) => prev + 1)
+          setTriggerFetch((prev) => !prev)
+
           setOpen(false)
         } else {
           console.error('Error creating file:', responseData)

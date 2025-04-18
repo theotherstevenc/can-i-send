@@ -19,7 +19,7 @@ const VisuallyHiddenInput = styled('input')({
 })
 
 const InputFileUpload = () => {
-  const { setHtml, setText, setAmp, setNumberOfWorkingFiles, setWorkingFileID, setWorkingFileName } = useEditorContext()
+  const { setHtml, setText, setAmp, setWorkingFileID, setWorkingFileName, setTriggerFetch } = useEditorContext()
   const { setIsMinifyEnabled, setIsWordWrapEnabled } = useAppContext()
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -81,7 +81,7 @@ const InputFileUpload = () => {
         setHtml(boilerPlateMarkup.html || '')
         setText(boilerPlateMarkup.text || '')
         setAmp(boilerPlateMarkup.amp || '')
-        setNumberOfWorkingFiles((prev) => prev + 1)
+        setTriggerFetch((prev) => !prev)
       } else {
         console.error('Error creating file:', responseData)
       }
