@@ -30,9 +30,7 @@ const InputDeleteFile = () => {
       const DOCUMENT = workingFileID
       const ACTION = 'delete'
 
-      const response = await updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, {}, () => {
-        setTriggerFetch((prev) => !prev)
-      })
+      const response = await updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, undefined, setTriggerFetch)
 
       if (!response.success) {
         throw new Error('Failed to delete file')

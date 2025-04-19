@@ -30,9 +30,7 @@ const InputUpdateFiles = () => {
       const ACTION = 'update'
       const firestoreObj = { fileName }
 
-      const response = await updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj, () => {
-        setTriggerFetch((prev) => !prev)
-      })
+      const response = await updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj, setTriggerFetch)
 
       if (response.success) {
         setFileName('')

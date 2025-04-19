@@ -61,9 +61,7 @@ const EditorWorkspacePreview = () => {
       const ACTION = 'update'
       const firestoreObj = { html, text, amp }
 
-      await updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj, () => {
-        setTriggerFetch((prev) => !prev)
-      })
+      await updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj, setTriggerFetch)
     }, DEBOUNCE_DELAY)
 
     return () => {
