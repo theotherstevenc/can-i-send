@@ -1,4 +1,12 @@
-export const updateStore = async (COLLECTION: string, DOCUMENT: string, ACTION: string, API_URL: string, HTTP_METHOD: string, firestoreObj?: object, onSuccessCallback?: () => void) => {
+export const updateStore = async (
+  COLLECTION: string,
+  DOCUMENT: string,
+  ACTION: string,
+  API_URL: string,
+  HTTP_METHOD: string,
+  firestoreObj?: object,
+  setTriggerFetch?: React.Dispatch<React.SetStateAction<boolean>>
+) => {
   try {
     const response = await fetch(API_URL, {
       method: HTTP_METHOD,
@@ -9,9 +17,10 @@ export const updateStore = async (COLLECTION: string, DOCUMENT: string, ACTION: 
     })
 
     if (response.ok) {
-      if (onSuccessCallback) {
-        onSuccessCallback()
+      if (setTriggerFetch) {
+        setTriggerFetch((prevState) => !prevState)
       }
+
       return { success: true }
     } else {
       const errorData = await response.json()
