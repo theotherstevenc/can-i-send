@@ -1,9 +1,8 @@
 import { Button } from '@mui/material'
 import { useAppContext } from '../context/AppContext'
 import { updateStore } from '../utils/updateStore'
-
-const BUTTON_VARIANT_OUTLINED = 'outlined'
-const BUTTON_VARIANT_CONTAINED = 'contained'
+import { EditorType } from '../types/types'
+import { BUTTON_VARIANT_CONTAINED, BUTTON_VARIANT_OUTLINED } from '../utils/constants'
 
 const EditorSelectorButtons = () => {
   const { activeEditor, setActiveEditor } = useAppContext()
@@ -20,19 +19,17 @@ const EditorSelectorButtons = () => {
     updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj)
   }
 
+  const editorTypes: EditorType[] = ['html', 'text', 'amp']
+
   return (
     <>
-      <Button variant={activeEditor === 'html' ? BUTTON_VARIANT_CONTAINED : BUTTON_VARIANT_OUTLINED} onClick={() => handleClick('html')}>
-        html
-      </Button>
-
-      <Button variant={activeEditor === 'text' ? BUTTON_VARIANT_CONTAINED : BUTTON_VARIANT_OUTLINED} onClick={() => handleClick('text')}>
-        text
-      </Button>
-
-      <Button variant={activeEditor === 'amp' ? BUTTON_VARIANT_CONTAINED : BUTTON_VARIANT_OUTLINED} onClick={() => handleClick('amp')}>
-        amp
-      </Button>
+      {editorTypes.map((editorType) => {
+        return (
+          <Button key={editorType} variant={activeEditor === editorType ? BUTTON_VARIANT_CONTAINED : BUTTON_VARIANT_OUTLINED} onClick={() => handleClick(editorType)}>
+            {editorType.toUpperCase()}
+          </Button>
+        )
+      })}
     </>
   )
 }
