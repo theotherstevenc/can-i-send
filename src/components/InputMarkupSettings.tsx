@@ -10,21 +10,21 @@ const InputMarkupSettings = () => {
   const { setHtml, html, setOriginalHtml, originalHtml } = useEditorContext()
   const { isMinifyEnabled, setIsMinifyEnabled, isWordWrapEnabled, setIsWordWrapEnabled, isPreventThreadingEnabled, setIsPreventThreadingEnabled } = useAppContext()
 
+  const settings = [
+    { name: 'isMinifyEnabled', label: 'Minify', checked: isMinifyEnabled, setter: setIsMinifyEnabled },
+    { name: 'isWordWrapEnabled', label: 'Word wrap', checked: isWordWrapEnabled, setter: setIsWordWrapEnabled },
+    { name: 'isPreventThreadingEnabled', label: 'Prevent Threading', checked: isPreventThreadingEnabled, setter: setIsPreventThreadingEnabled },
+  ]
+
   const handleChange = (event: React.SyntheticEvent, checked: boolean) => {
     const target = event.target as HTMLInputElement
     const { name } = target
-    switch (name) {
-      case 'isMinifyEnabled':
-        setIsMinifyEnabled(checked)
-        break
-      case 'isWordWrapEnabled':
-        setIsWordWrapEnabled(checked)
-        break
-      case 'isPreventThreadingEnabled':
-        setIsPreventThreadingEnabled(checked)
-        break
-      default:
-        break
+
+    // Find the setting object from the settings array that matches the name of the checkbox being toggled
+    const setting = settings.find((setting) => setting.name === name)
+
+    if (setting) {
+      setting.setter(checked)
     }
 
     const API_URL = '/api/update-editor'
@@ -37,21 +37,24 @@ const InputMarkupSettings = () => {
     updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj)
   }
 
-  useEffect(() => {
-    // extracting the minify logic
+  const updateHtml = () => {
     if (isMinifyEnabled) {
       setOriginalHtml(html)
       setHtml(customMinifier(html))
     } else {
       setHtml(originalHtml)
     }
+  }
+
+  useEffect(() => {
+    updateHtml()
   }, [isMinifyEnabled])
 
   return (
     <>
-      <FormControlLabel control={<Checkbox name='isMinifyEnabled' color='primary' />} label='Minify' checked={isMinifyEnabled} onChange={handleChange} />
-      <FormControlLabel control={<Checkbox name='isWordWrapEnabled' color='primary' />} label='Word wrap' checked={isWordWrapEnabled} onChange={handleChange} />
-      <FormControlLabel control={<Checkbox name='isPreventThreadingEnabled' color='primary' />} label='Prevent Threading' checked={isPreventThreadingEnabled} onChange={handleChange} />
+      {settings.map(({ name, label, checked }) => (
+        <FormControlLabel key={name} control={<Checkbox name={name} color='primary' />} label={label} checked={checked} onChange={handleChange} />
+      ))}
     </>
   )
 }
