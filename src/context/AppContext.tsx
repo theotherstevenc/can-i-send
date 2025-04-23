@@ -1,24 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, useEffect, useState } from 'react'
 
-import { SenderSettings } from '../interfaces'
-
-interface AppContextProps {
-  isMinifyEnabled: boolean
-  setIsMinifyEnabled: (isMinifyEnabled: boolean) => void
-  isWordWrapEnabled: boolean
-  setIsWordWrapEnabled: (isWordWrapEnabled: boolean) => void
-  isPreventThreadingEnabled: boolean
-  setIsPreventThreadingEnabled: (isPreventThreadingEnabled: boolean) => void
-  activeEditor: string
-  setActiveEditor: (editor: string) => void
-  subject: string
-  setSubject: (subject: string) => void
-  emailAddresses: string[]
-  setEmailAddresses: (emailAddresses: string[]) => void
-  inputSenderSettings: SenderSettings
-  setInputSenderSettings: React.Dispatch<React.SetStateAction<SenderSettings>>
-}
+import { AppContextProps, SenderSettings } from '../interfaces'
 
 const AppContext = createContext<AppContextProps | undefined>(undefined)
 
@@ -98,8 +81,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 }
 
 export const useAppContext = (): AppContextProps => {
-  const context = useContext(AppContext) as AppContextProps
-  if (!context) {
+  const context = useContext(AppContext)
+  if (context === undefined) {
     throw new Error('useAppContext must be used within an AppProvider')
   }
   return context

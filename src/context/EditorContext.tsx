@@ -1,22 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, useState } from 'react'
-
-interface EditorContextProps {
-  html: string
-  setHtml: (html: string) => void
-  originalHtml: string
-  setOriginalHtml: (html: string) => void
-  text: string
-  setText: (text: string) => void
-  amp: string
-  setAmp: (amp: string) => void
-  workingFileID: string
-  setWorkingFileID: (id: string) => void
-  workingFileName: string
-  setWorkingFileName: (name: string) => void
-  triggerFetch: boolean
-  setTriggerFetch: React.Dispatch<React.SetStateAction<boolean>>
-}
+import { EditorContextProps } from '../interfaces'
 
 const EditorContext = createContext<EditorContextProps | undefined>(undefined)
 
@@ -53,8 +37,8 @@ export const EditorProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 }
 
 export const useEditorContext = (): EditorContextProps => {
-  const context = useContext(EditorContext) as EditorContextProps
-  if (!context) {
+  const context = useContext(EditorContext)
+  if (context === undefined) {
     throw new Error('useEditorContext must be used within an EditorProvider')
   }
   return context
