@@ -5,6 +5,7 @@ import { useAppContext } from '../context/AppContext'
 import { useEditorContext } from '../context/EditorContext'
 
 import { useRef } from 'react'
+import { createNewFile } from '../utils/createNewFile'
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -41,6 +42,7 @@ const InputFileUpload = () => {
       method: 'POST',
       body: formData,
     }
+
     const response = await fetch('/api/upload', options)
 
     if (!response.ok) {
@@ -53,42 +55,11 @@ const InputFileUpload = () => {
       throw new Error('Empty response body')
     }
 
-    //TODO: refactor this to a shared function
     const isBoilerplateApplied = true
     const fileName = file.name.replace(/\.[^/.]+$/, '')
-
     const boilerPlateMarkup = JSON.parse(text)
 
-    try {
-      const requestBody: { fileName: string; boilerPlateMarkup?: string } = { fileName }
-
-      if (isBoilerplateApplied) {
-        requestBody.boilerPlateMarkup = JSON.stringify(boilerPlateMarkup)
-      }
-
-      const response = await fetch('/api/create-new-file', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestBody),
-      })
-
-      const responseData = await response.json()
-
-      if (response.ok) {
-        setWorkingFileID(responseData.id)
-        setWorkingFileName(fileName)
-        setHtml(boilerPlateMarkup.html || '')
-        setText(boilerPlateMarkup.text || '')
-        setAmp(boilerPlateMarkup.amp || '')
-        setTriggerFetch((prev) => !prev)
-      } else {
-        console.error('Error creating file:', responseData)
-      }
-    } catch (error) {
-      console.error('Error:', error)
-    }
+    await createNewFile(fileName, boilerPlateMarkup, isBoilerplateApplied, setWorkingFileID, setWorkingFileName, setHtml, setText, setAmp, setTriggerFetch)
   }
 
   const handleButtonClick = () => {

@@ -6,6 +6,7 @@ import { boilerPlateMarkup } from '../utils/bolierpateMarkup'
 import { useEditorContext } from '../context/EditorContext'
 import { StyledIconButton } from './InputIconButton'
 import { useAppContext } from '../context/AppContext'
+import { createNewFile } from '../utils/createNewFile'
 
 const InputCreateNewFile = () => {
   const { setIsMinifyEnabled, setIsWordWrapEnabled } = useAppContext()
@@ -24,40 +25,12 @@ const InputCreateNewFile = () => {
   const handleConfirm = async () => {
     setIsMinifyEnabled(false)
     setIsWordWrapEnabled(false)
-    //TODO: refactor this to a shared function
+
     if (fileName.trim()) {
-      try {
-        const requestBody: { fileName: string; boilerPlateMarkup?: string } = { fileName }
-
-        if (isBoilerplateApplied) {
-          requestBody.boilerPlateMarkup = JSON.stringify(boilerPlateMarkup)
-        }
-
-        const response = await fetch('/api/create-new-file', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(requestBody),
-        })
-
-        const responseData = await response.json()
-
-        if (response.ok) {
-          setFileName('')
-          setWorkingFileID(responseData.id)
-          setWorkingFileName(fileName)
-          setHtml(boilerPlateMarkup.html || '')
-          setText(boilerPlateMarkup.text || '')
-          setAmp(boilerPlateMarkup.amp || '')
-          setTriggerFetch((prev) => !prev)
-
-          setOpen(false)
-        } else {
-          console.error('Error creating file:', responseData)
-        }
-      } catch (error) {
-        console.error('Error:', error)
+      const success = await createNewFile(fileName, boilerPlateMarkup, isBoilerplateApplied, setWorkingFileID, setWorkingFileName, setHtml, setText, setAmp, setTriggerFetch)
+      if (success) {
+        setFileName('')
+        handleClose()
       }
     }
   }

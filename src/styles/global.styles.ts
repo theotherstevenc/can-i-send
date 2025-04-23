@@ -8,5 +8,5 @@ export const workspacePreviewIframeStyles = {
 export const workspaceEditorStyles = {
   display: 'flex',
   flexDirection: 'column',
-  height: '90vh',
+  height: '100%',
 }

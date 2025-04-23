@@ -26,3 +26,37 @@ export interface WorkingFile {
   text: string
   amp: string
 }
+
+export interface EditorContextProps {
+  html: string
+  setHtml: (html: string) => void
+  originalHtml: string
+  setOriginalHtml: (html: string) => void
+  text: string
+  setText: (text: string) => void
+  amp: string
+  setAmp: (amp: string) => void
+  workingFileID: string
+  setWorkingFileID: (id: string) => void
+  workingFileName: string
+  setWorkingFileName: (name: string) => void
+  triggerFetch: boolean
+  setTriggerFetch: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export interface AppContextProps {
+  isMinifyEnabled: boolean
+  setIsMinifyEnabled: (isMinifyEnabled: boolean) => void
+  isWordWrapEnabled: boolean
+  setIsWordWrapEnabled: (isWordWrapEnabled: boolean) => void
+  isPreventThreadingEnabled: boolean
+  setIsPreventThreadingEnabled: (isPreventThreadingEnabled: boolean) => void
+  activeEditor: string
+  setActiveEditor: (editor: string) => void
+  subject: string
+  setSubject: (subject: string) => void
+  emailAddresses: string[]
+  setEmailAddresses: (emailAddresses: string[]) => void
+  inputSenderSettings: SenderSettings
+  setInputSenderSettings: React.Dispatch<React.SetStateAction<SenderSettings>>
+}
