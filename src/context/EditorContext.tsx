@@ -52,8 +52,8 @@ export const EditorProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   )
 }
 
-export const useEditorContext = () => {
-  const context = useContext(EditorContext)
+export const useEditorContext = (): EditorContextProps => {
+  const context = useContext(EditorContext) as EditorContextProps
   if (!context) {
     throw new Error('useEditorContext must be used within an EditorProvider')
   }
