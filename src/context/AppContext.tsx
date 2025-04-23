@@ -1,5 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from 'react'
+
 import { SenderSettings } from '../interfaces'
 
 interface AppContextProps {
@@ -16,7 +17,7 @@ interface AppContextProps {
   emailAddresses: string[]
   setEmailAddresses: (emailAddresses: string[]) => void
   inputSenderSettings: SenderSettings
-  setInputSenderSettings: (inputSenderSettings: SenderSettings) => void
+  setInputSenderSettings: Dispatch<SetStateAction<SenderSettings>>
 }
 
 const AppContext = createContext<AppContextProps | undefined>(undefined)
@@ -25,12 +26,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [isMinifyEnabled, setIsMinifyEnabled] = useState(false)
   const [isWordWrapEnabled, setIsWordWrapEnabled] = useState(false)
   const [isPreventThreadingEnabled, setIsPreventThreadingEnabled] = useState(false)
-
   const [activeEditor, setActiveEditor] = useState('')
-
   const [subject, setSubject] = useState<string>('')
   const [emailAddresses, setEmailAddresses] = useState<string[]>([])
-
   const [inputSenderSettings, setInputSenderSettings] = useState<SenderSettings>({
     host: '',
     port: '',
@@ -99,8 +97,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   )
 }
 
-export const useAppContext = () => {
-  const context = useContext(AppContext)
+export const useAppContext = (): AppContextProps => {
+  const context = useContext(AppContext) as AppContextProps
   if (!context) {
     throw new Error('useAppContext must be used within an AppProvider')
   }
