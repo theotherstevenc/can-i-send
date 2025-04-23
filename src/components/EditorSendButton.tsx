@@ -33,12 +33,12 @@ const EditorSendButton = () => {
 
   const emailData = createEmailData(emailAddresses, subject, html, text, amp, isPreventThreadingEnabled, inputSenderSettings)
 
-  const handleRequest = async (emailData: EmailData): Promise<Response> => {
-    const API_URL = '/api/send'
-    const HTTP_METHOD_POST = 'POST'
+  const API_URL = '/api/send'
+  const HTTP_METHOD = 'POST'
 
+  const handleRequest = async (emailData: EmailData): Promise<Response> => {
     const options: RequestInit = {
-      method: HTTP_METHOD_POST,
+      method: HTTP_METHOD,
       headers: {
         'Content-Type': 'application/json',
       },

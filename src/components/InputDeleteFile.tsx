@@ -18,18 +18,18 @@ const InputDeleteFile = () => {
   }
   const handleClose = () => setOpen(false)
 
+  const API_URL = '/api/update-editor'
+  const HTTP_METHOD = 'POST'
+  const COLLECTION = 'workingFiles'
+  const DOCUMENT = workingFileID
+  const ACTION = 'delete'
+
   const handleDeleteFile = async () => {
     if (!workingFileID) {
       return
     }
 
     try {
-      const API_URL = '/api/update-editor'
-      const HTTP_METHOD = 'POST'
-      const COLLECTION = 'workingFiles'
-      const DOCUMENT = workingFileID
-      const ACTION = 'delete'
-
       const response = await updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, undefined, setTriggerFetch)
 
       if (!response.success) {
