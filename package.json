@@ -1,8 +1,11 @@
 {
   "name": "can-i-send",
   "private": true,
-  "version": "4.1.13",
+  "version": "4.1.14",
   "type": "module",
+  "engines": {
+    "node": "^18"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
