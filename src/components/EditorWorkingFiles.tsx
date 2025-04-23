@@ -12,14 +12,14 @@ const EditorWorkingFiles = () => {
 
   const [files, setFiles] = useState<WorkingFile[]>([])
 
-  const fetchFiles = async () => {
-    const API_URL = '/api/get-collection'
-    const HTTP_METHOD_POST = 'POST'
-    const COLLECTION = 'workingFiles'
+  const API_URL = '/api/get-collection'
+  const HTTP_METHOD = 'POST'
+  const COLLECTION = 'workingFiles'
 
+  const fetchFiles = async () => {
     try {
       const response = await fetch(API_URL, {
-        method: HTTP_METHOD_POST,
+        method: HTTP_METHOD,
         headers: {
           'Content-Type': 'application/json',
         },

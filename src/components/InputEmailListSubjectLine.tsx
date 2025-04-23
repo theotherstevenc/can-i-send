@@ -5,15 +5,15 @@ import { TagsInput } from 'react-tag-input-component'
 import { useAppContext } from '../context/AppContext'
 import { updateStore } from '../utils/updateStore'
 
+const API_URL = '/api/update-editor'
+const HTTP_METHOD = 'POST'
+const COLLECTION = 'config'
+const DOCUMENT = 'editorSettings'
+const ACTION = 'update'
+
 const InputEmailListSubjectLine = () => {
   const [sizes, setSizes] = useState<number[]>([50, 50])
   const { subject, setSubject, emailAddresses, setEmailAddresses } = useAppContext()
-
-  const API_URL = '/api/update-editor'
-  const HTTP_METHOD = 'POST'
-  const COLLECTION = 'config'
-  const DOCUMENT = 'editorSettings'
-  const ACTION = 'update'
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSubject(e.target.value)

@@ -4,15 +4,16 @@ import { updateStore } from '../utils/updateStore'
 import { EditorType } from '../types/types'
 import { BUTTON_VARIANT_CONTAINED, BUTTON_VARIANT_OUTLINED } from '../utils/constants'
 
+const API_URL = '/api/update-editor'
+const HTTP_METHOD = 'POST'
+const COLLECTION = 'config'
+const DOCUMENT = 'editorSettings'
+const ACTION = 'update'
+
 const EditorSelectorButtons = () => {
   const { activeEditor, setActiveEditor } = useAppContext()
 
   const handleClick = (editorType: string) => {
-    const API_URL = '/api/update-editor'
-    const HTTP_METHOD = 'POST'
-    const COLLECTION = 'config'
-    const DOCUMENT = 'editorSettings'
-    const ACTION = 'update'
     const firestoreObj = { activeEditor: editorType }
 
     setActiveEditor(editorType)

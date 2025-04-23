@@ -19,17 +19,17 @@ const InputUpdateFiles = () => {
   }
   const handleClose = () => setOpen(false)
 
+  const API_URL = '/api/update-editor'
+  const HTTP_METHOD = 'POST'
+  const COLLECTION = 'workingFiles'
+  const DOCUMENT = workingFileID
+  const ACTION = 'update'
+  const firestoreObj = { fileName }
+
   const handleConfirm = async () => {
     if (!workingFileID) return
 
     if (fileName.trim()) {
-      const API_URL = '/api/update-editor'
-      const HTTP_METHOD = 'POST'
-      const COLLECTION = 'workingFiles'
-      const DOCUMENT = workingFileID
-      const ACTION = 'update'
-      const firestoreObj = { fileName }
-
       const response = await updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj, setTriggerFetch)
 
       if (response.success) {

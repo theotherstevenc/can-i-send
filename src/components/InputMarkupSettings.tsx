@@ -16,6 +16,12 @@ const InputMarkupSettings = () => {
     { name: 'isPreventThreadingEnabled', label: 'Prevent Threading', checked: isPreventThreadingEnabled, setter: setIsPreventThreadingEnabled },
   ]
 
+  const API_URL = '/api/update-editor'
+  const HTTP_METHOD = 'POST'
+  const COLLECTION = 'config'
+  const DOCUMENT = 'editorSettings'
+  const ACTION = 'update'
+
   const handleChange = (event: React.SyntheticEvent, checked: boolean) => {
     const target = event.target as HTMLInputElement
     const { name } = target
@@ -27,11 +33,6 @@ const InputMarkupSettings = () => {
       setting.setter(checked)
     }
 
-    const API_URL = '/api/update-editor'
-    const HTTP_METHOD = 'POST'
-    const COLLECTION = 'config'
-    const DOCUMENT = 'editorSettings'
-    const ACTION = 'update'
     const firestoreObj = { [name]: checked }
 
     updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj)

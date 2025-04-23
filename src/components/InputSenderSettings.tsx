@@ -4,14 +4,14 @@ import { useAppContext } from '../context/AppContext'
 import { encryptString } from '../utils/encryptString'
 import { updateStore } from '../utils/updateStore'
 
+const API_URL = '/api/update-editor'
+const HTTP_METHOD = 'POST'
+const COLLECTION = 'config'
+const DOCUMENT = 'editorSettings'
+const ACTION = 'update'
+
 const InputSenderSettings = () => {
   const { inputSenderSettings, setInputSenderSettings } = useAppContext()
-
-  const API_URL = '/api/update-editor'
-  const HTTP_METHOD = 'POST'
-  const COLLECTION = 'config'
-  const DOCUMENT = 'editorSettings'
-  const ACTION = 'update'
 
   const handleInputChange = (id: keyof SenderSettings, value: string) => {
     setInputSenderSettings((prev: SenderSettings) => ({

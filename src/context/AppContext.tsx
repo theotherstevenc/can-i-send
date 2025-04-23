@@ -20,16 +20,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     from: '',
   })
 
+  const API_URL = '/api/get-collection'
+  const HTTP_METHOD = 'POST'
+  const COLLECTION = 'config'
+  const DOCUMENT = 'editorSettings'
+
   useEffect(() => {
     const fetchFirestoreCollection = async () => {
-      const API_URL = '/api/get-collection'
-      const HTTP_METHOD_POST = 'POST'
-      const COLLECTION = 'config'
-      const DOCUMENT = 'editorSettings'
-
       try {
         const response = await fetch(API_URL, {
-          method: HTTP_METHOD_POST,
+          method: HTTP_METHOD,
           headers: {
             'Content-Type': 'application/json',
           },

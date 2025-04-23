@@ -48,19 +48,19 @@ const EditorWorkspacePreview = () => {
 
   const editors = getEditorsConfig(html, setHtml, text, setText, amp, setAmp)
 
+  const API_URL = '/api/update-editor'
+  const HTTP_METHOD = 'POST'
+  const COLLECTION = 'workingFiles'
+  const DOCUMENT = workingFileID
+  const ACTION = 'update'
+  const firestoreObj = { html, text, amp }
+
   useEffect(() => {
     if (!workingFileID) {
       return
     }
 
     const debounceSave = setTimeout(async () => {
-      const API_URL = '/api/update-editor'
-      const HTTP_METHOD = 'POST'
-      const COLLECTION = 'workingFiles'
-      const DOCUMENT = workingFileID
-      const ACTION = 'update'
-      const firestoreObj = { html, text, amp }
-
       await updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj, setTriggerFetch)
     }, DEBOUNCE_DELAY)
 
