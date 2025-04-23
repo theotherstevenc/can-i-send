@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import React, { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 
 import { SenderSettings } from '../interfaces'
 
@@ -17,7 +17,7 @@ interface AppContextProps {
   emailAddresses: string[]
   setEmailAddresses: (emailAddresses: string[]) => void
   inputSenderSettings: SenderSettings
-  setInputSenderSettings: Dispatch<SetStateAction<SenderSettings>>
+  setInputSenderSettings: React.Dispatch<React.SetStateAction<SenderSettings>>
 }
 
 const AppContext = createContext<AppContextProps | undefined>(undefined)
