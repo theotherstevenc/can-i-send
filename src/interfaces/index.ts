@@ -38,6 +38,8 @@ export interface EditorContextProps {
   setAmp: (amp: string) => void
   workingFileID: string
   setWorkingFileID: (id: string) => void
+  deletedWorkingFileID: string
+  setDeletedWorkingFileID: (id: string) => void
   workingFileName: string
   setWorkingFileName: (name: string) => void
   triggerFetch: boolean

@@ -10,6 +10,7 @@ export const EditorProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [text, setText] = useState<string>('')
   const [amp, setAmp] = useState<string>('')
   const [workingFileID, setWorkingFileID] = useState<string>('')
+  const [deletedWorkingFileID, setDeletedWorkingFileID] = useState<string>('')
   const [workingFileName, setWorkingFileName] = useState<string>('')
   const [triggerFetch, setTriggerFetch] = useState<boolean>(false)
 
@@ -26,6 +27,8 @@ export const EditorProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         setAmp,
         workingFileID,
         setWorkingFileID,
+        deletedWorkingFileID,
+        setDeletedWorkingFileID,
         workingFileName,
         setWorkingFileName,
         triggerFetch,
