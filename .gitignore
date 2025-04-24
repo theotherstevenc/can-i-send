@@ -24,5 +24,4 @@ dist-ssr
 *.sw?
 *.tsbuildinfo
 .env
-.npmrc
 build
