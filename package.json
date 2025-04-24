@@ -1,11 +1,11 @@
 {
   "name": "can-i-send",
   "private": true,
-  "version": "4.1.16",
+  "version": "4.1.17",
   "type": "module",
   "engines": {
-    "node": "18.x",
-    "npm": "9.x"
+    "node": "22.x",
+    "npm": "10.x"
   },
   "scripts": {
     "dev": "vite",
@@ -46,6 +46,7 @@
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^15.15.0",
     "nodemon": "^3.1.9",
+    "rollup": "3.28.1",
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.24.1",
     "vite": "^6.3.2"
