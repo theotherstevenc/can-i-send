@@ -11,7 +11,7 @@ import { workspaceEditorStyles, workspacePreviewIframeStyles } from '../styles/g
 import { updateStore } from '../utils/updateStore'
 
 const EditorWorkspacePreview = () => {
-  const { html, setHtml, text, setText, amp, setAmp, workingFileID, setTriggerFetch } = useEditorContext()
+  const { html, setHtml, text, setText, amp, setAmp, workingFileID, deletedWorkingFileID, setTriggerFetch } = useEditorContext()
   const { isMinifyEnabled, isWordWrapEnabled, activeEditor } = useAppContext()
   const [editorSizes, setEditorSizes] = useState<number[]>([50, 50])
 
@@ -56,7 +56,7 @@ const EditorWorkspacePreview = () => {
   const firestoreObj = { html, text, amp }
 
   useEffect(() => {
-    if (!workingFileID) {
+    if (!workingFileID || workingFileID === deletedWorkingFileID) {
       return
     }
 
