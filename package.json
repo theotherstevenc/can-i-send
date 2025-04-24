@@ -3,6 +3,9 @@
   "private": true,
   "version": "4.1.16",
   "type": "module",
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -45,8 +48,5 @@
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.24.1",
     "vite": "^6.2.0"
-  },
-  "overrides": {
-    "@rollup/rollup-linux-x64-gnu": "npm:@rollup/rollup@3.29.4"
   }
 }
