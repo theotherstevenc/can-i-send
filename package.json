@@ -50,7 +50,8 @@
     "typescript-eslint": "^8.24.1",
     "vite": "^6.3.2"
   },
-  "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "4.6.1"
+  "overrides": {
+    "rollup": "^3.20.0"
   }
+  
 }
