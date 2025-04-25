@@ -3,6 +3,7 @@ export const workspacePreviewIframeStyles = {
   height: '100%',
   border: 'none',
   overflow: 'hidden',
+  display: 'block',
 }
 
 export const workspaceEditorStyles = {
