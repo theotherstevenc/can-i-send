@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Box, Button } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { WorkingFile } from '../interfaces'
 import { useEditorContext } from '../context/EditorContext'
 
@@ -8,9 +8,7 @@ const BUTTON_VARIANT_OUTLINED = 'outlined'
 const BUTTON_VARIANT_CONTAINED = 'contained'
 
 const EditorWorkingFiles = () => {
-  const { setHtml, setText, setAmp, workingFileID, setWorkingFileID, setWorkingFileName, triggerFetch } = useEditorContext()
-
-  const [files, setFiles] = useState<WorkingFile[]>([])
+  const { setHtml, setText, setAmp, workingFileID, setWorkingFileID, setWorkingFileName, triggerFetch, files, setFiles } = useEditorContext()
 
   const API_URL = '/api/get-collection'
   const HTTP_METHOD = 'POST'

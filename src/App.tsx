@@ -18,7 +18,7 @@ function App() {
     <>
       <EditorProvider>
         <ThemeProvider theme={theme}>
-          <Box sx={{ display: 'flex', margin: '0 0 0.5rem 0' }}>
+          <Box sx={{ display: 'flex', gap: '0.175rem', margin: '0.5rem' }}>
             <Box>
               <InputMarkupSettings />
             </Box>
@@ -33,7 +33,7 @@ function App() {
             </Box>
           </Box>
 
-          <Box sx={{ display: 'flex', gap: '0.175rem', margin: '0 0 0.25rem 0' }}>
+          <Box sx={{ display: 'flex', gap: '0.175rem', margin: '0 0.5rem' }}>
             <EditorSelectorButtons />
             <InputEmailListSubjectLine />
             <EditorSendButton />

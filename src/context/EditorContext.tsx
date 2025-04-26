@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, useState } from 'react'
-import { EditorContextProps } from '../interfaces'
+import { EditorContextProps, WorkingFile } from '../interfaces'
 
 const EditorContext = createContext<EditorContextProps | undefined>(undefined)
 
@@ -13,6 +13,7 @@ export const EditorProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [deletedWorkingFileID, setDeletedWorkingFileID] = useState<string>('')
   const [workingFileName, setWorkingFileName] = useState<string>('')
   const [triggerFetch, setTriggerFetch] = useState<boolean>(false)
+  const [files, setFiles] = useState<WorkingFile[]>([])
 
   return (
     <EditorContext.Provider
@@ -33,6 +34,8 @@ export const EditorProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         setWorkingFileName,
         triggerFetch,
         setTriggerFetch,
+        files,
+        setFiles,
       }}>
       {children}
     </EditorContext.Provider>

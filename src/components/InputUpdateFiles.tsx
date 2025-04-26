@@ -7,12 +7,12 @@ import { StyledIconButton } from './InputIconButton'
 import { updateStore } from '../utils/updateStore'
 
 const InputUpdateFiles = () => {
-  const { workingFileID, workingFileName, setWorkingFileName, setTriggerFetch } = useEditorContext()
+  const { deletedWorkingFileID, workingFileID, workingFileName, setWorkingFileName, setTriggerFetch } = useEditorContext()
   const [open, setOpen] = useState(false)
   const [fileName, setFileName] = useState('')
 
   const handleOpen = () => {
-    if (!workingFileID) {
+    if (!workingFileID || workingFileID === deletedWorkingFileID) {
       return
     }
     setOpen(true)
