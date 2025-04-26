@@ -56,3 +56,7 @@ button:hover {
   flex-grow: 1;
 }
 
+.no-working-files, 
+.no-working-files .gutter {
+  display: none;
+}
