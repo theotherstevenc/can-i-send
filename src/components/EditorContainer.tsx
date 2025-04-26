@@ -7,6 +7,7 @@ import { useEditorContext } from '../context/EditorContext'
 const EditorContainer = () => {
   const { files } = useEditorContext()
   const isFilesEmpty = files.length === 0 || files.length === undefined
+  // check for undefined due to api response
 
   return (
     <Split className='split-component' sizes={[10, 90]}>
