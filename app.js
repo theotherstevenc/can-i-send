@@ -58,7 +58,7 @@ app.post('/api/get-collection', async (req, res) => {
       const snapshot = await settingsRef.get()
 
       if (snapshot.empty) {
-        return res.status(404).json({ error: 'No documents found' })
+        return res.status(200).json({ success: true, message: 'No projects' })
       }
       const documents = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
       return res.status(200).json(documents)
