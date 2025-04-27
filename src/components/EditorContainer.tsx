@@ -5,13 +5,12 @@ import EditorWorkingFiles from './EditorWorkingFiles'
 import { useEditorContext } from '../context/EditorContext'
 
 const EditorContainer = () => {
-  const { files } = useEditorContext()
-  const isFilesEmpty = files.length === 0 || files.length === undefined
-  // check for undefined due to api response
+  const { hideWorkingFiles } = useEditorContext()
 
+  const className = hideWorkingFiles ? 'no-working-files' : ''
   return (
     <Split className='split-component' sizes={[10, 90]}>
-      <Box className={isFilesEmpty ? 'no-working-files' : ''}>
+      <Box className={className}>
         <EditorWorkingFiles />
       </Box>
       <Box sx={{ flexGrow: 1 }}>
