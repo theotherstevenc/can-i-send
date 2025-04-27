@@ -14,7 +14,7 @@ const InputToggleWorkingFiles = () => {
   return (
     <>
       <Tooltip title='Show/Hide Working Files'>
-        <StyledIconButton onClick={handleOpen} aria-label='Rename Project'>
+        <StyledIconButton onClick={handleOpen} aria-label='Show/Hide Working Files'>
           {hideWorkingFiles ? <ToggleOffIcon /> : <ToggleOnIcon />}
         </StyledIconButton>
       </Tooltip>
