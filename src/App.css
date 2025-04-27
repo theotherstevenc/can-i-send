@@ -57,6 +57,6 @@ button:hover {
 }
 
 .no-working-files, 
-.no-working-files .gutter {
+.no-working-files + .gutter {
   display: none;
 }
