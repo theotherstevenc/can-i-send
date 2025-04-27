@@ -14,7 +14,7 @@ export const EditorProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [workingFileName, setWorkingFileName] = useState<string>('')
   const [triggerFetch, setTriggerFetch] = useState<boolean>(false)
   const [files, setFiles] = useState<WorkingFile[]>([])
-  const [hideWorkingFiles, setHideWorkingFiles] = useState<boolean>(false)
+  const [hideWorkingFiles, setHideWorkingFiles] = useState<boolean>(true)
 
   return (
     <EditorContext.Provider
