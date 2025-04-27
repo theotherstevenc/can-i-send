@@ -46,6 +46,8 @@ export interface EditorContextProps {
   setTriggerFetch: React.Dispatch<React.SetStateAction<boolean>>
   files: WorkingFile[]
   setFiles: React.Dispatch<React.SetStateAction<WorkingFile[]>>
+  hideWorkingFiles: boolean
+  setHideWorkingFiles: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export interface AppContextProps {
