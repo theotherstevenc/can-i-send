@@ -12,6 +12,7 @@ import EditorContainer from './components/EditorContainer'
 import { EditorProvider } from './context/EditorContext'
 import InputDeleteFile from './components/InputDeleteFile'
 import InputUpdateFiles from './components/InputUpdateFiles'
+import InputToggleWorkingFiles from './components/InputToggleWorkingFiles'
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
               <InputSenderSettings />
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.175rem' }}>
+              <InputToggleWorkingFiles />
               <InputUpdateFiles />
               <InputDeleteFile />
               <InputCreateNewFile />
