@@ -9,6 +9,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [isMinifyEnabled, setIsMinifyEnabled] = useState(false)
   const [isWordWrapEnabled, setIsWordWrapEnabled] = useState(false)
   const [isPreventThreadingEnabled, setIsPreventThreadingEnabled] = useState(false)
+  const [hideWorkingFiles, setHideWorkingFiles] = useState<boolean>(true)
   const [activeEditor, setActiveEditor] = useState('')
   const [subject, setSubject] = useState<string>('')
   const [emailAddresses, setEmailAddresses] = useState<string[]>([])
@@ -39,11 +40,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           throw new Error(`Error fetching Firestore collection: ${response.statusText}`)
         }
         const data = await response.json()
-        const { subject, host, port, username, pass, from, isMinifyEnabled, isWordWrapEnabled, isPreventThreadingEnabled, activeEditor, emailAddresses } = data
+        const { subject, host, port, username, pass, from, isMinifyEnabled, isWordWrapEnabled, isPreventThreadingEnabled, activeEditor, emailAddresses, hideWorkingFiles } = data
         setSubject(subject)
         setIsMinifyEnabled(isMinifyEnabled)
         setIsWordWrapEnabled(isWordWrapEnabled)
         setIsPreventThreadingEnabled(isPreventThreadingEnabled)
+        setHideWorkingFiles(hideWorkingFiles)
         setActiveEditor(activeEditor)
         setEmailAddresses(emailAddresses)
         setInputSenderSettings({ host, port, username, pass, from })
@@ -74,6 +76,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setEmailAddresses,
         inputSenderSettings,
         setInputSenderSettings,
+        hideWorkingFiles,
+        setHideWorkingFiles,
       }}>
       {children}
     </AppContext.Provider>
