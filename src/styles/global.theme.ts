@@ -1,6 +1,14 @@
 import { createTheme } from '@mui/material/styles'
 
+const focusVisible = {
+  outline: '2px solid #1976d2',
+  outlineOffset: '2px',
+}
+
 export const theme = createTheme({
+  colorSchemes: {
+    dark: true,
+  },
   components: {
     MuiTooltip: {
       defaultProps: {
@@ -14,10 +22,7 @@ export const theme = createTheme({
       },
       styleOverrides: {
         root: {
-          ':focus-visible': {
-            outline: '2px solid #1976d2',
-            outlineOffset: '2px',
-          },
+          focusVisible,
         },
       },
     },
@@ -27,10 +32,7 @@ export const theme = createTheme({
       },
       styleOverrides: {
         root: {
-          ':focus-visible': {
-            outline: '2px solid #1976d2',
-            outlineOffset: '2px',
-          },
+          focusVisible,
         },
       },
     },

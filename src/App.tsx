@@ -1,6 +1,5 @@
 import './App.css'
-import { Box, ThemeProvider } from '@mui/material'
-import { theme } from './styles/global.theme'
+import { Box, CssBaseline, ThemeProvider } from '@mui/material'
 import EditorSelectorButtons from './components/EditorSelectorButtons'
 import EditorSendButton from './components/EditorSendButton'
 import InputEmailListSubjectLine from './components/InputEmailListSubjectLine'
@@ -13,12 +12,14 @@ import { EditorProvider } from './context/EditorContext'
 import InputDeleteFile from './components/InputDeleteFile'
 import InputUpdateFiles from './components/InputUpdateFiles'
 import InputToggleWorkingFiles from './components/InputToggleWorkingFiles'
+import { theme } from './styles/global.theme'
 
 function App() {
   return (
     <>
       <EditorProvider>
         <ThemeProvider theme={theme}>
+          <CssBaseline />
           <Box sx={{ display: 'flex', gap: '0.175rem', margin: '0.5rem' }}>
             <Box>
               <InputMarkupSettings />
@@ -40,8 +41,8 @@ function App() {
             <InputEmailListSubjectLine />
             <EditorSendButton />
           </Box>
-          <EditorContainer />
         </ThemeProvider>
+        <EditorContainer />
       </EditorProvider>
     </>
   )
