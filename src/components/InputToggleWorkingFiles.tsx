@@ -14,7 +14,6 @@ const ACTION = 'update'
 
 const InputToggleWorkingFiles = () => {
   const { hideWorkingFiles, setHideWorkingFiles } = useAppContext()
-  console.log(hideWorkingFiles)
 
   const handleOpen = () => {
     const firestoreObj = { hideWorkingFiles: !hideWorkingFiles }
