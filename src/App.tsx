@@ -35,7 +35,7 @@ function App() {
             </Box>
           </Box>
 
-          <Box sx={{ display: 'flex', gap: '0.175rem', margin: '0 0.5rem' }}>
+          <Box sx={{ display: 'flex', gap: '0.175rem', margin: '0 0.5rem 0.5rem 0.5rem' }}>
             <EditorSelectorButtons />
             <InputEmailListSubjectLine />
             <EditorSendButton />

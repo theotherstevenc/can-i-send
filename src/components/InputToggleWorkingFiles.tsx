@@ -3,6 +3,7 @@ import ToggleOffIcon from '@mui/icons-material/ToggleOff'
 import ToggleOnIcon from '@mui/icons-material/ToggleOn'
 import { StyledIconButton } from './InputIconButton'
 import { useEditorContext } from '../context/EditorContext'
+import { TOGGLE_BUTTON_HIDE_PROJECTS, TOGGLE_BUTTON_SHOW_PROJECTS } from '../utils/constants'
 
 const InputToggleWorkingFiles = () => {
   const { hideWorkingFiles, setHideWorkingFiles } = useEditorContext()
@@ -11,10 +12,12 @@ const InputToggleWorkingFiles = () => {
     setHideWorkingFiles(!hideWorkingFiles)
   }
 
+  const handleToggleButtonLabel = hideWorkingFiles ? TOGGLE_BUTTON_SHOW_PROJECTS : TOGGLE_BUTTON_HIDE_PROJECTS
+
   return (
     <>
-      <Tooltip title='Show/Hide Working Files'>
-        <StyledIconButton onClick={handleOpen} aria-label='Show/Hide Working Files'>
+      <Tooltip title={handleToggleButtonLabel}>
+        <StyledIconButton onClick={handleOpen} aria-label={handleToggleButtonLabel}>
           {hideWorkingFiles ? <ToggleOffIcon /> : <ToggleOnIcon />}
         </StyledIconButton>
       </Tooltip>
