@@ -3,9 +3,7 @@ import { Box, Button } from '@mui/material'
 import { useEffect } from 'react'
 import { WorkingFile } from '../interfaces'
 import { useEditorContext } from '../context/EditorContext'
-
-const BUTTON_VARIANT_OUTLINED = 'outlined'
-const BUTTON_VARIANT_CONTAINED = 'contained'
+import { BUTTON_VARIANT_CONTAINED, BUTTON_VARIANT_OUTLINED } from '../utils/constants'
 
 const EditorWorkingFiles = () => {
   const { setHtml, setText, setAmp, workingFileID, setWorkingFileID, setWorkingFileName, triggerFetch, files, setFiles } = useEditorContext()
@@ -47,7 +45,7 @@ const EditorWorkingFiles = () => {
   }, [triggerFetch])
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, padding: 0.5 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, padding: 0.5 }} className='editor-working-files'>
       {files.length > 0 &&
         files.map((file) => (
           <Button variant={workingFileID === file.id ? BUTTON_VARIANT_CONTAINED : BUTTON_VARIANT_OUTLINED} onClick={() => handleClick(file)} key={file.id}>

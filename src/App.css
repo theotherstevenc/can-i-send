@@ -60,3 +60,24 @@ button:hover {
 .no-working-files + .gutter {
   display: none;
 }
+
+@media (prefers-color-scheme: dark) {
+  .gutter {
+    background-color: #333;
+  }
+
+  .gutter.gutter-horizontal {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
+  }
+
+  .rti--container, 
+  .rti--input {
+    background-color: unset !important;
+  }
+
+  .rti--tag {
+    background-color: #90caf9 !important;
+    color: #000;
+  }
+
+}

@@ -1,4 +1,4 @@
-import { IconButton, Tooltip } from '@mui/material'
+import { Tooltip } from '@mui/material'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import styled from '@emotion/styled'
 import { useAppContext } from '../context/AppContext'
@@ -6,6 +6,7 @@ import { useEditorContext } from '../context/EditorContext'
 
 import { useRef } from 'react'
 import { createNewFile } from '../utils/createNewFile'
+import { StyledIconButton } from './InputIconButton'
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -71,24 +72,12 @@ const InputFileUpload = () => {
   return (
     <>
       <Tooltip title='Upload + Convert EML' arrow enterDelay={1000}>
-        <IconButton
-          color='primary'
-          onClick={handleButtonClick}
-          aria-label='Upload + Convert EML'
-          sx={{
-            padding: '6px 16px', // Default padding for buttons
-            borderRadius: '4px', // Default border radius for buttons
-            backgroundColor: 'primary.main', // Default background color
-            color: 'white', // Default text color
-            '&:hover': {
-              backgroundColor: 'primary.dark', // Default hover color
-            },
-          }}>
+        <StyledIconButton onClick={handleButtonClick} aria-label='Upload + Convert EML'>
           <CloudUploadIcon />
-        </IconButton>
+        </StyledIconButton>
       </Tooltip>
 
-      <VisuallyHiddenInput ref={fileInputRef} type='file' accept='.eml' onChange={(e) => handleFileUpload(e)} />
+      <VisuallyHiddenInput ref={fileInputRef} type='file' accept='.eml' tabIndex={-1} onChange={(e) => handleFileUpload(e)} />
     </>
   )
 }

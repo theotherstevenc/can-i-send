@@ -9,10 +9,11 @@ import { useEditorContext } from '../context/EditorContext'
 
 import { workspaceEditorStyles, workspacePreviewIframeStyles } from '../styles/global.styles'
 import { updateStore } from '../utils/updateStore'
+import { EDITOR_DARK_MODE, EDITOR_LIGHT_MODE } from '../utils/constants'
 
 const EditorWorkspacePreview = () => {
   const { html, setHtml, text, setText, amp, setAmp, workingFileID, deletedWorkingFileID, setTriggerFetch } = useEditorContext()
-  const { isMinifyEnabled, isWordWrapEnabled, activeEditor } = useAppContext()
+  const { isDarkMode, isMinifyEnabled, isWordWrapEnabled, activeEditor } = useAppContext()
   const [editorSizes, setEditorSizes] = useState<number[]>([50, 50])
 
   const MOSAIC_OPTION_ON = 'on'
@@ -77,6 +78,7 @@ const EditorWorkspacePreview = () => {
             (editor) =>
               activeEditor === editor.type && (
                 <Editor
+                  theme={isDarkMode ? EDITOR_DARK_MODE : EDITOR_LIGHT_MODE}
                   key={editor.type}
                   defaultLanguage={editor.language}
                   defaultValue={editor.value}

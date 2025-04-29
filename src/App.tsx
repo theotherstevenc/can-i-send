@@ -1,6 +1,5 @@
 import './App.css'
-import { Box, ThemeProvider } from '@mui/material'
-import { theme } from './styles/global.theme'
+import { Box, CssBaseline, ThemeProvider, useMediaQuery } from '@mui/material'
 import EditorSelectorButtons from './components/EditorSelectorButtons'
 import EditorSendButton from './components/EditorSendButton'
 import InputEmailListSubjectLine from './components/InputEmailListSubjectLine'
@@ -13,12 +12,17 @@ import { EditorProvider } from './context/EditorContext'
 import InputDeleteFile from './components/InputDeleteFile'
 import InputUpdateFiles from './components/InputUpdateFiles'
 import InputToggleWorkingFiles from './components/InputToggleWorkingFiles'
+import { lightTheme, darkTheme } from './styles/global.theme'
+import InputToggleEditorTheme from './components/InputToggleEditorTheme'
 
 function App() {
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
+
   return (
     <>
       <EditorProvider>
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={prefersDarkMode ? darkTheme : lightTheme}>
+          <CssBaseline />
           <Box sx={{ display: 'flex', gap: '0.175rem', margin: '0.5rem' }}>
             <Box>
               <InputMarkupSettings />
@@ -27,6 +31,7 @@ function App() {
               <InputSenderSettings />
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.175rem' }}>
+              <InputToggleEditorTheme />
               <InputToggleWorkingFiles />
               <InputUpdateFiles />
               <InputDeleteFile />
