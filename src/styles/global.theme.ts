@@ -5,36 +5,45 @@ const focusVisible = {
   outlineOffset: '2px',
 }
 
-export const theme = createTheme({
-  colorSchemes: {
-    dark: true,
+const sharedComponentProps = {
+  MuiTooltip: {
+    defaultProps: {
+      arrow: true,
+      enterDelay: 1000,
+    },
   },
-  components: {
-    MuiTooltip: {
-      defaultProps: {
-        arrow: true,
-        enterDelay: 1000,
-      },
+  MuiIconButton: {
+    defaultProps: {
+      disableRipple: true,
     },
-    MuiIconButton: {
-      defaultProps: {
-        disableRipple: true,
-      },
-      styleOverrides: {
-        root: {
-          focusVisible,
-        },
-      },
-    },
-    MuiButton: {
-      defaultProps: {
-        disableRipple: true,
-      },
-      styleOverrides: {
-        root: {
-          focusVisible,
-        },
+    styleOverrides: {
+      root: {
+        ':focus-visible': focusVisible,
       },
     },
   },
+  MuiButton: {
+    defaultProps: {
+      disableRipple: true,
+    },
+    styleOverrides: {
+      root: {
+        ':focus-visible': focusVisible,
+      },
+    },
+  },
+}
+
+export const lightTheme = createTheme({
+  palette: {
+    mode: 'light',
+  },
+  components: sharedComponentProps,
+})
+
+export const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+  components: sharedComponentProps,
 })
