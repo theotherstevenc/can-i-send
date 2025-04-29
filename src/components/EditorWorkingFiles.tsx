@@ -3,9 +3,7 @@ import { Box, Button } from '@mui/material'
 import { useEffect } from 'react'
 import { WorkingFile } from '../interfaces'
 import { useEditorContext } from '../context/EditorContext'
-
-const BUTTON_VARIANT_OUTLINED = 'outlined'
-const BUTTON_VARIANT_CONTAINED = 'contained'
+import { BUTTON_VARIANT_CONTAINED, BUTTON_VARIANT_OUTLINED } from '../utils/constants'
 
 const EditorWorkingFiles = () => {
   const { setHtml, setText, setAmp, workingFileID, setWorkingFileID, setWorkingFileName, triggerFetch, files, setFiles } = useEditorContext()
