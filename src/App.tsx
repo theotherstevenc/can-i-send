@@ -13,6 +13,7 @@ import InputDeleteFile from './components/InputDeleteFile'
 import InputUpdateFiles from './components/InputUpdateFiles'
 import InputToggleWorkingFiles from './components/InputToggleWorkingFiles'
 import { lightTheme, darkTheme } from './styles/global.theme'
+import InputToggleEditorTheme from './components/InputToggleEditorTheme'
 
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
@@ -30,6 +31,7 @@ function App() {
               <InputSenderSettings />
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.175rem' }}>
+              <InputToggleEditorTheme />
               <InputToggleWorkingFiles />
               <InputUpdateFiles />
               <InputDeleteFile />

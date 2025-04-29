@@ -65,4 +65,6 @@ export interface AppContextProps {
   setInputSenderSettings: React.Dispatch<React.SetStateAction<SenderSettings>>
   hideWorkingFiles: boolean
   setHideWorkingFiles: React.Dispatch<React.SetStateAction<boolean>>
+  isDarkMode: boolean
+  setIsDarkMode: React.Dispatch<React.SetStateAction<boolean>>
 }

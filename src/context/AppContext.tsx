@@ -10,6 +10,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [isWordWrapEnabled, setIsWordWrapEnabled] = useState(false)
   const [isPreventThreadingEnabled, setIsPreventThreadingEnabled] = useState(false)
   const [hideWorkingFiles, setHideWorkingFiles] = useState<boolean>(true)
+  const [isDarkMode, setIsDarkMode] = useState(false)
   const [activeEditor, setActiveEditor] = useState('')
   const [subject, setSubject] = useState<string>('')
   const [emailAddresses, setEmailAddresses] = useState<string[]>([])
@@ -78,6 +79,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setInputSenderSettings,
         hideWorkingFiles,
         setHideWorkingFiles,
+        isDarkMode,
+        setIsDarkMode,
       }}>
       {children}
     </AppContext.Provider>

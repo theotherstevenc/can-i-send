@@ -37,6 +37,9 @@ const sharedComponentProps = {
 export const lightTheme = createTheme({
   palette: {
     mode: 'light',
+    background: {
+      default: '#f5f5f5',
+    },
   },
   components: sharedComponentProps,
 })
@@ -44,6 +47,9 @@ export const lightTheme = createTheme({
 export const darkTheme = createTheme({
   palette: {
     mode: 'dark',
+    background: {
+      default: '#121212',
+    },
   },
   components: sharedComponentProps,
 })
