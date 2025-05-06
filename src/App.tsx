@@ -14,6 +14,7 @@ import InputUpdateFiles from './components/InputUpdateFiles'
 import InputToggleWorkingFiles from './components/InputToggleWorkingFiles'
 import { lightTheme, darkTheme } from './styles/global.theme'
 import InputToggleEditorTheme from './components/InputToggleEditorTheme'
+import { editorActionsStyles, inputActionsStyles, inputConfigStyles, inputSenderSettingsStyles } from './styles/global.styles'
 
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
@@ -23,14 +24,14 @@ function App() {
       <EditorProvider>
         <ThemeProvider theme={prefersDarkMode ? darkTheme : lightTheme}>
           <CssBaseline />
-          <Box sx={{ display: 'flex', gap: '0.175rem', margin: '0.5rem' }}>
+          <Box sx={inputConfigStyles}>
             <Box>
               <InputMarkupSettings />
             </Box>
-            <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', gap: '0.175rem', flexWrap: 'wrap' }}>
+            <Box sx={inputSenderSettingsStyles}>
               <InputSenderSettings />
             </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.175rem' }}>
+            <Box sx={inputActionsStyles}>
               <InputToggleEditorTheme />
               <InputToggleWorkingFiles />
               <InputUpdateFiles />
@@ -40,7 +41,7 @@ function App() {
             </Box>
           </Box>
 
-          <Box sx={{ display: 'flex', gap: '0.175rem', margin: '0 0.5rem 0.5rem 0.5rem' }}>
+          <Box sx={editorActionsStyles}>
             <EditorSelectorButtons />
             <InputEmailListSubjectLine />
             <EditorSendButton />
