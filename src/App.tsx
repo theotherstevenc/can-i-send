@@ -1,5 +1,5 @@
 import './App.css'
-import { Box, CssBaseline, ThemeProvider, useMediaQuery } from '@mui/material'
+import { Box, CssBaseline, ThemeProvider } from '@mui/material'
 import EditorSelectorButtons from './components/EditorSelectorButtons'
 import EditorSendButton from './components/EditorSendButton'
 import InputEmailListSubjectLine from './components/InputEmailListSubjectLine'
@@ -12,17 +12,17 @@ import { EditorProvider } from './context/EditorContext'
 import InputDeleteFile from './components/InputDeleteFile'
 import InputUpdateFiles from './components/InputUpdateFiles'
 import InputToggleWorkingFiles from './components/InputToggleWorkingFiles'
-import { lightTheme, darkTheme } from './styles/global.theme'
 import InputToggleEditorTheme from './components/InputToggleEditorTheme'
 import { editorActionsStyles, inputActionsStyles, inputConfigStyles, inputSenderSettingsStyles } from './styles/global.styles'
+import usePreferredTheme from './utils/usePreferredTheme'
 
 function App() {
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
+  const theme = usePreferredTheme()
 
   return (
     <>
       <EditorProvider>
-        <ThemeProvider theme={prefersDarkMode ? darkTheme : lightTheme}>
+        <ThemeProvider theme={theme}>
           <CssBaseline />
           <Box sx={inputConfigStyles}>
             <Box>
