@@ -9,20 +9,16 @@ import { useEditorContext } from '../context/EditorContext'
 
 import { workspaceEditorStyles, workspacePreviewIframeStyles } from '../styles/global.styles'
 import { updateStore } from '../utils/updateStore'
-import { EDITOR_DARK_MODE, EDITOR_LIGHT_MODE } from '../utils/constants'
+import { EDITOR_DARK_MODE, EDITOR_LIGHT_MODE, EDITOR_OPTION_AMP, EDITOR_OPTION_HTML, EDITOR_OPTION_TEXT, MOSAIC_OPTION_OFF, MOSAIC_OPTION_ON } from '../utils/constants'
 
 const EditorWorkspacePreview = () => {
   const { html, setHtml, text, setText, amp, setAmp, workingFileID, deletedWorkingFileID, setTriggerFetch } = useEditorContext()
   const { isDarkMode, isMinifyEnabled, isWordWrapEnabled, activeEditor } = useAppContext()
   const [editorSizes, setEditorSizes] = useState<number[]>([50, 50])
 
-  const MOSAIC_OPTION_ON = 'on'
-  const MOSAIC_OPTION_OFF = 'off'
-  const DEBOUNCE_DELAY = 2000
-
   const getEditorsConfig = (html: string, setHtml: (html: string) => void, text: string, setText: (text: string) => void, amp: string, setAmp: (amp: string) => void) => [
     {
-      type: 'html',
+      type: EDITOR_OPTION_HTML,
       language: 'html',
       value: html,
       onChange: (newValue: string | undefined) => {
@@ -30,7 +26,7 @@ const EditorWorkspacePreview = () => {
       },
     },
     {
-      type: 'text',
+      type: EDITOR_OPTION_TEXT,
       language: 'text',
       value: text,
       onChange: (newValue: string | undefined) => {
@@ -38,7 +34,7 @@ const EditorWorkspacePreview = () => {
       },
     },
     {
-      type: 'amp',
+      type: EDITOR_OPTION_AMP,
       language: 'html',
       value: amp,
       onChange: (newValue: string | undefined) => {
@@ -63,7 +59,7 @@ const EditorWorkspacePreview = () => {
 
     const debounceSave = setTimeout(async () => {
       await updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj, setTriggerFetch)
-    }, DEBOUNCE_DELAY)
+    }, 2000)
 
     return () => {
       clearTimeout(debounceSave)
