@@ -2,7 +2,7 @@ import { Tooltip } from '@mui/material'
 import ToggleOffIcon from '@mui/icons-material/ToggleOff'
 import ToggleOnIcon from '@mui/icons-material/ToggleOn'
 import { StyledIconButton } from './InputIconButton'
-import { TOGGLE_BUTTON_HIDE_PROJECTS, TOGGLE_BUTTON_SHOW_PROJECTS } from '../utils/constants'
+import { TOGGLE_BTN_HIDE_PROJECTS, TOGGLE_BTN_SHOW_PROJECTS } from '../utils/constants'
 import { useAppContext } from '../context/AppContext'
 import { updateStore } from '../utils/updateStore'
 
@@ -21,7 +21,7 @@ const InputToggleWorkingFiles = () => {
     updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj)
   }
 
-  const handleToggleButtonLabel = hideWorkingFiles ? TOGGLE_BUTTON_SHOW_PROJECTS : TOGGLE_BUTTON_HIDE_PROJECTS
+  const handleToggleButtonLabel = hideWorkingFiles ? TOGGLE_BTN_SHOW_PROJECTS : TOGGLE_BTN_HIDE_PROJECTS
 
   return (
     <>
