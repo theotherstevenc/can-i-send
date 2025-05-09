@@ -5,6 +5,16 @@ import { useState } from 'react'
 import { useEditorContext } from '../context/EditorContext'
 import { StyledIconButton } from './InputIconButton'
 import { updateStore } from '../utils/updateStore'
+import {
+  BTN_LABEL_CANCEL,
+  BTN_LABEL_CONFIRM,
+  BTN_LABEL_DELETE,
+  BTN_LABEL_DELETE_CONFIRM,
+  BTN_LABEL_DELETE_ERROR,
+  BTN_LABEL_DELETE_FAILURE,
+  DIALOG_CANNOT_BE_UNDONE,
+  LABEL_CLOSE,
+} from '../utils/constants'
 
 const InputDeleteFile = () => {
   const { deletedWorkingFileID, workingFileID, setHtml, setText, setAmp, workingFileName, setDeletedWorkingFileID, setTriggerFetch } = useEditorContext()
@@ -33,7 +43,7 @@ const InputDeleteFile = () => {
       const response = await updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, undefined, setTriggerFetch)
 
       if (!response.success) {
-        throw new Error('Failed to delete file')
+        throw new Error(BTN_LABEL_DELETE_FAILURE)
       }
 
       setHtml('')
@@ -41,7 +51,7 @@ const InputDeleteFile = () => {
       setAmp('')
       setDeletedWorkingFileID(workingFileID)
     } catch (error) {
-      console.error('Error deleting file:', error)
+      console.error(BTN_LABEL_DELETE_ERROR, error)
     } finally {
       handleClose()
     }
@@ -49,17 +59,17 @@ const InputDeleteFile = () => {
 
   return (
     <>
-      <Tooltip title='Delete Project'>
-        <StyledIconButton onClick={handleOpen} aria-label='Delete Project'>
+      <Tooltip title={BTN_LABEL_DELETE}>
+        <StyledIconButton onClick={handleOpen} aria-label={BTN_LABEL_DELETE}>
           <DeleteIcon />
         </StyledIconButton>
       </Tooltip>
 
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>
-          Confirm Delete
+          {BTN_LABEL_DELETE_CONFIRM}
           <IconButton
-            aria-label='close'
+            aria-label={LABEL_CLOSE}
             onClick={handleClose}
             sx={{
               position: 'absolute',
@@ -71,15 +81,15 @@ const InputDeleteFile = () => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to delete <strong>{workingFileName}</strong>? This action cannot be undone.
+            <strong>{workingFileName}</strong> - {DIALOG_CANNOT_BE_UNDONE}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color='secondary'>
-            Cancel
+            {BTN_LABEL_CANCEL}
           </Button>
           <Button onClick={handleDeleteFile} color='primary' autoFocus>
-            Confirm
+            {BTN_LABEL_CONFIRM}
           </Button>
         </DialogActions>
       </Dialog>
