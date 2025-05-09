@@ -51,6 +51,7 @@ const EditorWorkspacePreview = () => {
   const DOCUMENT = workingFileID
   const ACTION = 'update'
   const firestoreObj = { html, text, amp }
+  const DEBOUNCE_DELAY = 2000
 
   useEffect(() => {
     if (!workingFileID || workingFileID === deletedWorkingFileID) {
@@ -59,7 +60,7 @@ const EditorWorkspacePreview = () => {
 
     const debounceSave = setTimeout(async () => {
       await updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj, setTriggerFetch)
-    }, 2000)
+    }, DEBOUNCE_DELAY)
 
     return () => {
       clearTimeout(debounceSave)
