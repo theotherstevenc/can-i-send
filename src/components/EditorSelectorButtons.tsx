@@ -2,7 +2,7 @@ import { Button } from '@mui/material'
 import { useAppContext } from '../context/AppContext'
 import { updateStore } from '../utils/updateStore'
 import { EditorType } from '../types/types'
-import { BUTTON_VARIANT_CONTAINED, BUTTON_VARIANT_OUTLINED } from '../utils/constants'
+import { BTN_VARIANT_CONTAINED, BTN_VARIANT_OUTLINED, EDITOR_OPTION_AMP, EDITOR_OPTION_HTML, EDITOR_OPTION_TEXT } from '../utils/constants'
 
 const API_URL = '/api/update-editor'
 const HTTP_METHOD = 'POST'
@@ -20,14 +20,14 @@ const EditorSelectorButtons = () => {
     updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj)
   }
 
-  const editorTypes: EditorType[] = ['html', 'text', 'amp']
+  const editorOptions: EditorType[] = [EDITOR_OPTION_HTML, EDITOR_OPTION_TEXT, EDITOR_OPTION_AMP]
 
   return (
     <>
-      {editorTypes.map((editorType) => {
+      {editorOptions.map((editorOption) => {
         return (
-          <Button key={editorType} variant={activeEditor === editorType ? BUTTON_VARIANT_CONTAINED : BUTTON_VARIANT_OUTLINED} onClick={() => handleClick(editorType)}>
-            {editorType.toUpperCase()}
+          <Button key={editorOption} variant={activeEditor === editorOption ? BTN_VARIANT_CONTAINED : BTN_VARIANT_OUTLINED} onClick={() => handleClick(editorOption)}>
+            {editorOption.toUpperCase()}
           </Button>
         )
       })}
