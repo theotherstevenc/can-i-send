@@ -5,15 +5,16 @@ import { useEditorContext } from '../context/EditorContext'
 import { useEffect } from 'react'
 import { customMinifier } from '../utils/customMinifier'
 import { updateStore } from '../utils/updateStore'
+import { SETTINGS_CHECKBOX_LABEL_MINIFY, SETTINGS_CHECKBOX_LABEL_PREVENT_THREADING, SETTINGS_CHECKBOX_LABEL_WORD_WRAP } from '../utils/constants'
 
 const InputMarkupSettings = () => {
   const { setHtml, html, setOriginalHtml, originalHtml } = useEditorContext()
   const { isMinifyEnabled, setIsMinifyEnabled, isWordWrapEnabled, setIsWordWrapEnabled, isPreventThreadingEnabled, setIsPreventThreadingEnabled } = useAppContext()
 
   const settings = [
-    { name: 'isMinifyEnabled', label: 'Minify', checked: isMinifyEnabled, setter: setIsMinifyEnabled },
-    { name: 'isWordWrapEnabled', label: 'Word wrap', checked: isWordWrapEnabled, setter: setIsWordWrapEnabled },
-    { name: 'isPreventThreadingEnabled', label: 'Prevent Threading', checked: isPreventThreadingEnabled, setter: setIsPreventThreadingEnabled },
+    { name: 'isMinifyEnabled', label: SETTINGS_CHECKBOX_LABEL_MINIFY, checked: isMinifyEnabled, setter: setIsMinifyEnabled },
+    { name: 'isWordWrapEnabled', label: SETTINGS_CHECKBOX_LABEL_WORD_WRAP, checked: isWordWrapEnabled, setter: setIsWordWrapEnabled },
+    { name: 'isPreventThreadingEnabled', label: SETTINGS_CHECKBOX_LABEL_PREVENT_THREADING, checked: isPreventThreadingEnabled, setter: setIsPreventThreadingEnabled },
   ]
 
   const API_URL = '/api/update-editor'

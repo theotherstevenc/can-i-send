@@ -7,6 +7,7 @@ import { useEditorContext } from '../context/EditorContext'
 import { StyledIconButton } from './InputIconButton'
 import { useAppContext } from '../context/AppContext'
 import { createNewFile } from '../utils/createNewFile'
+import { BTN_LABEL_CANCEL, BTN_LABEL_CREATE, BTN_LABEL_CREATE_CHECKBOX, BTN_LABEL_CREATE_DIALOG, BTN_LABEL_OK, LABEL_CLOSE } from '../utils/constants'
 
 const InputCreateNewFile = () => {
   const { setIsMinifyEnabled, setIsWordWrapEnabled } = useAppContext()
@@ -37,17 +38,17 @@ const InputCreateNewFile = () => {
 
   return (
     <>
-      <Tooltip title='Create New Project'>
-        <StyledIconButton onClick={handleOpen} aria-label='Create New Project'>
+      <Tooltip title={BTN_LABEL_CREATE}>
+        <StyledIconButton onClick={handleOpen} aria-label={BTN_LABEL_CREATE}>
           <AddIcon />
         </StyledIconButton>
       </Tooltip>
 
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth='sm'>
         <DialogTitle>
-          Create New Project
+          {BTN_LABEL_CREATE}
           <IconButton
-            aria-label='close'
+            aria-label={LABEL_CLOSE}
             onClick={handleClose}
             sx={{
               position: 'absolute',
@@ -61,7 +62,7 @@ const InputCreateNewFile = () => {
           <TextField
             autoFocus
             margin='dense'
-            label='Project Name'
+            label={BTN_LABEL_CREATE_DIALOG}
             type='text'
             fullWidth
             value={fileName}
@@ -73,19 +74,14 @@ const InputCreateNewFile = () => {
               }
             }}
           />
-          <FormControlLabel
-            control={<Checkbox name='isBoilerplateApplied' color='primary' />}
-            label='Apply placeholder boilerplates for html, text, amp'
-            checked={isBoilerplateApplied}
-            onChange={handleChange}
-          />
+          <FormControlLabel control={<Checkbox name='isBoilerplateApplied' color='primary' />} label={BTN_LABEL_CREATE_CHECKBOX} checked={isBoilerplateApplied} onChange={handleChange} />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color='secondary'>
-            Cancel
+            {BTN_LABEL_CANCEL}
           </Button>
           <Button onClick={handleConfirm} color='primary'>
-            OK
+            {BTN_LABEL_OK}
           </Button>
         </DialogActions>
       </Dialog>

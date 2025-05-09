@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { useEditorContext } from '../context/EditorContext'
 import { StyledIconButton } from './InputIconButton'
 import { updateStore } from '../utils/updateStore'
+import { BTN_LABEL_CANCEL, BTN_LABEL_OK, BTN_LABEL_UPDATE, BTN_LABEL_UPDATE_DIALOG, BTN_LABEL_UPDATE_FAILURE, LABEL_CLOSE } from '../utils/constants'
 
 const InputUpdateFiles = () => {
   const { deletedWorkingFileID, workingFileID, workingFileName, setWorkingFileName, setTriggerFetch } = useEditorContext()
@@ -36,24 +37,24 @@ const InputUpdateFiles = () => {
         setFileName('')
         setOpen(false)
       } else {
-        console.error('Failed to update file:', response.message)
+        console.error(BTN_LABEL_UPDATE_FAILURE + response.message)
       }
     }
   }
 
   return (
     <>
-      <Tooltip title='Rename Project'>
-        <StyledIconButton onClick={handleOpen} aria-label='Rename Project'>
+      <Tooltip title={BTN_LABEL_UPDATE}>
+        <StyledIconButton onClick={handleOpen} aria-label={BTN_LABEL_UPDATE}>
           <EditIcon />
         </StyledIconButton>
       </Tooltip>
 
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth='sm'>
         <DialogTitle>
-          Rename Project
+          {BTN_LABEL_UPDATE}
           <IconButton
-            aria-label='close'
+            aria-label={LABEL_CLOSE}
             onClick={handleClose}
             sx={{
               position: 'absolute',
@@ -67,7 +68,7 @@ const InputUpdateFiles = () => {
           <TextField
             autoFocus
             margin='dense'
-            label='Project Name'
+            label={BTN_LABEL_UPDATE_DIALOG}
             type='text'
             fullWidth
             value={fileName || workingFileName}
@@ -85,10 +86,10 @@ const InputUpdateFiles = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color='secondary'>
-            Cancel
+            {BTN_LABEL_CANCEL}
           </Button>
           <Button onClick={handleConfirm} color='primary'>
-            OK
+            {BTN_LABEL_OK}
           </Button>
         </DialogActions>
       </Dialog>

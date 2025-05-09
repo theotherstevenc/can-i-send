@@ -7,6 +7,7 @@ import { useEditorContext } from '../context/EditorContext'
 import { useRef } from 'react'
 import { createNewFile } from '../utils/createNewFile'
 import { StyledIconButton } from './InputIconButton'
+import { BTN_UPLOAD_INVALID_FILE, BTN_UPLOAD_LABEL, HTTP_STATUS_ERROR } from '../utils/constants'
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -32,7 +33,7 @@ const InputFileUpload = () => {
     const file = e.target.files?.[0]
 
     if (!file) {
-      console.error('No file selected or file is invalid.')
+      console.error(BTN_UPLOAD_INVALID_FILE)
       return
     }
 
@@ -47,7 +48,7 @@ const InputFileUpload = () => {
     const response = await fetch('/api/upload', options)
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
+      throw new Error(HTTP_STATUS_ERROR + response.status)
     }
 
     const text = await response.text()
@@ -71,8 +72,8 @@ const InputFileUpload = () => {
 
   return (
     <>
-      <Tooltip title='Upload + Convert EML' arrow enterDelay={1000}>
-        <StyledIconButton onClick={handleButtonClick} aria-label='Upload + Convert EML'>
+      <Tooltip title={BTN_UPLOAD_LABEL} arrow enterDelay={1000}>
+        <StyledIconButton onClick={handleButtonClick} aria-label={BTN_UPLOAD_LABEL}>
           <CloudUploadIcon />
         </StyledIconButton>
       </Tooltip>
