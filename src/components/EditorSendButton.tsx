@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { EmailData, SenderSettings } from '../interfaces'
 import { getCurrentDateTime } from '../utils/getCurrentDateTime'
 import { useEditorContext } from '../context/EditorContext'
+import { BTN_LABEL_SEND, FETCH_ERROR, SEND_ALERT_FAILURE, SEND_ALERT_SUCCESS } from '../utils/constants'
 
 const EditorSendButton = () => {
   const { html, text, amp } = useEditorContext()
@@ -50,7 +51,7 @@ const EditorSendButton = () => {
 
   const handleResponse = (response: Response) => {
     if (!response.ok || response.status !== 200) {
-      throw new Error(`Error: ${response.statusText}`)
+      throw new Error(FETCH_ERROR + response.statusText)
     }
     setIsSendSuccessful(true)
   }
@@ -63,7 +64,7 @@ const EditorSendButton = () => {
       const response = await handleRequest(emailData)
       handleResponse(response)
     } catch (error) {
-      console.error('An error occurred:', error)
+      console.error(FETCH_ERROR + error)
       setIsSendSuccessful(false)
     } finally {
       setOpenBackdrop(false)
@@ -78,7 +79,7 @@ const EditorSendButton = () => {
   return (
     <>
       <Button variant='contained' color='primary' onClick={handleClick}>
-        Send Email
+        {BTN_LABEL_SEND}
       </Button>
 
       <Backdrop sx={(theme) => ({ color: '#ffffff', zIndex: theme.zIndex.drawer + 1 })} open={openBackdrop}>
@@ -87,7 +88,7 @@ const EditorSendButton = () => {
 
       <Snackbar open={open} autoHideDuration={2500} onClose={handleClose}>
         <Alert severity={isSendSuccessful ? 'success' : 'error'} variant='standard' sx={{ width: '100%' }}>
-          {isSendSuccessful ? 'Email sent successfully!' : 'Email was not sent successfully'}
+          {isSendSuccessful ? SEND_ALERT_SUCCESS : SEND_ALERT_FAILURE}
         </Alert>
       </Snackbar>
     </>
