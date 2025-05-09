@@ -3,6 +3,7 @@ import { SenderSettings } from '../interfaces'
 import { useAppContext } from '../context/AppContext'
 import { encryptString } from '../utils/encryptString'
 import { updateStore } from '../utils/updateStore'
+import { SETTINGS_FROM, SETTINGS_HOST, SETTINGS_PASS, SETTINGS_PORT, SETTINGS_USER } from '../utils/constants'
 
 const API_URL = '/api/update-editor'
 const HTTP_METHOD = 'POST'
@@ -36,11 +37,11 @@ const InputSenderSettings = () => {
   }
 
   const textFields = [
-    { id: 'host', label: 'host', type: 'text', sx: {} },
-    { id: 'port', label: 'port', type: 'text', sx: { width: '70px' } },
-    { id: 'username', label: 'username', type: 'text', sx: {} },
-    { id: 'pass', label: 'password', type: 'password', sx: {} },
-    { id: 'from', label: 'from', type: 'text', sx: {} },
+    { id: SETTINGS_HOST, type: 'text', sx: {} },
+    { id: SETTINGS_PORT, type: 'text', sx: { width: '70px' } },
+    { id: SETTINGS_USER, type: 'text', sx: {} },
+    { id: SETTINGS_PASS, type: 'password', sx: {} },
+    { id: SETTINGS_FROM, type: 'text', sx: {} },
   ]
 
   return (
@@ -49,7 +50,7 @@ const InputSenderSettings = () => {
         <TextField
           key={field.id}
           id={field.id}
-          label={field.label}
+          label={field.id}
           type={field.type}
           variant='outlined'
           size='small'
