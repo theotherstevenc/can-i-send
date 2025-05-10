@@ -10,11 +10,17 @@ import { useEditorContext } from '../context/EditorContext'
 import { workspaceEditorStyles, workspacePreviewIframeStyles } from '../styles/global.styles'
 import { updateStore } from '../utils/updateStore'
 import { EDITOR_DARK_MODE, EDITOR_LIGHT_MODE, EDITOR_OPTION_AMP, EDITOR_OPTION_HTML, EDITOR_OPTION_TEXT, MOSAIC_OPTION_OFF, MOSAIC_OPTION_ON } from '../utils/constants'
+import handleEditorResize from '../utils/handleEditorResize'
+import getSanitizedValue from '../utils/getSanitizedValue'
 
 const EditorWorkspacePreview = () => {
   const { html, setHtml, text, setText, amp, setAmp, workingFileID, deletedWorkingFileID, setTriggerFetch } = useEditorContext()
   const { isDarkMode, isMinifyEnabled, isWordWrapEnabled, activeEditor } = useAppContext()
-  const [editorSizes, setEditorSizes] = useState<number[]>([50, 50])
+
+  const [editorSizes, setEditorSizes] = useState<number[]>(() => {
+    const savedSizes = localStorage.getItem('editorSizes')
+    return savedSizes ? JSON.parse(savedSizes) : [50, 50]
+  })
 
   const getEditorsConfig = (html: string, setHtml: (html: string) => void, text: string, setText: (text: string) => void, amp: string, setAmp: (amp: string) => void) => [
     {
@@ -69,7 +75,7 @@ const EditorWorkspacePreview = () => {
 
   return (
     <Box sx={workspaceEditorStyles}>
-      <Split className='split-component' sizes={editorSizes} onDragEnd={(editorSizes) => setEditorSizes(editorSizes)}>
+      <Split className='split-component' sizes={editorSizes} onDragEnd={(sizes) => handleEditorResize(sizes, 'editorSizes', setEditorSizes)}>
         <Box>
           {editors.map(
             (editor) =>
@@ -93,7 +99,11 @@ const EditorWorkspacePreview = () => {
               )
           )}
         </Box>
-        <Box>{editors.map((editor) => activeEditor === editor.type && <iframe style={workspacePreviewIframeStyles} key={editor.type} srcDoc={editor.value} />)}</Box>
+        <Box>
+          {editors.map((editor) => {
+            return activeEditor === editor.type && <iframe style={workspacePreviewIframeStyles} key={editor.type} srcDoc={getSanitizedValue(editor)} />
+          })}
+        </Box>
       </Split>
     </Box>
   )

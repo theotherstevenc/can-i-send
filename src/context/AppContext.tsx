@@ -41,11 +41,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           throw new Error(`Error fetching Firestore collection: ${response.statusText}`)
         }
         const data = await response.json()
-        const { subject, host, port, username, pass, from, isMinifyEnabled, isWordWrapEnabled, isPreventThreadingEnabled, activeEditor, emailAddresses, hideWorkingFiles } = data
+        const { subject, host, port, username, pass, from, isMinifyEnabled, isWordWrapEnabled, isPreventThreadingEnabled, activeEditor, emailAddresses, hideWorkingFiles, isDarkMode } = data
         setSubject(subject)
         setIsMinifyEnabled(isMinifyEnabled)
         setIsWordWrapEnabled(isWordWrapEnabled)
         setIsPreventThreadingEnabled(isPreventThreadingEnabled)
+        setIsDarkMode(isDarkMode)
         setHideWorkingFiles(hideWorkingFiles)
         setActiveEditor(activeEditor)
         setEmailAddresses(emailAddresses)
