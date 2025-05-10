@@ -11,6 +11,7 @@ import { workspaceEditorStyles, workspacePreviewIframeStyles } from '../styles/g
 import { updateStore } from '../utils/updateStore'
 import { EDITOR_DARK_MODE, EDITOR_LIGHT_MODE, EDITOR_OPTION_AMP, EDITOR_OPTION_HTML, EDITOR_OPTION_TEXT, MOSAIC_OPTION_OFF, MOSAIC_OPTION_ON } from '../utils/constants'
 import handleEditorResize from '../utils/handleEditorResize'
+import getSanitizedValue from '../utils/getSanitizedValue'
 
 const EditorWorkspacePreview = () => {
   const { html, setHtml, text, setText, amp, setAmp, workingFileID, deletedWorkingFileID, setTriggerFetch } = useEditorContext()
@@ -81,7 +82,6 @@ const EditorWorkspacePreview = () => {
               activeEditor === editor.type && (
                 <Editor
                   theme={isDarkMode ? EDITOR_DARK_MODE : EDITOR_LIGHT_MODE}
-                  // theme={editor.type === EDITOR_OPTION_TEXT ? EDITOR_LIGHT_MODE : isDarkMode ? EDITOR_DARK_MODE : EDITOR_LIGHT_MODE}
                   key={editor.type}
                   defaultLanguage={editor.language}
                   defaultValue={editor.value}
@@ -99,7 +99,11 @@ const EditorWorkspacePreview = () => {
               )
           )}
         </Box>
-        <Box>{editors.map((editor) => activeEditor === editor.type && <iframe style={workspacePreviewIframeStyles} key={editor.type} srcDoc={editor.value} />)}</Box>
+        <Box>
+          {editors.map((editor) => {
+            return activeEditor === editor.type && <iframe style={workspacePreviewIframeStyles} key={editor.type} srcDoc={getSanitizedValue(editor)} />
+          })}
+        </Box>
       </Split>
     </Box>
   )
