@@ -4,6 +4,7 @@ import Split from 'react-split'
 import { TagsInput } from 'react-tag-input-component'
 import { useAppContext } from '../context/AppContext'
 import { updateStore } from '../utils/updateStore'
+import handleEditorResize from '../utils/handleEditorResize'
 
 const API_URL = '/api/update-editor'
 const HTTP_METHOD = 'POST'
@@ -12,7 +13,11 @@ const DOCUMENT = 'editorSettings'
 const ACTION = 'update'
 
 const InputEmailListSubjectLine = () => {
-  const [sizes, setSizes] = useState<number[]>([50, 50])
+  const [sizes, setSizes] = useState<number[]>(() => {
+    const savedSizes = localStorage.getItem('listSubjectLineSizes')
+    return savedSizes ? JSON.parse(savedSizes) : [50, 50]
+  })
+
   const { subject, setSubject, emailAddresses, setEmailAddresses } = useAppContext()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,7 +38,7 @@ const InputEmailListSubjectLine = () => {
   return (
     <>
       <Box className='split-container'>
-        <Split className='split-component' sizes={sizes} onDragEnd={(sizes) => setSizes(sizes)}>
+        <Split className='split-component' sizes={sizes} onDragEnd={(sizes) => handleEditorResize(sizes, 'listSubjectLineSizes', setSizes)}>
           <TagsInput value={emailAddresses} onChange={handleEmailAddressesChange} />
           <TextField id='subject' className='full-height' variant='outlined' label='subject line' value={subject} size='small' onBlur={handleBlur} onChange={handleChange} />
         </Split>
