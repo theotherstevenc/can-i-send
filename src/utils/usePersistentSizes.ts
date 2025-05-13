@@ -1,9 +1,18 @@
 import { useState } from 'react'
+import { FAILED_TO_PARSE_LOCALSTORAGE } from './constants'
 
 function usePersistentSizes(key: string, defaultSizes: number[]) {
   const [sizes, setSizes] = useState<number[]>(() => {
     const savedSizes = localStorage.getItem(key)
-    return savedSizes ? JSON.parse(savedSizes) : defaultSizes
+    if (savedSizes) {
+      try {
+        return JSON.parse(savedSizes)
+      } catch (error) {
+        console.error(FAILED_TO_PARSE_LOCALSTORAGE, error)
+        return defaultSizes
+      }
+    }
+    return defaultSizes
   })
 
   const updateSizes = (newSizes: number[]) => {

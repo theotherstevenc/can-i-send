@@ -47,3 +47,4 @@ export const INPUT_EMAIL_LIST_SUBJECT_LINE_SPLIT_SIZES_STORAGE_KEY = 'InputEmail
 export const INPUT_EMAIL_LIST_SUBJECT_LINE_SPLIT_SIZES_DEFAULT = [50, 50]
 export const EDITOR_CONTAINER_SPLIT_SIZES_STORAGE_KEY = 'EditorContainerSplitSizes'
 export const EDITOR_CONTAINER_SPLIT_SIZES_DEFAULT = [10, 90]
+export const FAILED_TO_PARSE_LOCALSTORAGE = 'Failed to parse from localStorage:'
