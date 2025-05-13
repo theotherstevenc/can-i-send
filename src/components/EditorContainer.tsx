@@ -3,20 +3,17 @@ import EditorWorkspacePreview from './EditorWorkspacePreview'
 import Split from 'react-split'
 import EditorWorkingFiles from './EditorWorkingFiles'
 import { useAppContext } from '../context/AppContext'
-import { useState } from 'react'
-import handleEditorResize from '../utils/handleEditorResize'
+import usePersistentSizes from '../utils/usePersistentSizes'
+import { EDITOR_CONTAINER_SPLIT_SIZES_DEFAULT, EDITOR_CONTAINER_SPLIT_SIZES_STORAGE_KEY } from '../utils/constants'
 
 const EditorContainer = () => {
   const { hideWorkingFiles } = useAppContext()
 
-  const [sidebarSizes, setSidebarSizes] = useState<number[]>(() => {
-    const savedSizes = localStorage.getItem('sidebarSizes')
-    return savedSizes ? JSON.parse(savedSizes) : [10, 90]
-  })
+  const [sizes, setSizes] = usePersistentSizes(EDITOR_CONTAINER_SPLIT_SIZES_STORAGE_KEY, EDITOR_CONTAINER_SPLIT_SIZES_DEFAULT)
 
   const className = hideWorkingFiles ? 'no-working-files' : ''
   return (
-    <Split className='split-component' sizes={sidebarSizes} onDragEnd={(sizes) => handleEditorResize(sizes, 'sidebarSizes', setSidebarSizes)}>
+    <Split className='split-component' sizes={sizes} onDragEnd={setSizes}>
       <Box className={className}>
         <EditorWorkingFiles />
       </Box>
