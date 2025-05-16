@@ -11,7 +11,7 @@ import { BTN_LABEL_CANCEL, BTN_LABEL_CREATE, BTN_LABEL_CREATE_CHECKBOX, BTN_LABE
 
 const InputCreateNewFile = () => {
   const { setIsMinifyEnabled, setIsWordWrapEnabled } = useAppContext()
-  const { setWorkingFileID, setWorkingFileName, setHtml, setText, setAmp, setTriggerFetch } = useEditorContext()
+  const { setWorkingFileID, setWorkingFileName, setHtml, setText, setAmp } = useEditorContext()
   const [open, setOpen] = useState(false)
   const [fileName, setFileName] = useState('')
   const [isBoilerplateApplied, setIsBoilerplateApplied] = useState(false)
@@ -28,11 +28,9 @@ const InputCreateNewFile = () => {
     setIsWordWrapEnabled(false)
 
     if (fileName.trim()) {
-      const success = await createNewFile(fileName, boilerPlateMarkup, isBoilerplateApplied, setWorkingFileID, setWorkingFileName, setHtml, setText, setAmp, setTriggerFetch)
-      if (success) {
-        setFileName('')
-        handleClose()
-      }
+      await createNewFile(fileName, boilerPlateMarkup, isBoilerplateApplied, setWorkingFileID, setWorkingFileName, setHtml, setText, setAmp)
+      setFileName('')
+      handleClose()
     }
   }
 

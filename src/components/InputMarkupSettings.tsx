@@ -4,8 +4,9 @@ import { useAppContext } from '../context/AppContext'
 import { useEditorContext } from '../context/EditorContext'
 import { useEffect } from 'react'
 import { customMinifier } from '../utils/customMinifier'
-import { updateStore } from '../utils/updateStore'
 import { SETTINGS_CHECKBOX_LABEL_MINIFY, SETTINGS_CHECKBOX_LABEL_PREVENT_THREADING, SETTINGS_CHECKBOX_LABEL_WORD_WRAP } from '../utils/constants'
+import { db } from '../firebase'
+import { updateFirestoreDoc } from '../utils/updateFirestoreDoc'
 
 const InputMarkupSettings = () => {
   const { setHtml, html, setOriginalHtml, originalHtml } = useEditorContext()
@@ -17,13 +18,10 @@ const InputMarkupSettings = () => {
     { name: 'isPreventThreadingEnabled', label: SETTINGS_CHECKBOX_LABEL_PREVENT_THREADING, checked: isPreventThreadingEnabled, setter: setIsPreventThreadingEnabled },
   ]
 
-  const API_URL = '/api/update-editor'
-  const HTTP_METHOD = 'POST'
   const COLLECTION = 'config'
   const DOCUMENT = 'editorSettings'
-  const ACTION = 'update'
 
-  const handleChange = (event: React.SyntheticEvent, checked: boolean) => {
+  const handleChange = async (event: React.SyntheticEvent, checked: boolean) => {
     const target = event.target as HTMLInputElement
     const { name } = target
 
@@ -35,8 +33,7 @@ const InputMarkupSettings = () => {
     }
 
     const firestoreObj = { [name]: checked }
-
-    updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj)
+    updateFirestoreDoc(db, COLLECTION, DOCUMENT, firestoreObj)
   }
 
   const updateHtml = () => {

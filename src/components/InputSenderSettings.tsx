@@ -2,14 +2,12 @@ import { TextField } from '@mui/material'
 import { SenderSettings } from '../interfaces'
 import { useAppContext } from '../context/AppContext'
 import { encryptString } from '../utils/encryptString'
-import { updateStore } from '../utils/updateStore'
 import { SETTINGS_FROM, SETTINGS_HOST, SETTINGS_PASS, SETTINGS_PORT, SETTINGS_USER } from '../utils/constants'
+import { db } from '../firebase'
+import { updateFirestoreDoc } from '../utils/updateFirestoreDoc'
 
-const API_URL = '/api/update-editor'
-const HTTP_METHOD = 'POST'
 const COLLECTION = 'config'
 const DOCUMENT = 'editorSettings'
-const ACTION = 'update'
 
 const InputSenderSettings = () => {
   const { inputSenderSettings, setInputSenderSettings } = useAppContext()
@@ -27,7 +25,7 @@ const InputSenderSettings = () => {
 
     if (isBlur) {
       const firestoreObj = { ...inputSenderSettings, [id]: processedValue }
-      updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj)
+      updateFirestoreDoc(db, COLLECTION, DOCUMENT, firestoreObj)
     }
   }
 
