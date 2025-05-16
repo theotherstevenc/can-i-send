@@ -20,7 +20,7 @@ const EditorWorkingFiles = () => {
 
   useEffect(() => {
     const workingFiles = collection(db, 'workingFiles')
-    onSnapshot(
+    const unsubscribe = onSnapshot(
       workingFiles,
       (snapshot) => {
         const workingFilesData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
@@ -30,6 +30,7 @@ const EditorWorkingFiles = () => {
         console.error(FETCH_ERROR, error)
       }
     )
+    return () => unsubscribe()
   }, [])
 
   return (
