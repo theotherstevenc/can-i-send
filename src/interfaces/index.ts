@@ -42,8 +42,6 @@ export interface EditorContextProps {
   setDeletedWorkingFileID: (id: string) => void
   workingFileName: string
   setWorkingFileName: (name: string) => void
-  triggerFetch: boolean
-  setTriggerFetch: React.Dispatch<React.SetStateAction<boolean>>
   files: WorkingFile[]
   setFiles: React.Dispatch<React.SetStateAction<WorkingFile[]>>
 }
