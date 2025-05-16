@@ -12,7 +12,6 @@ export const EditorProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [workingFileID, setWorkingFileID] = useState<string>('')
   const [deletedWorkingFileID, setDeletedWorkingFileID] = useState<string>('')
   const [workingFileName, setWorkingFileName] = useState<string>('')
-  const [triggerFetch, setTriggerFetch] = useState<boolean>(false)
   const [files, setFiles] = useState<WorkingFile[]>([])
 
   return (
@@ -32,8 +31,6 @@ export const EditorProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         setDeletedWorkingFileID,
         workingFileName,
         setWorkingFileName,
-        triggerFetch,
-        setTriggerFetch,
         files,
         setFiles,
       }}>
