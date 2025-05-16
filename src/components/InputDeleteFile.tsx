@@ -4,20 +4,12 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import { useState } from 'react'
 import { useEditorContext } from '../context/EditorContext'
 import { StyledIconButton } from './InputIconButton'
-import { updateStore } from '../utils/updateStore'
-import {
-  BTN_LABEL_CANCEL,
-  BTN_LABEL_CONFIRM,
-  BTN_LABEL_DELETE,
-  BTN_LABEL_DELETE_CONFIRM,
-  BTN_LABEL_DELETE_ERROR,
-  BTN_LABEL_DELETE_FAILURE,
-  DIALOG_CANNOT_BE_UNDONE,
-  LABEL_CLOSE,
-} from '../utils/constants'
+import { BTN_LABEL_CANCEL, BTN_LABEL_CONFIRM, BTN_LABEL_DELETE, BTN_LABEL_DELETE_CONFIRM, BTN_LABEL_DELETE_ERROR, DIALOG_CANNOT_BE_UNDONE, LABEL_CLOSE } from '../utils/constants'
+import { deleteDoc, doc } from 'firebase/firestore'
+import { db } from '../firebase'
 
 const InputDeleteFile = () => {
-  const { deletedWorkingFileID, workingFileID, setHtml, setText, setAmp, workingFileName, setDeletedWorkingFileID, setTriggerFetch } = useEditorContext()
+  const { deletedWorkingFileID, workingFileID, setHtml, setText, setAmp, workingFileName, setDeletedWorkingFileID } = useEditorContext()
   const [open, setOpen] = useState(false)
 
   const handleOpen = () => {
@@ -28,11 +20,8 @@ const InputDeleteFile = () => {
   }
   const handleClose = () => setOpen(false)
 
-  const API_URL = '/api/update-editor'
-  const HTTP_METHOD = 'POST'
   const COLLECTION = 'workingFiles'
   const DOCUMENT = workingFileID
-  const ACTION = 'delete'
 
   const handleDeleteFile = async () => {
     if (!workingFileID) {
@@ -40,11 +29,8 @@ const InputDeleteFile = () => {
     }
 
     try {
-      const response = await updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, undefined, setTriggerFetch)
-
-      if (!response.success) {
-        throw new Error(BTN_LABEL_DELETE_FAILURE)
-      }
+      const workingFiles = doc(db, COLLECTION, DOCUMENT)
+      await deleteDoc(workingFiles)
 
       setHtml('')
       setText('')

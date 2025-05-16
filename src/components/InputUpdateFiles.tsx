@@ -4,11 +4,12 @@ import EditIcon from '@mui/icons-material/Edit'
 import { useState } from 'react'
 import { useEditorContext } from '../context/EditorContext'
 import { StyledIconButton } from './InputIconButton'
-import { updateStore } from '../utils/updateStore'
 import { BTN_LABEL_CANCEL, BTN_LABEL_OK, BTN_LABEL_UPDATE, BTN_LABEL_UPDATE_DIALOG, BTN_LABEL_UPDATE_FAILURE, LABEL_CLOSE } from '../utils/constants'
+import { db } from '../firebase'
+import { updateFirestoreDoc } from '../utils/updateFirestoreDoc'
 
 const InputUpdateFiles = () => {
-  const { deletedWorkingFileID, workingFileID, workingFileName, setWorkingFileName, setTriggerFetch } = useEditorContext()
+  const { deletedWorkingFileID, workingFileID, workingFileName, setWorkingFileName } = useEditorContext()
   const [open, setOpen] = useState(false)
   const [fileName, setFileName] = useState('')
 
@@ -20,24 +21,20 @@ const InputUpdateFiles = () => {
   }
   const handleClose = () => setOpen(false)
 
-  const API_URL = '/api/update-editor'
-  const HTTP_METHOD = 'POST'
   const COLLECTION = 'workingFiles'
   const DOCUMENT = workingFileID
-  const ACTION = 'update'
   const firestoreObj = { fileName }
 
   const handleConfirm = async () => {
     if (!workingFileID) return
 
     if (fileName.trim()) {
-      const response = await updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj, setTriggerFetch)
-
-      if (response.success) {
-        setFileName('')
-        setOpen(false)
-      } else {
-        console.error(BTN_LABEL_UPDATE_FAILURE + response.message)
+      try {
+        await updateFirestoreDoc(db, COLLECTION, DOCUMENT, firestoreObj)
+        setWorkingFileName(fileName)
+        handleClose()
+      } catch (error) {
+        console.error(BTN_LABEL_UPDATE_FAILURE, error)
       }
     }
   }

@@ -4,33 +4,11 @@ import { useEffect } from 'react'
 import { WorkingFile } from '../interfaces'
 import { useEditorContext } from '../context/EditorContext'
 import { BTN_VARIANT_CONTAINED, BTN_VARIANT_OUTLINED, FETCH_ERROR } from '../utils/constants'
+import { collection, onSnapshot } from 'firebase/firestore'
+import { db } from '../firebase'
 
 const EditorWorkingFiles = () => {
-  const { setHtml, setText, setAmp, workingFileID, setWorkingFileID, setWorkingFileName, triggerFetch, files, setFiles } = useEditorContext()
-
-  const API_URL = '/api/get-collection'
-  const HTTP_METHOD = 'POST'
-  const COLLECTION = 'workingFiles'
-
-  const fetchFiles = async () => {
-    try {
-      const response = await fetch(API_URL, {
-        method: HTTP_METHOD,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          COLLECTION,
-        }),
-      })
-
-      const data = await response.json()
-
-      setFiles(data)
-    } catch (err) {
-      console.error(FETCH_ERROR + err)
-    }
-  }
+  const { setHtml, setText, setAmp, workingFileID, setWorkingFileID, setWorkingFileName, files, setFiles } = useEditorContext()
 
   const handleClick = (file: WorkingFile) => {
     setHtml(file.html)
@@ -41,8 +19,19 @@ const EditorWorkingFiles = () => {
   }
 
   useEffect(() => {
-    fetchFiles()
-  }, [triggerFetch])
+    const workingFiles = collection(db, 'workingFiles')
+    const unsubscribe = onSnapshot(
+      workingFiles,
+      (snapshot) => {
+        const workingFilesData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+        setFiles(workingFilesData as WorkingFile[])
+      },
+      (error) => {
+        console.error(FETCH_ERROR, error)
+      }
+    )
+    return () => unsubscribe()
+  }, [])
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, padding: 0.5 }} className='editor-working-files'>

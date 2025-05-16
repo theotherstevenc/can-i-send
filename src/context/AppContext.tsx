@@ -1,7 +1,10 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, useEffect, useState } from 'react'
+import { doc, onSnapshot } from 'firebase/firestore'
+import { db } from '../firebase'
 
 import { AppContextProps, SenderSettings } from '../interfaces'
+import { FETCH_ERROR } from '../utils/constants'
 
 const AppContext = createContext<AppContextProps | undefined>(undefined)
 
@@ -22,43 +25,31 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     from: '',
   })
 
-  const API_URL = '/api/get-collection'
-  const HTTP_METHOD = 'POST'
-  const COLLECTION = 'config'
-  const DOCUMENT = 'editorSettings'
-
   useEffect(() => {
-    const fetchFirestoreCollection = async () => {
-      try {
-        const response = await fetch(API_URL, {
-          method: HTTP_METHOD,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ COLLECTION, DOCUMENT }),
-        })
-        if (!response.ok) {
-          throw new Error(`Error fetching Firestore collection: ${response.statusText}`)
+    const editorSettings = doc(db, 'config', 'editorSettings')
+    const unsubscribe = onSnapshot(
+      editorSettings,
+      (doc) => {
+        const data = doc.data()
+        if (data) {
+          const { subject, host, port, username, pass, from, isMinifyEnabled, isWordWrapEnabled, isPreventThreadingEnabled, activeEditor, emailAddresses, hideWorkingFiles, isDarkMode } = data
+          setSubject(subject)
+          setIsMinifyEnabled(isMinifyEnabled)
+          setIsWordWrapEnabled(isWordWrapEnabled)
+          setIsPreventThreadingEnabled(isPreventThreadingEnabled)
+          setIsDarkMode(isDarkMode)
+          setHideWorkingFiles(hideWorkingFiles)
+          setActiveEditor(activeEditor)
+          setEmailAddresses(emailAddresses)
+          setInputSenderSettings({ host, port, username, pass, from })
         }
-        const data = await response.json()
-        const { subject, host, port, username, pass, from, isMinifyEnabled, isWordWrapEnabled, isPreventThreadingEnabled, activeEditor, emailAddresses, hideWorkingFiles, isDarkMode } = data
-        setSubject(subject)
-        setIsMinifyEnabled(isMinifyEnabled)
-        setIsWordWrapEnabled(isWordWrapEnabled)
-        setIsPreventThreadingEnabled(isPreventThreadingEnabled)
-        setIsDarkMode(isDarkMode)
-        setHideWorkingFiles(hideWorkingFiles)
-        setActiveEditor(activeEditor)
-        setEmailAddresses(emailAddresses)
-        setInputSenderSettings({ host, port, username, pass, from })
-        return data
-      } catch (error) {
-        console.error('Error fetching Firestore collection:', error)
-        return null
+      },
+      (error) => {
+        console.error(FETCH_ERROR, error)
       }
-    }
+    )
 
-    fetchFirestoreCollection()
+    return () => unsubscribe()
   }, [])
 
   return (

@@ -1,14 +1,12 @@
 import { Button } from '@mui/material'
 import { useAppContext } from '../context/AppContext'
-import { updateStore } from '../utils/updateStore'
 import { EditorType } from '../types/types'
 import { BTN_VARIANT_CONTAINED, BTN_VARIANT_OUTLINED, EDITOR_OPTION_AMP, EDITOR_OPTION_HTML, EDITOR_OPTION_TEXT } from '../utils/constants'
+import { db } from '../firebase'
+import { updateFirestoreDoc } from '../utils/updateFirestoreDoc'
 
-const API_URL = '/api/update-editor'
-const HTTP_METHOD = 'POST'
 const COLLECTION = 'config'
 const DOCUMENT = 'editorSettings'
-const ACTION = 'update'
 
 const EditorSelectorButtons = () => {
   const { activeEditor, setActiveEditor } = useAppContext()
@@ -17,7 +15,7 @@ const EditorSelectorButtons = () => {
     const firestoreObj = { activeEditor: editorType }
 
     setActiveEditor(editorType)
-    updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj)
+    updateFirestoreDoc(db, COLLECTION, DOCUMENT, firestoreObj)
   }
 
   const editorOptions: EditorType[] = [EDITOR_OPTION_HTML, EDITOR_OPTION_TEXT, EDITOR_OPTION_AMP]

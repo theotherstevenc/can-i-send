@@ -1,3 +1,7 @@
+import { addDoc, collection } from 'firebase/firestore'
+import { db } from '../firebase'
+import { ERROR_CREATING_NEW_FILE, ERROR_PARSING_DATA } from './constants'
+
 export const createNewFile = async (
   fileName: string,
   boilerPlateMarkup: { html: string; text: string; amp: string },
@@ -6,9 +10,8 @@ export const createNewFile = async (
   setWorkingFileName: (name: string) => void,
   setHtml: (html: string) => void,
   setText: (text: string) => void,
-  setAmp: (amp: string) => void,
-  setTriggerFetch: (value: React.SetStateAction<boolean>) => void
-): Promise<boolean> => {
+  setAmp: (amp: string) => void
+) => {
   try {
     const requestBody: { fileName: string; boilerPlateMarkup?: string } = { fileName }
 
@@ -16,31 +19,36 @@ export const createNewFile = async (
       requestBody.boilerPlateMarkup = JSON.stringify(boilerPlateMarkup)
     }
 
-    const response = await fetch('/api/create-new-file', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(requestBody),
-    })
+    const reqFileName = requestBody.fileName
+    const reqBoilerPlateMarkup = requestBody.boilerPlateMarkup
 
-    const responseData = await response.json()
+    let parsedBoilerPlateMarkup: { html?: string; text?: string; amp?: string } = {}
 
-    if (response.ok) {
-      setWorkingFileID(responseData.id)
-      setWorkingFileName(fileName)
-      setHtml(boilerPlateMarkup.html || '')
-      setText(boilerPlateMarkup.text || '')
-      setAmp(boilerPlateMarkup.amp || '')
-      setTriggerFetch((prev) => !prev)
-
-      return true
-    } else {
-      console.error('Error creating file:', responseData)
-      return false
+    if (reqBoilerPlateMarkup) {
+      try {
+        parsedBoilerPlateMarkup = JSON.parse(reqBoilerPlateMarkup)
+      } catch (error) {
+        console.error(ERROR_PARSING_DATA, error)
+      }
     }
+
+    const newFileData = {
+      fileName: reqFileName,
+      html: parsedBoilerPlateMarkup.html || '',
+      text: parsedBoilerPlateMarkup.text || '',
+      amp: parsedBoilerPlateMarkup.amp || '',
+      createdAt: new Date().toISOString(),
+    }
+
+    const newFileRef = await addDoc(collection(db, 'workingFiles'), newFileData)
+
+    setWorkingFileID(newFileRef.id)
+    setWorkingFileName(newFileData.fileName)
+    setHtml(newFileData.html || '')
+    setText(newFileData.text || '')
+    setAmp(newFileData.amp || '')
   } catch (error) {
-    console.error('Error:', error)
+    console.error(ERROR_CREATING_NEW_FILE, error)
     return false
   }
 }

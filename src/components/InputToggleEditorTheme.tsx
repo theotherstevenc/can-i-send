@@ -4,21 +4,20 @@ import LightModeIcon from '@mui/icons-material/LightMode'
 import { StyledIconButton } from './InputIconButton'
 import { TOGGLE_BTN_DARK_MODE, TOGGLE_BTN_LIGHT_MODE } from '../utils/constants'
 import { useAppContext } from '../context/AppContext'
-import { updateStore } from '../utils/updateStore'
+import { db } from '../firebase'
+import { updateFirestoreDoc } from '../utils/updateFirestoreDoc'
 
-const API_URL = '/api/update-editor'
-const HTTP_METHOD = 'POST'
 const COLLECTION = 'config'
 const DOCUMENT = 'editorSettings'
-const ACTION = 'update'
 
 const InputToggleEditorTheme = () => {
   const { isDarkMode, setIsDarkMode } = useAppContext()
 
-  const handleOpen = () => {
+  const handleOpen = async () => {
     const firestoreObj = { isDarkMode: !isDarkMode }
     setIsDarkMode(!isDarkMode)
-    updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj)
+
+    updateFirestoreDoc(db, COLLECTION, DOCUMENT, firestoreObj)
   }
 
   const handleToggleButtonLabel = isDarkMode ? TOGGLE_BTN_LIGHT_MODE : TOGGLE_BTN_DARK_MODE

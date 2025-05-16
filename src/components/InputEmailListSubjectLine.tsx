@@ -2,15 +2,13 @@ import { Box, TextField } from '@mui/material'
 import Split from 'react-split'
 import { TagsInput } from 'react-tag-input-component'
 import { useAppContext } from '../context/AppContext'
-import { updateStore } from '../utils/updateStore'
 import usePersistentSizes from '../utils/usePersistentSizes'
 import { INPUT_EMAIL_LIST_SUBJECT_LINE_SPLIT_SIZES_DEFAULT, INPUT_EMAIL_LIST_SUBJECT_LINE_SPLIT_SIZES_STORAGE_KEY } from '../utils/constants'
+import { db } from '../firebase'
+import { updateFirestoreDoc } from '../utils/updateFirestoreDoc'
 
-const API_URL = '/api/update-editor'
-const HTTP_METHOD = 'POST'
 const COLLECTION = 'config'
 const DOCUMENT = 'editorSettings'
-const ACTION = 'update'
 
 const InputEmailListSubjectLine = () => {
   const { subject, setSubject, emailAddresses, setEmailAddresses } = useAppContext()
@@ -20,15 +18,15 @@ const InputEmailListSubjectLine = () => {
     setSubject(e.target.value)
   }
 
-  const handleBlur = () => {
+  const handleBlur = async () => {
     const firestoreObj = { subject }
-    updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj)
+    updateFirestoreDoc(db, COLLECTION, DOCUMENT, firestoreObj)
   }
 
-  const handleEmailAddressesChange = (newEmailAddresses: string[]) => {
+  const handleEmailAddressesChange = async (newEmailAddresses: string[]) => {
     const firestoreObj = { emailAddresses: newEmailAddresses }
     setEmailAddresses(newEmailAddresses)
-    updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj)
+    updateFirestoreDoc(db, COLLECTION, DOCUMENT, firestoreObj)
   }
 
   return (

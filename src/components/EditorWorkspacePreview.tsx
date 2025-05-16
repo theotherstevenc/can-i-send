@@ -8,7 +8,6 @@ import { useAppContext } from '../context/AppContext'
 import { useEditorContext } from '../context/EditorContext'
 
 import { workspaceEditorStyles, workspacePreviewIframeStyles } from '../styles/global.styles'
-import { updateStore } from '../utils/updateStore'
 import {
   EDITOR_DARK_MODE,
   EDITOR_LIGHT_MODE,
@@ -22,9 +21,11 @@ import {
 } from '../utils/constants'
 import getSanitizedValue from '../utils/getSanitizedValue'
 import usePersistentSizes from '../utils/usePersistentSizes'
+import { db } from '../firebase'
+import { updateFirestoreDoc } from '../utils/updateFirestoreDoc'
 
 const EditorWorkspacePreview = () => {
-  const { html, setHtml, text, setText, amp, setAmp, workingFileID, deletedWorkingFileID, setTriggerFetch } = useEditorContext()
+  const { html, setHtml, text, setText, amp, setAmp, workingFileID, deletedWorkingFileID } = useEditorContext()
   const { isDarkMode, isMinifyEnabled, isWordWrapEnabled, activeEditor } = useAppContext()
 
   const [sizes, setSizes] = usePersistentSizes(EDITOR_WORKSPACE_PREVIEW_SPLIT_SIZES_STORAGE_KEY, EDITOR_WORKSPACE_PREVIEW_SPLIT_SIZES_DEFAULT)
@@ -58,11 +59,8 @@ const EditorWorkspacePreview = () => {
 
   const editors = getEditorsConfig(html, setHtml, text, setText, amp, setAmp)
 
-  const API_URL = '/api/update-editor'
-  const HTTP_METHOD = 'POST'
   const COLLECTION = 'workingFiles'
   const DOCUMENT = workingFileID
-  const ACTION = 'update'
   const firestoreObj = { html, text, amp }
   const DEBOUNCE_DELAY = 2000
 
@@ -72,7 +70,7 @@ const EditorWorkspacePreview = () => {
     }
 
     const debounceSave = setTimeout(async () => {
-      await updateStore(COLLECTION, DOCUMENT, ACTION, API_URL, HTTP_METHOD, firestoreObj, setTriggerFetch)
+      updateFirestoreDoc(db, COLLECTION, DOCUMENT, firestoreObj)
     }, DEBOUNCE_DELAY)
 
     return () => {
