@@ -1,3 +1,5 @@
+import { User } from 'firebase/auth'
+
 export interface SenderSettings {
   host: string
   port: string
@@ -65,4 +67,5 @@ export interface AppContextProps {
   setHideWorkingFiles: React.Dispatch<React.SetStateAction<boolean>>
   isDarkMode: boolean
   setIsDarkMode: React.Dispatch<React.SetStateAction<boolean>>
+  user: User | null
 }

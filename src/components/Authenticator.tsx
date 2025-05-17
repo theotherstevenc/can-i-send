@@ -6,23 +6,23 @@ import LoginIcon from '@mui/icons-material/Login'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField, Tooltip } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 
-import usePersistentAuth from '../utils/usePersistentAuth'
 import { useState } from 'react'
+import { useAppContext } from '../context/AppContext'
 
 export const Authenticator = () => {
   const auth = getAuth()
+  const { user } = useAppContext()
 
-  const [isAuth, setIsAuth] = usePersistentAuth('isLoggedIn', false)
   const [open, setOpen] = useState(false)
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
   const handleOpen = () => {
-    if (!isAuth) {
+    if (!user) {
       setOpen(true)
     }
-    if (isAuth) {
+    if (user) {
       handleLogout()
     }
   }
@@ -33,8 +33,6 @@ export const Authenticator = () => {
   const handleLogout = async () => {
     try {
       await signOut(auth)
-      setIsAuth(false)
-      console.log('User signed out')
     } catch (error) {
       console.error('Error signing out:', error)
     }
@@ -42,24 +40,20 @@ export const Authenticator = () => {
 
   const handleLogin = async () => {
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, username, password)
-      console.log('User signed in:', userCredential.user)
-      setIsAuth(true)
+      await signInWithEmailAndPassword(auth, username, password)
       setOpen(false)
     } catch (error) {
       console.error('Error signing in:', error)
     }
   }
 
-  const handleLoginButtonLabel = isAuth ? BTN_LABEL_LOGOUT : BTN_LABEL_LOGIN
-
-  
+  const handleLoginButtonLabel = user ? BTN_LABEL_LOGOUT : BTN_LABEL_LOGIN
 
   return (
     <>
       <Tooltip title={handleLoginButtonLabel}>
         <StyledIconButton onClick={handleOpen} aria-label={handleLoginButtonLabel}>
-          {isAuth ? <LogoutIcon /> : <LoginIcon />}
+          {user ? <LogoutIcon /> : <LoginIcon />}
         </StyledIconButton>
       </Tooltip>
 
