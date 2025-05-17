@@ -1,5 +1,4 @@
 import 'dotenv/config'
-import basicAuth from 'express-basic-auth'
 import bcrypt from 'bcrypt'
 import CryptoJS from 'crypto-js'
 import cors from 'cors'
@@ -11,32 +10,11 @@ import { simpleParser } from 'mailparser'
 const PORT = process.env.PORT || 8080
 const app = express()
 
-import db from './firebase.js'
-
 app.use(express.urlencoded({ limit: '50mb', extended: true }))
 app.use(express.json({ limit: '50mb' }))
 app.use(cors({ origin: '*' }))
 app.use(express.static('build'))
 app.use(fileUpload())
-
-if (process.env.NODE_ENV === 'development') {
-  console.warn('Basic authentication is disabled in development mode')
-} else {
-  const hashedPassword = bcrypt.hashSync(process.env.AUTH_PASS, 10)
-
-  app.use(
-    basicAuth({
-      users: { [process.env.AUTH_USER]: process.env.AUTH_PASS },
-      challenge: true,
-      authorizeAsync: true,
-      authorizer: (username, password, cb) => {
-        const isValidUser = username === process.env.AUTH_USER
-        const isValidPass = bcrypt.compareSync(password, hashedPassword)
-        cb(null, isValidUser && isValidPass)
-      },
-    })
-  )
-}
 
 const encryptText = (text, key) => {
   return CryptoJS.AES.encrypt(text, key).toString()
