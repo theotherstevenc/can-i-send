@@ -6,15 +6,19 @@ import LoginIcon from '@mui/icons-material/Login'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField, Tooltip } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 
-import usePersistentAuth from '../utils/usePersistentAuth'
 import { useState } from 'react'
+import { useAppContext } from '../context/AppContext'
+import { updateFirestoreDoc } from '../utils/updateFirestoreDoc'
+import { db } from '../firebase'
 
 export const Authenticator = () => {
+  const COLLECTION = 'config'
+  const DOCUMENT = 'editorSettings'
+
   const auth = getAuth()
+  const { isAuth, setIsAuth } = useAppContext()
 
-  const [isAuth, setIsAuth] = usePersistentAuth('isLoggedIn', false)
   const [open, setOpen] = useState(false)
-
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -32,9 +36,10 @@ export const Authenticator = () => {
 
   const handleLogout = async () => {
     try {
+      await updateFirestoreDoc(db, COLLECTION, DOCUMENT, { isAuth: false })
       await signOut(auth)
-      setIsAuth(false)
       console.log('User signed out')
+      setIsAuth(false)
     } catch (error) {
       console.error('Error signing out:', error)
     }
@@ -43,6 +48,7 @@ export const Authenticator = () => {
   const handleLogin = async () => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, username, password)
+      updateFirestoreDoc(db, COLLECTION, DOCUMENT, { isAuth: true })
       console.log('User signed in:', userCredential.user)
       setIsAuth(true)
       setOpen(false)
@@ -52,8 +58,6 @@ export const Authenticator = () => {
   }
 
   const handleLoginButtonLabel = isAuth ? BTN_LABEL_LOGOUT : BTN_LABEL_LOGIN
-
-  
 
   return (
     <>
