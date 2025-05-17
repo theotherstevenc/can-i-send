@@ -53,7 +53,7 @@ export const Authenticator = () => {
 
   const handleLoginButtonLabel = isAuth ? BTN_LABEL_LOGOUT : BTN_LABEL_LOGIN
 
-  console.log('isAuth:', isAuth)
+  
 
   return (
     <>
