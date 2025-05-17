@@ -1,6 +1,6 @@
 import { getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth'
 import { StyledIconButton } from './InputIconButton'
-import { BTN_LABEL_CANCEL, BTN_LABEL_LOGIN, BTN_LABEL_LOGOUT, BTN_LABEL_OK, LABEL_CLOSE } from '../utils/constants'
+import { BTN_LABEL_CANCEL, BTN_LABEL_LOGIN, BTN_LABEL_LOGOUT, BTN_LABEL_OK, ERROR_SIGNING_IN, ERROR_SIGNING_OUT, LABEL_CLOSE } from '../utils/constants'
 import LogoutIcon from '@mui/icons-material/Logout'
 import LoginIcon from '@mui/icons-material/Login'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField, Tooltip } from '@mui/material'
@@ -38,22 +38,20 @@ export const Authenticator = () => {
     try {
       await updateFirestoreDoc(db, COLLECTION, DOCUMENT, { isAuth: false })
       await signOut(auth)
-      console.log('User signed out')
       setIsAuth(false)
     } catch (error) {
-      console.error('Error signing out:', error)
+      console.error(ERROR_SIGNING_IN, error)
     }
   }
 
   const handleLogin = async () => {
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, username, password)
+      await signInWithEmailAndPassword(auth, username, password)
       updateFirestoreDoc(db, COLLECTION, DOCUMENT, { isAuth: true })
-      console.log('User signed in:', userCredential.user)
       setIsAuth(true)
       setOpen(false)
     } catch (error) {
-      console.error('Error signing in:', error)
+      console.error(ERROR_SIGNING_OUT, error)
     }
   }
 
