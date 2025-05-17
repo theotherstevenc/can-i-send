@@ -21,6 +21,10 @@ const EditorWorkingFiles = () => {
   }
 
   useEffect(() => {
+    if (!user) {
+      setFiles([]) // Clear files if user is not authenticated
+      return
+    }
     const workingFiles = collection(db, 'workingFiles')
     const unsubscribe = onSnapshot(
       workingFiles,
