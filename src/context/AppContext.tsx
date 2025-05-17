@@ -9,6 +9,7 @@ import { FETCH_ERROR } from '../utils/constants'
 const AppContext = createContext<AppContextProps | undefined>(undefined)
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [isAuth, setIsAuth] = useState(false)
   const [isMinifyEnabled, setIsMinifyEnabled] = useState(false)
   const [isWordWrapEnabled, setIsWordWrapEnabled] = useState(false)
   const [isPreventThreadingEnabled, setIsPreventThreadingEnabled] = useState(false)
@@ -32,7 +33,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       (doc) => {
         const data = doc.data()
         if (data) {
-          const { subject, host, port, username, pass, from, isMinifyEnabled, isWordWrapEnabled, isPreventThreadingEnabled, activeEditor, emailAddresses, hideWorkingFiles, isDarkMode } = data
+          const { subject, host, port, username, pass, from, isMinifyEnabled, isWordWrapEnabled, isPreventThreadingEnabled, activeEditor, emailAddresses, hideWorkingFiles, isDarkMode, isAuth } = data
+          setIsAuth(isAuth)
           setSubject(subject)
           setIsMinifyEnabled(isMinifyEnabled)
           setIsWordWrapEnabled(isWordWrapEnabled)
@@ -73,6 +75,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setHideWorkingFiles,
         isDarkMode,
         setIsDarkMode,
+        isAuth,
+        setIsAuth,
       }}>
       {children}
     </AppContext.Provider>
