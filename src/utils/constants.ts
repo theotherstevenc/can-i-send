@@ -52,3 +52,5 @@ export const EDITOR_CONTAINER_SPLIT_SIZES_DEFAULT = [10, 90]
 export const FAILED_TO_PARSE_LOCALSTORAGE = 'Failed to parse from localStorage:'
 export const ERROR_CREATING_NEW_FILE = 'Error creating new file:'
 export const ERROR_PARSING_DATA = 'Error parsing data:'
+export const ERROR_SIGNING_IN = 'Error signing in:'
+export const ERROR_SIGNING_OUT = 'Error signing out:'
