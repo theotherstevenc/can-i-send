@@ -6,9 +6,11 @@ import { useEditorContext } from '../context/EditorContext'
 import { BTN_VARIANT_CONTAINED, BTN_VARIANT_OUTLINED, FETCH_ERROR } from '../utils/constants'
 import { collection, onSnapshot } from 'firebase/firestore'
 import { db } from '../firebase'
+import { useAppContext } from '../context/AppContext'
 
 const EditorWorkingFiles = () => {
   const { setHtml, setText, setAmp, workingFileID, setWorkingFileID, setWorkingFileName, files, setFiles } = useEditorContext()
+  const { user } = useAppContext()
 
   const handleClick = (file: WorkingFile) => {
     setHtml(file.html)
@@ -31,7 +33,7 @@ const EditorWorkingFiles = () => {
       }
     )
     return () => unsubscribe()
-  }, [])
+  }, [user])
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, padding: 0.5 }} className='editor-working-files'>

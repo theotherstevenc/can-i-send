@@ -1,10 +1,11 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { doc, onSnapshot } from 'firebase/firestore'
-import { db } from '../firebase'
+import { auth, db } from '../firebase'
 
 import { AppContextProps, SenderSettings } from '../interfaces'
 import { FETCH_ERROR } from '../utils/constants'
+import { onAuthStateChanged, User } from 'firebase/auth'
 
 const AppContext = createContext<AppContextProps | undefined>(undefined)
 
@@ -24,8 +25,36 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     pass: '',
     from: '',
   })
+  const [user, setUser] = useState<User | null>(null)
 
   useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      console.log('User state changed:', firebaseUser)
+      setUser(firebaseUser)
+    })
+    return () => unsubscribe()
+  }, [])
+
+  useEffect(() => {
+    if (!user) {
+      setSubject('')
+      setIsMinifyEnabled(false)
+      setIsWordWrapEnabled(false)
+      setIsPreventThreadingEnabled(false)
+      setIsDarkMode(false)
+      setHideWorkingFiles(true)
+      setActiveEditor('')
+      setEmailAddresses([])
+      setInputSenderSettings({
+        host: '',
+        port: '',
+        username: '',
+        pass: '',
+        from: '',
+      })
+      return
+    }
+
     const editorSettings = doc(db, 'config', 'editorSettings')
     const unsubscribe = onSnapshot(
       editorSettings,
@@ -50,7 +79,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     )
 
     return () => unsubscribe()
-  }, [])
+  }, [user])
 
   return (
     <AppContext.Provider
@@ -73,6 +102,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setHideWorkingFiles,
         isDarkMode,
         setIsDarkMode,
+        user,
       }}>
       {children}
     </AppContext.Provider>
