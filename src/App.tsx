@@ -15,15 +15,10 @@ import InputToggleWorkingFiles from './components/InputToggleWorkingFiles'
 import InputToggleEditorTheme from './components/InputToggleEditorTheme'
 import { editorActionsStyles, inputActionsStyles, inputConfigStyles, inputSenderSettingsStyles } from './styles/global.styles'
 import usePreferredTheme from './utils/usePreferredTheme'
-import { useEffect } from 'react'
-import { signIn } from './firebase'
+import Authenticator from './components/Authenticator'
 
 function App() {
   const theme = usePreferredTheme()
-
-  useEffect(() => {
-    signIn()
-  }, [])
 
   return (
     <>
@@ -38,6 +33,7 @@ function App() {
               <InputSenderSettings />
             </Box>
             <Box sx={inputActionsStyles}>
+              <Authenticator />
               <InputToggleEditorTheme />
               <InputToggleWorkingFiles />
               <InputUpdateFiles />
