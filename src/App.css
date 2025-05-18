@@ -73,6 +73,7 @@ button:hover {
   .rti--container, 
   .rti--input {
     background-color: unset !important;
+    color: #fff;
   }
 
   .rti--tag {
