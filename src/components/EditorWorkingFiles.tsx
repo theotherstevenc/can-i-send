@@ -22,7 +22,12 @@ const EditorWorkingFiles = () => {
 
   useEffect(() => {
     if (!user) {
-      setFiles([]) // Clear files if user is not authenticated
+      setHtml('')
+      setText('')
+      setAmp('')
+      setWorkingFileID('')
+      setWorkingFileName('')
+      setFiles([])
       return
     }
     const workingFiles = collection(db, 'workingFiles')
