@@ -33,13 +33,13 @@ function App() {
               <InputSenderSettings />
             </Box>
             <Box sx={inputActionsStyles}>
-              <Authenticator />
               <InputToggleEditorTheme />
               <InputToggleWorkingFiles />
+              <InputCreateNewFile />
               <InputUpdateFiles />
               <InputDeleteFile />
-              <InputCreateNewFile />
               <InputFileUpload />
+              <Authenticator />
             </Box>
           </Box>
 
