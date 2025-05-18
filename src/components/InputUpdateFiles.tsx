@@ -19,7 +19,11 @@ const InputUpdateFiles = () => {
     }
     setOpen(true)
   }
-  const handleClose = () => setOpen(false)
+
+  const handleClose = () => {
+    setOpen(false)
+    setFileName('')
+  }
 
   const COLLECTION = 'workingFiles'
   const DOCUMENT = workingFileID
