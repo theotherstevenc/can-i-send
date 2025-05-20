@@ -69,6 +69,11 @@ button:hover {
   overflow: hidden;
 }
 
+.warn-collapse {
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}
+
 @media (prefers-color-scheme: dark) {
   .gutter {
     background-color: #333;
