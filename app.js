@@ -1,5 +1,4 @@
 import 'dotenv/config'
-import bcrypt from 'bcrypt'
 import CryptoJS from 'crypto-js'
 import cors from 'cors'
 import express from 'express'
