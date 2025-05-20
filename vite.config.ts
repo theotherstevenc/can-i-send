@@ -28,6 +28,8 @@ export default defineConfig({
             if (id.includes('@mui/material')) return 'mui-material'
             if (id.includes('react-tag-input-component')) return 'tag-input'
             return 'vendor'
+          } else {
+            return undefined
           }
         },
       },
