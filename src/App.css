@@ -33,7 +33,6 @@ button:hover {
   display: flex;
   flex-direction: row;
   flex-grow: 1;
-
 }
 
 .gutter {
@@ -45,6 +44,7 @@ button:hover {
 .gutter.gutter-horizontal {
   background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
   cursor: col-resize;
+  width: 15px !important;
 }
 
 .rti--container {
@@ -83,7 +83,7 @@ button:hover {
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
   }
 
-  .rti--container, 
+  .rti--container,
   .rti--input {
     background-color: unset !important;
     color: #fff;
@@ -93,5 +93,4 @@ button:hover {
     background-color: #90caf9 !important;
     color: #000;
   }
-
 }

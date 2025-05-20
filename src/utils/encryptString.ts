@@ -1,3 +1,5 @@
+import { ERROR_ENCRYPTING_STRING } from './constants'
+
 export const encryptString = async (text: string): Promise<string> => {
   const API_URL = '/api/encrypt'
   const HTTP_METHOD_POST = 'POST'
@@ -19,7 +21,7 @@ export const encryptString = async (text: string): Promise<string> => {
     const data = await response.json()
     return data.encrypted
   } catch (error) {
-    console.error('Error encrypting string:', error)
+    console.error(ERROR_ENCRYPTING_STRING, error)
     return ''
   }
 }

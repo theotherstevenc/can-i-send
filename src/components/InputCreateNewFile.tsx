@@ -26,6 +26,7 @@ const InputCreateNewFile = () => {
   const handleConfirm = async () => {
     setIsMinifyEnabled(false)
     setIsWordWrapEnabled(false)
+    setWorkingFileID('')
 
     if (fileName.trim()) {
       await createNewFile(fileName, boilerPlateMarkup, isBoilerplateApplied, setWorkingFileID, setWorkingFileName, setHtml, setText, setAmp)
