@@ -49,7 +49,7 @@
     "nodemon": "^3.1.9",
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.24.1",
-    "vite": "^6.3.2"
+    "vite": "^6.3.5"
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "4.6.1"
