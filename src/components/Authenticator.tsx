@@ -1,20 +1,19 @@
-import { getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth'
-import { StyledIconButton } from './InputIconButton'
-import { BTN_LABEL_CANCEL, BTN_LABEL_LOGIN, BTN_LABEL_LOGOUT, BTN_LABEL_OK, LABEL_CLOSE } from '../utils/constants'
-import LogoutIcon from '@mui/icons-material/Logout'
-import LoginIcon from '@mui/icons-material/Login'
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField, Tooltip } from '@mui/material'
-import CloseIcon from '@mui/icons-material/Close'
-
 import { useState } from 'react'
 import { useAppContext } from '../context/AppContext'
+import { getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth'
+import { BTN_LABEL_CANCEL, BTN_LABEL_LOGIN, BTN_LABEL_LOGOUT, BTN_LABEL_OK, LABEL_CLOSE } from '../utils/constants'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField, Tooltip } from '@mui/material'
+import { StyledIconButton } from './InputIconButton'
+import { iconButtonStyles } from '../styles/global.styles'
+import LogoutIcon from '@mui/icons-material/Logout'
+import LoginIcon from '@mui/icons-material/Login'
+import CloseIcon from '@mui/icons-material/Close'
 
 export const Authenticator = () => {
   const auth = getAuth()
   const { user } = useAppContext()
 
   const [open, setOpen] = useState(false)
-
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -26,6 +25,7 @@ export const Authenticator = () => {
       handleLogout()
     }
   }
+
   const handleClose = () => {
     setOpen(false)
   }
@@ -60,14 +60,7 @@ export const Authenticator = () => {
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth='sm'>
         <DialogTitle>
           {BTN_LABEL_LOGIN}
-          <IconButton
-            aria-label={LABEL_CLOSE}
-            onClick={handleClose}
-            sx={{
-              position: 'absolute',
-              right: 8,
-              top: 8,
-            }}>
+          <IconButton aria-label={LABEL_CLOSE} onClick={handleClose} sx={iconButtonStyles}>
             <CloseIcon />
           </IconButton>
         </DialogTitle>

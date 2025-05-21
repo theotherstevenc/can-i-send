@@ -1,12 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect } from 'react'
-import { Box } from '@mui/material'
-import { Editor } from '@monaco-editor/react'
-import Split from 'react-split'
-
+import { db } from '../firebase'
 import { useAppContext } from '../context/AppContext'
 import { useEditorContext } from '../context/EditorContext'
-
+import { Box } from '@mui/material'
+import { useEffect } from 'react'
+import { Editor } from '@monaco-editor/react'
+import { updateFirestoreDoc } from '../utils/updateFirestoreDoc'
 import { workspaceEditorStyles, workspacePreviewIframeStyles } from '../styles/global.styles'
 import {
   EDITOR_DARK_MODE,
@@ -21,8 +20,7 @@ import {
 } from '../utils/constants'
 import getSanitizedValue from '../utils/getSanitizedValue'
 import usePersistentSizes from '../utils/usePersistentSizes'
-import { db } from '../firebase'
-import { updateFirestoreDoc } from '../utils/updateFirestoreDoc'
+import Split from 'react-split'
 
 const EditorWorkspacePreview = () => {
   const { html, setHtml, text, setText, amp, setAmp, workingFileID, deletedWorkingFileID } = useEditorContext()
@@ -59,18 +57,22 @@ const EditorWorkspacePreview = () => {
 
   const editors = getEditorsConfig(html, setHtml, text, setText, amp, setAmp)
 
-  const COLLECTION = 'workingFiles'
-  const DOCUMENT = workingFileID
-  const firestoreObj = { html, text, amp }
-  const DEBOUNCE_DELAY = 2000
-
   useEffect(() => {
     if (!workingFileID || workingFileID === deletedWorkingFileID) {
       return
     }
 
+    const COLLECTION = 'workingFiles'
+    const DOCUMENT = workingFileID
+    const firestoreObj = { html, text, amp }
+    const DEBOUNCE_DELAY = 2000
+
     const debounceSave = setTimeout(async () => {
-      updateFirestoreDoc(db, COLLECTION, DOCUMENT, firestoreObj)
+      try {
+        await updateFirestoreDoc(db, COLLECTION, DOCUMENT, firestoreObj)
+      } catch (error) {
+        console.error('Error auto updating Firestore: ', error)
+      }
     }, DEBOUNCE_DELAY)
 
     return () => {

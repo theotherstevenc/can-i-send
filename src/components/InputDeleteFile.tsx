@@ -1,16 +1,20 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Tooltip } from '@mui/material'
-import CloseIcon from '@mui/icons-material/Close'
-import DeleteIcon from '@mui/icons-material/Delete'
+import { db } from '../firebase'
 import { useState } from 'react'
+import { deleteDoc, doc } from 'firebase/firestore'
 import { useEditorContext } from '../context/EditorContext'
 import { StyledIconButton } from './InputIconButton'
+import { iconButtonStyles } from '../styles/global.styles'
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Tooltip } from '@mui/material'
 import { BTN_LABEL_CANCEL, BTN_LABEL_CONFIRM, BTN_LABEL_DELETE, BTN_LABEL_DELETE_CONFIRM, BTN_LABEL_DELETE_ERROR, DIALOG_CANNOT_BE_UNDONE, LABEL_CLOSE } from '../utils/constants'
-import { deleteDoc, doc } from 'firebase/firestore'
-import { db } from '../firebase'
+import CloseIcon from '@mui/icons-material/Close'
+import DeleteIcon from '@mui/icons-material/Delete'
 
 const InputDeleteFile = () => {
   const { deletedWorkingFileID, workingFileID, setHtml, setText, setAmp, workingFileName, setDeletedWorkingFileID } = useEditorContext()
   const [open, setOpen] = useState(false)
+
+  const COLLECTION = 'workingFiles'
+  const DOCUMENT = workingFileID
 
   const handleOpen = () => {
     if (!workingFileID || workingFileID === deletedWorkingFileID) {
@@ -18,10 +22,10 @@ const InputDeleteFile = () => {
     }
     setOpen(true)
   }
-  const handleClose = () => setOpen(false)
 
-  const COLLECTION = 'workingFiles'
-  const DOCUMENT = workingFileID
+  const handleClose = () => {
+    setOpen(false)
+  }
 
   const handleDeleteFile = async () => {
     if (!workingFileID) {
@@ -38,9 +42,9 @@ const InputDeleteFile = () => {
       setDeletedWorkingFileID(workingFileID)
     } catch (error) {
       console.error(BTN_LABEL_DELETE_ERROR, error)
-    } finally {
-      handleClose()
     }
+
+    handleClose()
   }
 
   return (
@@ -54,14 +58,7 @@ const InputDeleteFile = () => {
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>
           {BTN_LABEL_DELETE_CONFIRM}
-          <IconButton
-            aria-label={LABEL_CLOSE}
-            onClick={handleClose}
-            sx={{
-              position: 'absolute',
-              right: 8,
-              top: 8,
-            }}>
+          <IconButton aria-label={LABEL_CLOSE} onClick={handleClose} sx={iconButtonStyles}>
             <CloseIcon />
           </IconButton>
         </DialogTitle>

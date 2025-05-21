@@ -1,12 +1,13 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, IconButton, Tooltip } from '@mui/material'
-import CloseIcon from '@mui/icons-material/Close'
-import EditIcon from '@mui/icons-material/Edit'
+import { db } from '../firebase'
 import { useState } from 'react'
 import { useEditorContext } from '../context/EditorContext'
-import { StyledIconButton } from './InputIconButton'
-import { BTN_LABEL_CANCEL, BTN_LABEL_OK, BTN_LABEL_UPDATE, BTN_LABEL_UPDATE_DIALOG, BTN_LABEL_UPDATE_FAILURE, LABEL_CLOSE } from '../utils/constants'
-import { db } from '../firebase'
 import { updateFirestoreDoc } from '../utils/updateFirestoreDoc'
+import { StyledIconButton } from './InputIconButton'
+import { iconButtonStyles } from '../styles/global.styles'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, IconButton, Tooltip } from '@mui/material'
+import { BTN_LABEL_CANCEL, BTN_LABEL_OK, BTN_LABEL_UPDATE, BTN_LABEL_UPDATE_DIALOG, BTN_LABEL_UPDATE_FAILURE, LABEL_CLOSE } from '../utils/constants'
+import CloseIcon from '@mui/icons-material/Close'
+import EditIcon from '@mui/icons-material/Edit'
 
 const InputUpdateFiles = () => {
   const { deletedWorkingFileID, workingFileID, workingFileName, setWorkingFileName } = useEditorContext()
@@ -20,6 +21,7 @@ const InputUpdateFiles = () => {
     setOpen(true)
   }
 
+  // TODO: handle if text field is cleared and user clicks away
   const handleClose = () => {
     setOpen(false)
     setFileName('')
@@ -32,7 +34,7 @@ const InputUpdateFiles = () => {
   const handleConfirm = async () => {
     if (!workingFileID) return
 
-    if (fileName.trim()) {
+    if (fileName) {
       try {
         await updateFirestoreDoc(db, COLLECTION, DOCUMENT, firestoreObj)
         setWorkingFileName(fileName)
@@ -54,14 +56,7 @@ const InputUpdateFiles = () => {
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth='sm'>
         <DialogTitle>
           {BTN_LABEL_UPDATE}
-          <IconButton
-            aria-label={LABEL_CLOSE}
-            onClick={handleClose}
-            sx={{
-              position: 'absolute',
-              right: 8,
-              top: 8,
-            }}>
+          <IconButton aria-label={LABEL_CLOSE} onClick={handleClose} sx={iconButtonStyles}>
             <CloseIcon />
           </IconButton>
         </DialogTitle>

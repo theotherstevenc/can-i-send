@@ -1,10 +1,10 @@
-import { TextField } from '@mui/material'
-import { SenderSettings } from '../interfaces'
+import { db } from '../firebase'
 import { useAppContext } from '../context/AppContext'
 import { encryptString } from '../utils/encryptString'
-import { SETTINGS_FROM, SETTINGS_HOST, SETTINGS_PASS, SETTINGS_PORT, SETTINGS_USER } from '../utils/constants'
-import { db } from '../firebase'
 import { updateFirestoreDoc } from '../utils/updateFirestoreDoc'
+import { TextField } from '@mui/material'
+import { SenderSettings } from '../interfaces'
+import { SETTINGS_FROM, SETTINGS_HOST, SETTINGS_PASS, SETTINGS_PORT, SETTINGS_USER } from '../utils/constants'
 
 const COLLECTION = 'config'
 const DOCUMENT = 'editorSettings'
@@ -25,13 +25,21 @@ const InputSenderSettings = () => {
 
     if (isBlur) {
       const firestoreObj = { ...inputSenderSettings, [id]: processedValue }
-      updateFirestoreDoc(db, COLLECTION, DOCUMENT, firestoreObj)
+      try {
+        await updateFirestoreDoc(db, COLLECTION, DOCUMENT, firestoreObj)
+      } catch (error) {
+        console.error('Error updating Firestore document:', error)
+      }
     }
   }
 
-  const handleEvent = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>, isBlur: boolean) => {
+  const handleEvent = async (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>, isBlur: boolean) => {
     const { id, value } = e.target
-    handleInput(id, value, isBlur)
+    try {
+      await handleInput(id, value, isBlur)
+    } catch (error) {
+      console.error('Error handling input event:', error)
+    }
   }
 
   const textFields = [

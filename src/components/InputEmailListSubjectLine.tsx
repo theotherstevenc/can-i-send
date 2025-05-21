@@ -1,11 +1,11 @@
-import { Box, TextField } from '@mui/material'
-import Split from 'react-split'
-import { TagsInput } from 'react-tag-input-component'
-import { useAppContext } from '../context/AppContext'
-import usePersistentSizes from '../utils/usePersistentSizes'
-import { INPUT_EMAIL_LIST_SUBJECT_LINE_SPLIT_SIZES_DEFAULT, INPUT_EMAIL_LIST_SUBJECT_LINE_SPLIT_SIZES_STORAGE_KEY } from '../utils/constants'
 import { db } from '../firebase'
+import { useAppContext } from '../context/AppContext'
 import { updateFirestoreDoc } from '../utils/updateFirestoreDoc'
+import { Box, TextField } from '@mui/material'
+import { TagsInput } from 'react-tag-input-component'
+import { INPUT_EMAIL_LIST_SUBJECT_LINE_SPLIT_SIZES_DEFAULT, INPUT_EMAIL_LIST_SUBJECT_LINE_SPLIT_SIZES_STORAGE_KEY } from '../utils/constants'
+import Split from 'react-split'
+import usePersistentSizes from '../utils/usePersistentSizes'
 
 const COLLECTION = 'config'
 const DOCUMENT = 'editorSettings'
@@ -19,14 +19,22 @@ const InputEmailListSubjectLine = () => {
   }
 
   const handleBlur = async () => {
-    const firestoreObj = { subject }
-    updateFirestoreDoc(db, COLLECTION, DOCUMENT, firestoreObj)
+    try {
+      const firestoreObj = { subject }
+      await updateFirestoreDoc(db, COLLECTION, DOCUMENT, firestoreObj)
+    } catch (error) {
+      console.error('Error updating subject in Firestore: ', error)
+    }
   }
 
   const handleEmailAddressesChange = async (newEmailAddresses: string[]) => {
-    const firestoreObj = { emailAddresses: newEmailAddresses }
-    setEmailAddresses(newEmailAddresses)
-    updateFirestoreDoc(db, COLLECTION, DOCUMENT, firestoreObj)
+    try {
+      const firestoreObj = { emailAddresses: newEmailAddresses }
+      setEmailAddresses(newEmailAddresses)
+      await updateFirestoreDoc(db, COLLECTION, DOCUMENT, firestoreObj)
+    } catch (error) {
+      console.error('Error updating email addresses in Firestore: ', error)
+    }
   }
 
   return (

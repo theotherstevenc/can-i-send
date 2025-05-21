@@ -1,11 +1,11 @@
+import { db } from '../firebase'
 import { Tooltip } from '@mui/material'
+import { useAppContext } from '../context/AppContext'
+import { StyledIconButton } from './InputIconButton'
+import { updateFirestoreDoc } from '../utils/updateFirestoreDoc'
+import { TOGGLE_BTN_DARK_MODE, TOGGLE_BTN_LIGHT_MODE } from '../utils/constants'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
 import LightModeIcon from '@mui/icons-material/LightMode'
-import { StyledIconButton } from './InputIconButton'
-import { TOGGLE_BTN_DARK_MODE, TOGGLE_BTN_LIGHT_MODE } from '../utils/constants'
-import { useAppContext } from '../context/AppContext'
-import { db } from '../firebase'
-import { updateFirestoreDoc } from '../utils/updateFirestoreDoc'
 
 const COLLECTION = 'config'
 const DOCUMENT = 'editorSettings'
@@ -14,10 +14,13 @@ const InputToggleEditorTheme = () => {
   const { isDarkMode, setIsDarkMode } = useAppContext()
 
   const handleOpen = async () => {
-    const firestoreObj = { isDarkMode: !isDarkMode }
-    setIsDarkMode(!isDarkMode)
-
-    updateFirestoreDoc(db, COLLECTION, DOCUMENT, firestoreObj)
+    try {
+      const firestoreObj = { isDarkMode: !isDarkMode }
+      setIsDarkMode(!isDarkMode)
+      await updateFirestoreDoc(db, COLLECTION, DOCUMENT, firestoreObj)
+    } catch (error) {
+      console.error('Error updating display mode: ', error)
+    }
   }
 
   const handleToggleButtonLabel = isDarkMode ? TOGGLE_BTN_LIGHT_MODE : TOGGLE_BTN_DARK_MODE

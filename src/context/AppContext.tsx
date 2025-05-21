@@ -1,11 +1,10 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, useEffect, useState } from 'react'
+import { onAuthStateChanged, User } from 'firebase/auth'
 import { doc, onSnapshot } from 'firebase/firestore'
 import { auth, db } from '../firebase'
-
 import { AppContextProps, SenderSettings } from '../interfaces'
 import { FETCH_ERROR } from '../utils/constants'
-import { onAuthStateChanged, User } from 'firebase/auth'
 
 const AppContext = createContext<AppContextProps | undefined>(undefined)
 
