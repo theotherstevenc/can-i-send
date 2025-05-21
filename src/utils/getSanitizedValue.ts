@@ -16,7 +16,7 @@ const getSanitizedValue = (editor: { type: string; value: string }): string => {
   if (editor.type === EDITOR_OPTION_TEXT) {
     return rootColorScheme + '<pre class=pre>' + DOMPurify.sanitize(editor.value) + '</pre>'
   }
-  return DOMPurify.sanitize(editor.value)
+  return editor.value
 }
 
 export default getSanitizedValue

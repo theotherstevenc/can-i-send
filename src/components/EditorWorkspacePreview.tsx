@@ -3,7 +3,7 @@ import { db } from '../firebase'
 import { useAppContext } from '../context/AppContext'
 import { useEditorContext } from '../context/EditorContext'
 import { Box } from '@mui/material'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { Editor } from '@monaco-editor/react'
 import { updateFirestoreDoc } from '../utils/updateFirestoreDoc'
 import { workspaceEditorStyles, workspacePreviewIframeStyles } from '../styles/global.styles'
@@ -26,6 +26,7 @@ const EditorWorkspacePreview = () => {
   const { html, setHtml, text, setText, amp, setAmp, workingFileID, deletedWorkingFileID } = useEditorContext()
   const { isDarkMode, isMinifyEnabled, isWordWrapEnabled, activeEditor } = useAppContext()
 
+  const iframeRef = useRef<HTMLIFrameElement>(null)
   const [sizes, setSizes] = usePersistentSizes(EDITOR_WORKSPACE_PREVIEW_SPLIT_SIZES_STORAGE_KEY, EDITOR_WORKSPACE_PREVIEW_SPLIT_SIZES_DEFAULT)
 
   const getEditorsConfig = (html: string, setHtml: (html: string) => void, text: string, setText: (text: string) => void, amp: string, setAmp: (amp: string) => void) => [
@@ -80,9 +81,22 @@ const EditorWorkspacePreview = () => {
     }
   }, [html, text, amp])
 
+  const handleDragEnd = (newSizes: number[]) => {
+    setSizes(newSizes)
+
+    if (iframeRef.current) {
+      // This toggle and forced reflow hack is necessary to fix iframe scrolling issues
+      // that occur after resizing. By toggling the display property and forcing a reflow,
+      // we ensure the iframe content updates correctly.
+      iframeRef.current.style.display = 'none'
+      void iframeRef.current.offsetHeight
+      iframeRef.current.style.display = 'block'
+    }
+  }
+
   return (
     <Box sx={workspaceEditorStyles}>
-      <Split className='split-component' sizes={sizes} onDragEnd={setSizes}>
+      <Split className='split-component' sizes={sizes} onDragEnd={handleDragEnd}>
         <Box>
           {editors.map(
             (editor) =>
@@ -108,7 +122,7 @@ const EditorWorkspacePreview = () => {
         </Box>
         <Box>
           {editors.map((editor) => {
-            return activeEditor === editor.type && <iframe style={workspacePreviewIframeStyles} key={editor.type} srcDoc={getSanitizedValue(editor)} />
+            return activeEditor === editor.type && <iframe ref={iframeRef} style={workspacePreviewIframeStyles} key={editor.type} srcDoc={getSanitizedValue(editor)} />
           })}
         </Box>
       </Split>
