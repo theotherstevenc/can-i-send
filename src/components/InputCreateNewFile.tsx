@@ -1,13 +1,14 @@
 import { useState } from 'react'
+import { useAppContext } from '../context/AppContext'
+import { useEditorContext } from '../context/EditorContext'
+import { boilerPlateMarkup } from '../utils/bolierpateMarkup'
+import { StyledIconButton } from './InputIconButton'
+import { createNewFile } from '../utils/createNewFile'
+import { iconButtonStyles } from '../styles/global.styles'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, IconButton, FormControlLabel, Checkbox, Tooltip } from '@mui/material'
+import { BTN_LABEL_CANCEL, BTN_LABEL_CREATE, BTN_LABEL_CREATE_CHECKBOX, BTN_LABEL_CREATE_DIALOG, BTN_LABEL_CREATE_ERROR, BTN_LABEL_OK, LABEL_CLOSE } from '../utils/constants'
 import AddIcon from '@mui/icons-material/Add'
 import CloseIcon from '@mui/icons-material/Close'
-import { boilerPlateMarkup } from '../utils/bolierpateMarkup'
-import { useEditorContext } from '../context/EditorContext'
-import { StyledIconButton } from './InputIconButton'
-import { useAppContext } from '../context/AppContext'
-import { createNewFile } from '../utils/createNewFile'
-import { BTN_LABEL_CANCEL, BTN_LABEL_CREATE, BTN_LABEL_CREATE_CHECKBOX, BTN_LABEL_CREATE_DIALOG, BTN_LABEL_OK, LABEL_CLOSE } from '../utils/constants'
 
 const InputCreateNewFile = () => {
   const { setIsMinifyEnabled, setIsWordWrapEnabled } = useAppContext()
@@ -16,22 +17,24 @@ const InputCreateNewFile = () => {
   const [fileName, setFileName] = useState('')
   const [isBoilerplateApplied, setIsBoilerplateApplied] = useState(false)
 
+  const handleOpen = () => setOpen(true)
+  const handleClose = () => setOpen(false)
+
   const handleChange = (_event: React.SyntheticEvent, checked: boolean) => {
     setIsBoilerplateApplied(checked)
   }
-
-  const handleOpen = () => setOpen(true)
-  const handleClose = () => setOpen(false)
 
   const handleConfirm = async () => {
     setIsMinifyEnabled(false)
     setIsWordWrapEnabled(false)
     setWorkingFileID('')
 
-    if (fileName.trim()) {
+    try {
       await createNewFile(fileName, boilerPlateMarkup, isBoilerplateApplied, setWorkingFileID, setWorkingFileName, setHtml, setText, setAmp)
       setFileName('')
       handleClose()
+    } catch (error) {
+      console.error(BTN_LABEL_CREATE_ERROR, error)
     }
   }
 
@@ -46,14 +49,7 @@ const InputCreateNewFile = () => {
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth='sm'>
         <DialogTitle>
           {BTN_LABEL_CREATE}
-          <IconButton
-            aria-label={LABEL_CLOSE}
-            onClick={handleClose}
-            sx={{
-              position: 'absolute',
-              right: 8,
-              top: 8,
-            }}>
+          <IconButton aria-label={LABEL_CLOSE} onClick={handleClose} sx={iconButtonStyles}>
             <CloseIcon />
           </IconButton>
         </DialogTitle>
