@@ -14,10 +14,6 @@ const EditorSelectorButtons = () => {
   const handleClick = (editorType: string) => {
     const firestoreObj = { activeEditor: editorType }
 
-    if (!firestoreObj) {
-      return
-    }
-
     try {
       setActiveEditor(editorType)
       updateFirestoreDoc(db, COLLECTION, DOCUMENT, firestoreObj)
