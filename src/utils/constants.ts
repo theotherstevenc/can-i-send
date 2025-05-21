@@ -29,6 +29,7 @@ export const EDITOR_LIGHT_MODE = 'light'
 export const EDITOR_OPTION_AMP = 'amp'
 export const EDITOR_OPTION_HTML = 'html'
 export const EDITOR_OPTION_TEXT = 'text'
+export const EDITOR_OPTION_ERROR = 'Error setting active editor:'
 export const EDITOR_WORKSPACE_PREVIEW_SPLIT_SIZES_DEFAULT = [50, 50]
 export const EDITOR_WORKSPACE_PREVIEW_SPLIT_SIZES_STORAGE_KEY = 'EditorWorkspacePreviewSplitSizes'
 export const ERROR_CREATING_NEW_FILE = 'Error creating new file:'
