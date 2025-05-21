@@ -37,3 +37,9 @@ export const editorActionsStyles = {
   gap: '0.175rem',
   margin: '0 0.5rem 0.5rem 0.5rem',
 }
+
+export const iconButtonStyles = {
+  position: 'absolute',
+  right: 8,
+  top: 8,
+}
