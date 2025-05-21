@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Box, Button } from '@mui/material'
-import { useEffect } from 'react'
-import { WorkingFile } from '../interfaces'
-import { useEditorContext } from '../context/EditorContext'
-import { BTN_VARIANT_CONTAINED, BTN_VARIANT_OUTLINED, FETCH_ERROR } from '../utils/constants'
-import { collection, onSnapshot } from 'firebase/firestore'
 import { db } from '../firebase'
+import { useEffect } from 'react'
 import { useAppContext } from '../context/AppContext'
+import { collection, onSnapshot } from 'firebase/firestore'
+import { useEditorContext } from '../context/EditorContext'
+import { Box, Button } from '@mui/material'
+import { WorkingFile } from '../interfaces'
+import { BTN_VARIANT_CONTAINED, BTN_VARIANT_OUTLINED, FETCH_ERROR } from '../utils/constants'
 
 const EditorWorkingFiles = () => {
   const { setHtml, setText, setAmp, workingFileID, setWorkingFileID, setWorkingFileName, files, setFiles } = useEditorContext()
