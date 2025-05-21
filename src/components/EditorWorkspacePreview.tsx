@@ -85,6 +85,9 @@ const EditorWorkspacePreview = () => {
     setSizes(newSizes)
 
     if (iframeRef.current) {
+      // This toggle and forced reflow hack is necessary to fix iframe scrolling issues
+      // that occur after resizing. By toggling the display property and forcing a reflow,
+      // we ensure the iframe content updates correctly.
       iframeRef.current.style.display = 'none'
       void iframeRef.current.offsetHeight
       iframeRef.current.style.display = 'block'
