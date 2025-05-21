@@ -1,11 +1,11 @@
-import { Box } from '@mui/material'
-import EditorWorkspacePreview from './EditorWorkspacePreview'
-import Split from 'react-split'
-import EditorWorkingFiles from './EditorWorkingFiles'
 import { useAppContext } from '../context/AppContext'
-import usePersistentSizes from '../utils/usePersistentSizes'
-import { EDITOR_CONTAINER_SPLIT_SIZES_DEFAULT, EDITOR_CONTAINER_SPLIT_SIZES_MINIMUM, EDITOR_CONTAINER_SPLIT_SIZES_STORAGE_KEY } from '../utils/constants'
+import { Box } from '@mui/material'
 import { clsx } from 'clsx'
+import { EDITOR_CONTAINER_SPLIT_SIZES_DEFAULT, EDITOR_CONTAINER_SPLIT_SIZES_ERROR, EDITOR_CONTAINER_SPLIT_SIZES_MINIMUM, EDITOR_CONTAINER_SPLIT_SIZES_STORAGE_KEY } from '../utils/constants'
+import Split from 'react-split'
+import EditorWorkspacePreview from './EditorWorkspacePreview'
+import EditorWorkingFiles from './EditorWorkingFiles'
+import usePersistentSizes from '../utils/usePersistentSizes'
 
 const EditorContainer = () => {
   const { hideWorkingFiles, setHideWorkingFiles } = useAppContext()
@@ -19,9 +19,13 @@ const EditorContainer = () => {
   }
 
   const handleDragEnd = (newSizes: number[]) => {
-    const isWorkingFilesHidden = newSizes[0] < minThreshold
-    setHideWorkingFiles(isWorkingFilesHidden)
-    setSizes(isWorkingFilesHidden ? [0, 100] : newSizes)
+    try {
+      const isWorkingFilesHidden = newSizes[0] < minThreshold
+      setHideWorkingFiles(isWorkingFilesHidden)
+      setSizes(isWorkingFilesHidden ? [0, 100] : newSizes)
+    } catch (error) {
+      console.error(EDITOR_CONTAINER_SPLIT_SIZES_ERROR, error)
+    }
   }
 
   const workingFilesClassName = clsx({

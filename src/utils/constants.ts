@@ -21,6 +21,7 @@ export const BTN_VARIANT_CONTAINED = 'contained'
 export const BTN_VARIANT_OUTLINED = 'outlined'
 export const DIALOG_CANNOT_BE_UNDONE = 'This cannot be undone. Are you sure you want to delete this file?'
 export const EDITOR_CONTAINER_SPLIT_SIZES_DEFAULT = [10, 90]
+export const EDITOR_CONTAINER_SPLIT_SIZES_ERROR = 'Error after resize:'
 export const EDITOR_CONTAINER_SPLIT_SIZES_MINIMUM = [10, 100]
 export const EDITOR_CONTAINER_SPLIT_SIZES_STORAGE_KEY = 'EditorContainerSplitSizes'
 export const EDITOR_DARK_MODE = 'vs-dark'
