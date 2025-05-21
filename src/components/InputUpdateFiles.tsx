@@ -21,6 +21,7 @@ const InputUpdateFiles = () => {
     setOpen(true)
   }
 
+  // TODO: handle if text field is cleared and user clicks away
   const handleClose = () => {
     setOpen(false)
     setFileName('')
@@ -33,7 +34,7 @@ const InputUpdateFiles = () => {
   const handleConfirm = async () => {
     if (!workingFileID) return
 
-    if (fileName.trim()) {
+    if (fileName) {
       try {
         await updateFirestoreDoc(db, COLLECTION, DOCUMENT, firestoreObj)
         setWorkingFileName(fileName)
