@@ -1,10 +1,26 @@
 import { defineConfig } from 'vite'
+import { createHtmlPlugin } from 'vite-plugin-html'
+import pkg from './package.json'
+
 import { visualizer } from 'rollup-plugin-visualizer'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
+  define: {
+    __APP_VERSION__: JSON.stringify(pkg.version),
+  },
   optimizeDeps: { exclude: ['node_modules/.cache'] },
-  plugins: [react(), visualizer()],
+  plugins: [
+    react(),
+    visualizer(),
+    createHtmlPlugin({
+      inject: {
+        data: {
+          appVersion: pkg.version,
+        },
+      },
+    }),
+  ],
   build: {
     outDir: 'build',
     minify: 'terser',
@@ -19,6 +35,9 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
+        entryFileNames: `assets/[name].v${pkg.version}.js`,
+        chunkFileNames: `assets/[name].v${pkg.version}.js`,
+        assetFileNames: `assets/[name].v${pkg.version}.[ext]`,
         manualChunks(id) {
           if (id.includes('node_modules')) {
             if (id.includes('crypto-js')) return 'crypto'
