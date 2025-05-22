@@ -4,8 +4,10 @@ import cors from 'cors'
 import express from 'express'
 import fileUpload from 'express-fileupload'
 import nodemailer from 'nodemailer'
+import fs from 'fs'
 import { simpleParser } from 'mailparser'
 
+const pkg = JSON.parse(fs.readFileSync('./package.json', 'utf8'))
 const PORT = process.env.PORT || 8080
 const app = express()
 
@@ -105,6 +107,10 @@ app.post('/api/upload', async (req, res) => {
   const file = req.files.file
   const parsedContent = await parseUpload(file)
   res.json(parsedContent)
+})
+
+app.get('/api/version', (req, res) => {
+  res.json({ name: pkg.name, version: pkg.version })
 })
 
 app.listen(PORT, () =>
