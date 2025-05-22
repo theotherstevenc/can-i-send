@@ -36,8 +36,8 @@ export default defineConfig({
     rollupOptions: {
       output: {
         entryFileNames: `assets/[name].v${pkg.version}.js`,
-        chunkFileNames: `assets/[name].js`,
-        assetFileNames: `assets/[name].[ext]`,
+        chunkFileNames: `assets/[name].v${pkg.version}.js`,
+        assetFileNames: `assets/[name].v${pkg.version}.[ext]`,
         manualChunks(id) {
           if (id.includes('node_modules')) {
             if (id.includes('crypto-js')) return 'crypto'
