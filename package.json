@@ -14,7 +14,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "start": "npx nodemon app.js",
-    "start-dev": "NODE_ENV=development npx nodemon app.js"
+    "start-dev": "NODE_ENV=development npx nodemon app.js",
+    "tag": "git tag -a $npm_package_version -m \"Release version $npm_package_version\" && git push origin $npm_package_version"
   },
   "dependencies": {
     "@emotion/styled": "^11.14.0",
