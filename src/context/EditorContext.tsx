@@ -1,6 +1,8 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, useState } from 'react'
 import { EditorContextProps, WorkingFile } from '../interfaces'
+import { WORKING_FILE_ID_KEY } from '../utils/constants'
+import usePersistentValue from '../utils/usePersistentSizes'
 
 const EditorContext = createContext<EditorContextProps | undefined>(undefined)
 
@@ -9,7 +11,7 @@ export const EditorProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [originalHtml, setOriginalHtml] = useState<string>('')
   const [text, setText] = useState<string>('')
   const [amp, setAmp] = useState<string>('')
-  const [workingFileID, setWorkingFileID] = useState<string>('')
+  const [workingFileID, setWorkingFileID] = usePersistentValue<string>(WORKING_FILE_ID_KEY, '')
   const [deletedWorkingFileID, setDeletedWorkingFileID] = useState<string>('')
   const [workingFileName, setWorkingFileName] = useState<string>('')
   const [files, setFiles] = useState<WorkingFile[]>([])
