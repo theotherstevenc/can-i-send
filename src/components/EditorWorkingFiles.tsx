@@ -21,15 +21,6 @@ const EditorWorkingFiles = () => {
   }
 
   useEffect(() => {
-    if (!user) {
-      setHtml('')
-      setText('')
-      setAmp('')
-      setWorkingFileID('')
-      setWorkingFileName('')
-      setFiles([])
-      return
-    }
     const workingFiles = collection(db, 'workingFiles')
     const unsubscribe = onSnapshot(
       workingFiles,

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useAppContext } from '../context/AppContext'
+import { useEditorContext } from '../context/EditorContext'
 import { getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth'
 import { BTN_LABEL_CANCEL, BTN_LABEL_LOGIN, BTN_LABEL_LOGOUT, BTN_LABEL_OK, LABEL_CLOSE } from '../utils/constants'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField, Tooltip } from '@mui/material'
@@ -12,6 +13,7 @@ import CloseIcon from '@mui/icons-material/Close'
 export const Authenticator = () => {
   const auth = getAuth()
   const { user } = useAppContext()
+  const { setHtml, setText, setAmp, setWorkingFileID, setWorkingFileName, setFiles } = useEditorContext()
 
   const [open, setOpen] = useState(false)
   const [username, setUsername] = useState('')
@@ -33,6 +35,12 @@ export const Authenticator = () => {
   const handleLogout = async () => {
     try {
       await signOut(auth)
+      setHtml('')
+      setText('')
+      setAmp('')
+      setWorkingFileID('')
+      setWorkingFileName('')
+      setFiles([])
     } catch (error) {
       console.error('Error signing out:', error)
     }
