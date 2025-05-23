@@ -21,6 +21,7 @@ const EditorWorkingFiles = () => {
   }
 
   useEffect(() => {
+    if (!user) return
     const workingFiles = collection(db, 'workingFiles')
     const unsubscribe = onSnapshot(
       workingFiles,
