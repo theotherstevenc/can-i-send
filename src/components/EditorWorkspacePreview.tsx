@@ -24,7 +24,7 @@ import forceIframeReflow from '../utils/forceIframeReflow'
 import Split from 'react-split'
 
 const EditorWorkspacePreview = () => {
-  const { html, setHtml, text, setText, amp, setAmp, workingFileID, deletedWorkingFileID } = useEditorContext()
+  const { html, setHtml, text, setText, amp, setAmp, workingFileID, deletedWorkingFileID, files } = useEditorContext()
   const { isDarkMode, isMinifyEnabled, isWordWrapEnabled, activeEditor } = useAppContext()
 
   const iframeRef = useRef<HTMLIFrameElement>(null)
@@ -64,6 +64,27 @@ const EditorWorkspacePreview = () => {
       return
     }
 
+    if (!files || files.length === 0) {
+      return
+    }
+
+    const isEditorContentEmpty = html === '' && text === '' && amp === ''
+
+    if (workingFileID && isEditorContentEmpty) {
+      const currentFile = files.find((file) => file.id === workingFileID)
+
+      if (!currentFile) {
+        console.error('File not found in the list of files')
+        return
+      }
+
+      setHtml(currentFile.html)
+      setText(currentFile.text)
+      setAmp(currentFile.amp)
+
+      return
+    }
+
     const COLLECTION = 'workingFiles'
     const DOCUMENT = workingFileID
     const firestoreObj = { html, text, amp }
@@ -80,7 +101,7 @@ const EditorWorkspacePreview = () => {
     return () => {
       clearTimeout(debounceSave)
     }
-  }, [html, text, amp])
+  }, [html, text, amp, files])
 
   const handleDragEnd = (newSizes: number[]) => {
     setSizes(newSizes)
