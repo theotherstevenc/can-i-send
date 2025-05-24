@@ -18,10 +18,10 @@ const InputUpdateFiles = () => {
     if (!workingFileID || workingFileID === deletedWorkingFileID) {
       return
     }
+    setFileName(workingFileName)
     setOpen(true)
   }
 
-  // TODO: handle if text field is cleared and user clicks away
   const handleClose = () => {
     setOpen(false)
     setFileName('')
@@ -67,10 +67,9 @@ const InputUpdateFiles = () => {
             label={BTN_LABEL_UPDATE_DIALOG}
             type='text'
             fullWidth
-            value={fileName || workingFileName}
+            value={fileName}
             onChange={(e) => {
               setFileName(e.target.value)
-              setWorkingFileName(e.target.value)
             }}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
