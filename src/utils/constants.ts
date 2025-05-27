@@ -35,7 +35,6 @@ export const ERROR_CREATING_NEW_FILE = 'Error creating new file:'
 export const ERROR_ENCRYPTING_STRING = 'Error encrypting string:'
 export const ERROR_PARSING_DATA = 'Error parsing data:'
 export const FAILED_TO_PARSE_LOCALSTORAGE = 'Failed to parse from localStorage:'
-export const FETCH_ERROR = 'An error occurred: '
 export const HTTP_STATUS_ERROR = 'HTTP error! status:'
 export const INPUT_EMAIL_LIST_SUBJECT_LINE_SPLIT_SIZES_DEFAULT = [50, 50]
 export const INPUT_EMAIL_LIST_SUBJECT_LINE_SPLIT_SIZES_STORAGE_KEY = 'InputEmailListSubjectLineSplitSizes'
