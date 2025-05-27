@@ -5,8 +5,9 @@ import { boilerPlateMarkup } from '../utils/bolierpateMarkup'
 import { StyledIconButton } from './InputIconButton'
 import { createNewFile } from '../utils/createNewFile'
 import { iconButtonStyles } from '../styles/global.styles'
+import { logError } from '../utils/logError'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, IconButton, FormControlLabel, Checkbox, Tooltip } from '@mui/material'
-import { BTN_LABEL_CANCEL, BTN_LABEL_CREATE, BTN_LABEL_CREATE_CHECKBOX, BTN_LABEL_CREATE_DIALOG, BTN_LABEL_CREATE_ERROR, BTN_LABEL_OK, LABEL_CLOSE } from '../utils/constants'
+import { BTN_LABEL_CANCEL, BTN_LABEL_CREATE, BTN_LABEL_CREATE_CHECKBOX, BTN_LABEL_CREATE_DIALOG, BTN_LABEL_OK, LABEL_CLOSE } from '../utils/constants'
 import AddIcon from '@mui/icons-material/Add'
 import CloseIcon from '@mui/icons-material/Close'
 
@@ -34,7 +35,7 @@ const InputCreateNewFile = () => {
       setFileName('')
       handleClose()
     } catch (error) {
-      console.error(BTN_LABEL_CREATE_ERROR, error)
+      logError('Error creating new file', 'InputCreateNewFile', error)
     }
   }
 

@@ -4,7 +4,8 @@ import { useState } from 'react'
 import { EmailData, SenderSettings } from '../interfaces'
 import { getCurrentDateTime } from '../utils/getCurrentDateTime'
 import { useEditorContext } from '../context/EditorContext'
-import { BTN_LABEL_SEND, FETCH_ERROR, SEND_ALERT_FAILURE, SEND_ALERT_SUCCESS } from '../utils/constants'
+import { logError } from '../utils/logError'
+import { BTN_LABEL_SEND, SEND_ALERT_FAILURE, SEND_ALERT_SUCCESS } from '../utils/constants'
 
 const EditorSendButton = () => {
   const { html, text, amp } = useEditorContext()
@@ -51,7 +52,7 @@ const EditorSendButton = () => {
 
   const handleResponse = (response: Response) => {
     if (!response.ok || response.status !== 200) {
-      throw new Error(FETCH_ERROR + response.statusText)
+      throw new Error('An error returned response.statusText: ' + response.statusText)
     }
     setIsSendSuccessful(true)
   }
@@ -64,7 +65,7 @@ const EditorSendButton = () => {
       const response = await handleRequest(emailData)
       handleResponse(response)
     } catch (error) {
-      console.error(FETCH_ERROR + error)
+      logError('An error occurred while sending the email', 'EditorSendButton', error)
       setIsSendSuccessful(false)
     } finally {
       setOpenBackdrop(false)

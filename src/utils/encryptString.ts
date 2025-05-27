@@ -1,4 +1,4 @@
-import { ERROR_ENCRYPTING_STRING } from './constants'
+import { logError } from './logError'
 
 export const encryptString = async (text: string): Promise<string> => {
   const API_URL = '/api/encrypt'
@@ -21,7 +21,7 @@ export const encryptString = async (text: string): Promise<string> => {
     const data = await response.json()
     return data.encrypted
   } catch (error) {
-    console.error(ERROR_ENCRYPTING_STRING, error)
+    logError('Error encrypting string:', 'encryptString', error)
     return ''
   }
 }
