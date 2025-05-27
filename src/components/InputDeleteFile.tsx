@@ -4,8 +4,9 @@ import { deleteDoc, doc } from 'firebase/firestore'
 import { useEditorContext } from '../context/EditorContext'
 import { StyledIconButton } from './InputIconButton'
 import { iconButtonStyles } from '../styles/global.styles'
+import { logError } from '../utils/logError'
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Tooltip } from '@mui/material'
-import { BTN_LABEL_CANCEL, BTN_LABEL_CONFIRM, BTN_LABEL_DELETE, BTN_LABEL_DELETE_CONFIRM, BTN_LABEL_DELETE_ERROR, DIALOG_CANNOT_BE_UNDONE, LABEL_CLOSE } from '../utils/constants'
+import { BTN_LABEL_CANCEL, BTN_LABEL_CONFIRM, BTN_LABEL_DELETE, BTN_LABEL_DELETE_CONFIRM, DIALOG_CANNOT_BE_UNDONE, LABEL_CLOSE } from '../utils/constants'
 import CloseIcon from '@mui/icons-material/Close'
 import DeleteIcon from '@mui/icons-material/Delete'
 
@@ -41,7 +42,7 @@ const InputDeleteFile = () => {
       setAmp('')
       setDeletedWorkingFileID(workingFileID)
     } catch (error) {
-      console.error(BTN_LABEL_DELETE_ERROR, error)
+      logError('Error deleting file', 'InputDeleteFile', error)
     }
 
     handleClose()

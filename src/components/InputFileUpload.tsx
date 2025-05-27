@@ -5,9 +5,10 @@ import { useAppContext } from '../context/AppContext'
 import { useEditorContext } from '../context/EditorContext'
 
 import { useRef } from 'react'
+import { logError } from '../utils/logError'
 import { createNewFile } from '../utils/createNewFile'
 import { StyledIconButton } from './InputIconButton'
-import { BTN_UPLOAD_INVALID_FILE, BTN_UPLOAD_LABEL, HTTP_STATUS_ERROR } from '../utils/constants'
+import { BTN_UPLOAD_LABEL, HTTP_STATUS_ERROR } from '../utils/constants'
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -33,7 +34,7 @@ const InputFileUpload = () => {
     const file = e.target.files?.[0]
 
     if (!file) {
-      console.error(BTN_UPLOAD_INVALID_FILE)
+      logError('No file selected or file is invalid', 'InputFileUpload')
       return
     }
 

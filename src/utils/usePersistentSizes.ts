@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { FAILED_TO_PARSE_LOCALSTORAGE } from './constants'
+import { logError } from './logError'
 
 function usePersistentValue<T>(key: string, defaultValue: T) {
   const [value, setValue] = useState<T>(() => {
@@ -8,7 +8,7 @@ function usePersistentValue<T>(key: string, defaultValue: T) {
       try {
         return JSON.parse(saved)
       } catch (error) {
-        console.error(FAILED_TO_PARSE_LOCALSTORAGE, error)
+        logError('Failed to parse from localStorage:', 'usePersistentSize', error)
         return defaultValue
       }
     }

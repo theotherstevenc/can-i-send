@@ -1,6 +1,6 @@
 import { addDoc, collection } from 'firebase/firestore'
 import { db } from '../firebase'
-import { ERROR_CREATING_NEW_FILE, ERROR_PARSING_DATA } from './constants'
+import { logError } from './logError'
 
 export const createNewFile = async (
   fileName: string,
@@ -28,7 +28,7 @@ export const createNewFile = async (
       try {
         parsedBoilerPlateMarkup = JSON.parse(reqBoilerPlateMarkup)
       } catch (error) {
-        console.error(ERROR_PARSING_DATA, error)
+        logError('Error parsing data', 'createNewFile', error)
       }
     }
 
@@ -48,7 +48,7 @@ export const createNewFile = async (
     setText(newFileData.text || '')
     setAmp(newFileData.amp || '')
   } catch (error) {
-    console.error(ERROR_CREATING_NEW_FILE, error)
+    logError('Error creating new file', 'createNewFile', error)
     return false
   }
 }
