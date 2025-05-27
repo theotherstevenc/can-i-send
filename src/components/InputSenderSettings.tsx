@@ -5,6 +5,7 @@ import { updateFirestoreDoc } from '../utils/updateFirestoreDoc'
 import { TextField } from '@mui/material'
 import { SenderSettings } from '../interfaces'
 import { SETTINGS_FROM, SETTINGS_HOST, SETTINGS_PASS, SETTINGS_PORT, SETTINGS_USER } from '../utils/constants'
+import { logError } from '../utils/logError'
 
 const COLLECTION = 'config'
 const DOCUMENT = 'editorSettings'
@@ -28,7 +29,7 @@ const InputSenderSettings = () => {
       try {
         await updateFirestoreDoc(db, COLLECTION, DOCUMENT, firestoreObj)
       } catch (error) {
-        console.error('Error updating Firestore document:', error)
+        logError('Error updating Firestore document', 'InputSenderSettings', error)
       }
     }
   }
@@ -38,7 +39,7 @@ const InputSenderSettings = () => {
     try {
       await handleInput(id, value, isBlur)
     } catch (error) {
-      console.error('Error handling input event:', error)
+      logError('Error handling input event', 'InputSenderSettings', error)
     }
   }
 

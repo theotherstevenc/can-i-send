@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import { useAppContext } from '../context/AppContext'
 import { Checkbox, FormControlLabel } from '@mui/material'
 import { useEditorContext } from '../context/EditorContext'
+import { logError } from '../utils/logError'
 import { customMinifier } from '../utils/customMinifier'
 import { updateFirestoreDoc } from '../utils/updateFirestoreDoc'
 import { SETTINGS_CHECKBOX_LABEL_MINIFY, SETTINGS_CHECKBOX_LABEL_PREVENT_THREADING, SETTINGS_CHECKBOX_LABEL_WORD_WRAP } from '../utils/constants'
@@ -32,7 +33,7 @@ const InputMarkupSettings = () => {
     if (setting) {
       setting.setter(checked)
     } else {
-      console.warn('No setting found for checkbox name: ' + name)
+      logError('No setting found for checkbox name: ' + name, 'InputMarkupSettings')
     }
 
     const firestoreObj = { [name]: checked }
@@ -40,7 +41,7 @@ const InputMarkupSettings = () => {
     try {
       await updateFirestoreDoc(db, COLLECTION, DOCUMENT, firestoreObj)
     } catch (error) {
-      console.error('Error updating settings: ', error)
+      logError('Error updating Firestore document', 'InputMarkupSettings', error)
     }
   }
 
