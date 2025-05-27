@@ -4,8 +4,9 @@ import { useEditorContext } from '../context/EditorContext'
 import { updateFirestoreDoc } from '../utils/updateFirestoreDoc'
 import { StyledIconButton } from './InputIconButton'
 import { iconButtonStyles } from '../styles/global.styles'
+import { logError } from '../utils/logError'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, IconButton, Tooltip } from '@mui/material'
-import { BTN_LABEL_CANCEL, BTN_LABEL_OK, BTN_LABEL_UPDATE, BTN_LABEL_UPDATE_DIALOG, BTN_LABEL_UPDATE_FAILURE, LABEL_CLOSE } from '../utils/constants'
+import { BTN_LABEL_CANCEL, BTN_LABEL_OK, BTN_LABEL_UPDATE, BTN_LABEL_UPDATE_DIALOG, LABEL_CLOSE } from '../utils/constants'
 import CloseIcon from '@mui/icons-material/Close'
 import EditIcon from '@mui/icons-material/Edit'
 
@@ -40,7 +41,7 @@ const InputUpdateFiles = () => {
         setWorkingFileName(fileName)
         handleClose()
       } catch (error) {
-        console.error(BTN_LABEL_UPDATE_FAILURE, error)
+        logError('Failed to rename file:', 'InputUpdateFiles.tsx', error)
       }
     }
   }
