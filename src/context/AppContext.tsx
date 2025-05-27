@@ -4,7 +4,7 @@ import { onAuthStateChanged, User } from 'firebase/auth'
 import { doc, onSnapshot } from 'firebase/firestore'
 import { auth, db } from '../firebase'
 import { AppContextProps, SenderSettings } from '../interfaces'
-import { FETCH_ERROR } from '../utils/constants'
+import { logError } from '../utils/logError'
 
 const AppContext = createContext<AppContextProps | undefined>(undefined)
 
@@ -72,7 +72,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         }
       },
       (error) => {
-        console.error(FETCH_ERROR, error)
+        logError('An error occurred while fetching app context data', 'AppContext.tsx', error)
       }
     )
 

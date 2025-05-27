@@ -6,7 +6,8 @@ import { collection, onSnapshot } from 'firebase/firestore'
 import { useEditorContext } from '../context/EditorContext'
 import { Box, Button } from '@mui/material'
 import { WorkingFile } from '../interfaces'
-import { BTN_VARIANT_CONTAINED, BTN_VARIANT_OUTLINED, FETCH_ERROR } from '../utils/constants'
+import { logError } from '../utils/logError'
+import { BTN_VARIANT_CONTAINED, BTN_VARIANT_OUTLINED } from '../utils/constants'
 
 const EditorWorkingFiles = () => {
   const { setHtml, setText, setAmp, workingFileID, setWorkingFileID, setWorkingFileName, files, setFiles } = useEditorContext()
@@ -30,7 +31,7 @@ const EditorWorkingFiles = () => {
         setFiles(workingFilesData as WorkingFile[])
       },
       (error) => {
-        console.error(FETCH_ERROR, error)
+        logError('An error occurred while fetching working files', 'EditorWorkingFiles.tsx', error)
       }
     )
     return () => unsubscribe()
