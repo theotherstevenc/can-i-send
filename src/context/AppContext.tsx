@@ -72,7 +72,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         }
       },
       (error) => {
-        logError('An error occurred while fetching app context data', 'AppContext.tsx', error)
+        logError('An error occurred while fetching app context data', 'AppContext', error)
       }
     )
 

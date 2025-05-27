@@ -31,7 +31,7 @@ const EditorWorkingFiles = () => {
         setFiles(workingFilesData as WorkingFile[])
       },
       (error) => {
-        logError('An error occurred while fetching working files', 'EditorWorkingFiles.tsx', error)
+        logError('An error occurred while fetching working files', 'EditorWorkingFiles', error)
       }
     )
     return () => unsubscribe()

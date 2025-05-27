@@ -41,7 +41,7 @@ const InputUpdateFiles = () => {
         setWorkingFileName(fileName)
         handleClose()
       } catch (error) {
-        logError('Failed to rename file:', 'InputUpdateFiles.tsx', error)
+        logError('Failed to rename file:', 'InputUpdateFiles', error)
       }
     }
   }

@@ -19,7 +19,7 @@ const EditorSelectorButtons = () => {
       await updateFirestoreDoc(db, COLLECTION, DOCUMENT, firestoreObj)
       setActiveEditor(editorType)
     } catch (error) {
-      logError('Unable to set active editor', 'EditorSelectorButtons.tsx', error)
+      logError('Unable to set active editor', 'EditorSelectorButtons', error)
     }
   }
 

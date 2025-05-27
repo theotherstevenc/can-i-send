@@ -65,7 +65,7 @@ const EditorSendButton = () => {
       const response = await handleRequest(emailData)
       handleResponse(response)
     } catch (error) {
-      logError('An error occurred while sending the email', 'EditorSendButton.tsx', error)
+      logError('An error occurred while sending the email', 'EditorSendButton', error)
       setIsSendSuccessful(false)
     } finally {
       setOpenBackdrop(false)

@@ -95,7 +95,7 @@ const EditorWorkspacePreview = () => {
       try {
         await updateFirestoreDoc(db, COLLECTION, DOCUMENT, firestoreObj)
       } catch (error) {
-        logError('Error auto updating Firestore', 'EditorWorkspacePreview.tsx', error)
+        logError('Error auto updating Firestore', 'EditorWorkspacePreview', error)
       }
     }, DEBOUNCE_DELAY)
 
