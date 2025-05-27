@@ -4,6 +4,7 @@ import { useAppContext } from '../context/AppContext'
 import { useEditorContext } from '../context/EditorContext'
 import { Box } from '@mui/material'
 import { useEffect, useRef } from 'react'
+import { logError } from '../utils/logError'
 import { Editor } from '@monaco-editor/react'
 import { updateFirestoreDoc } from '../utils/updateFirestoreDoc'
 import { workspaceEditorStyles, workspacePreviewIframeStyles } from '../styles/global.styles'
@@ -74,7 +75,7 @@ const EditorWorkspacePreview = () => {
       const currentFile = files.find((file) => file.id === workingFileID)
 
       if (!currentFile) {
-        console.error('File not found in the list of files')
+        logError('File not found in the list of files', 'EditorWorkspacePreview.tsx')
         return
       }
 
@@ -94,7 +95,7 @@ const EditorWorkspacePreview = () => {
       try {
         await updateFirestoreDoc(db, COLLECTION, DOCUMENT, firestoreObj)
       } catch (error) {
-        console.error('Error auto updating Firestore: ', error)
+        logError('Error auto updating Firestore', 'EditorWorkspacePreview.tsx', error)
       }
     }, DEBOUNCE_DELAY)
 
