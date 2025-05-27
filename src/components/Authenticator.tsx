@@ -6,6 +6,7 @@ import { BTN_LABEL_CANCEL, BTN_LABEL_LOGIN, BTN_LABEL_LOGOUT, BTN_LABEL_OK, LABE
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField, Tooltip } from '@mui/material'
 import { StyledIconButton } from './InputIconButton'
 import { iconButtonStyles } from '../styles/global.styles'
+import { logError } from '../utils/logError'
 import LogoutIcon from '@mui/icons-material/Logout'
 import LoginIcon from '@mui/icons-material/Login'
 import CloseIcon from '@mui/icons-material/Close'
@@ -42,7 +43,7 @@ export const Authenticator = () => {
       setWorkingFileName('')
       setFiles([])
     } catch (error) {
-      console.error('Error signing out:', error)
+      logError('Error signing out', 'Authenticator', error)
     }
   }
 
@@ -51,7 +52,7 @@ export const Authenticator = () => {
       await signInWithEmailAndPassword(auth, username, password)
       setOpen(false)
     } catch (error) {
-      console.error('Error signing in:', error)
+      logError('Error signing in', 'Authenticator', error)
     }
   }
 
