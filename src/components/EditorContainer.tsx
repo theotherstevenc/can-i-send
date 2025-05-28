@@ -5,12 +5,12 @@ import { EDITOR_CONTAINER_SPLIT_SIZES_DEFAULT, EDITOR_CONTAINER_SPLIT_SIZES_MINI
 import Split from 'react-split'
 import EditorWorkspacePreview from './EditorWorkspacePreview'
 import EditorWorkingFiles from './EditorWorkingFiles'
-import usePersistentSizes from '../utils/usePersistentSizes'
+import usePersistentValue from '../utils/usePersistentValue'
 
 const EditorContainer = () => {
   const { hideWorkingFiles, setHideWorkingFiles } = useAppContext()
 
-  const [sizes, setSizes] = usePersistentSizes(EDITOR_CONTAINER_SPLIT_SIZES_STORAGE_KEY, EDITOR_CONTAINER_SPLIT_SIZES_DEFAULT)
+  const [sizes, setSizes] = usePersistentValue(EDITOR_CONTAINER_SPLIT_SIZES_STORAGE_KEY, EDITOR_CONTAINER_SPLIT_SIZES_DEFAULT)
   const minThreshold = 5
 
   const handleDrag = (newSizes: number[]) => {

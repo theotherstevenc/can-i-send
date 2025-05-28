@@ -8,7 +8,7 @@ function usePersistentValue<T>(key: string, defaultValue: T) {
       try {
         return JSON.parse(saved)
       } catch (error) {
-        logError('Failed to parse from localStorage:', 'usePersistentSize', error)
+        logError('Failed to parse from localStorage:', 'usePersistentValue', error)
         return defaultValue
       }
     }

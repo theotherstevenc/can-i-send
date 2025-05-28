@@ -11,7 +11,6 @@ import { logError } from '../utils/logError'
 import { useEffect } from 'react'
 
 const InputLockFile = () => {
-  console.log('InputLockFile rendered')
   const { workingFileID, isFileLocked, setIsFileLocked } = useEditorContext()
 
   const COLLECTION = 'workingFiles'

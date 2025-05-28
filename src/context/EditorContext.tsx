@@ -2,7 +2,7 @@
 import React, { createContext, useContext, useState } from 'react'
 import { EditorContextProps, WorkingFile } from '../interfaces'
 import { WORKING_FILE_ID_KEY } from '../utils/constants'
-import usePersistentValue from '../utils/usePersistentSizes'
+import usePersistentValue from '../utils/usePersistentValue'
 
 const EditorContext = createContext<EditorContextProps | undefined>(undefined)
 
