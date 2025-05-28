@@ -13,7 +13,6 @@ import { useEffect } from 'react'
 const InputLockFile = () => {
   console.log('InputLockFile rendered')
   const { workingFileID, isFileLocked, setIsFileLocked } = useEditorContext()
-  console.log('InputLockFile', workingFileID, isFileLocked)
 
   const COLLECTION = 'workingFiles'
   const DOCUMENT = workingFileID
