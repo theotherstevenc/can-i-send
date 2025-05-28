@@ -45,8 +45,8 @@ const InputLockFile = () => {
 
   return (
     <>
-      <Tooltip title=''>
-        <StyledIconButton onClick={handleClick} aria-label=''>
+      <Tooltip title={isFileLocked ? 'Unlock file' : 'Lock file'}>
+        <StyledIconButton onClick={handleClick} aria-label={isFileLocked ? 'Unlock file' : 'Lock file'}>
           {isFileLocked ? <LockIcon /> : <LockOpenIcon />}
         </StyledIconButton>
       </Tooltip>
