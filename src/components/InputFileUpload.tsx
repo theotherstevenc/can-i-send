@@ -8,7 +8,7 @@ import { useRef } from 'react'
 import { logError } from '../utils/logError'
 import { createNewFile } from '../utils/createNewFile'
 import { StyledIconButton } from './InputIconButton'
-import { BTN_UPLOAD_LABEL, HTTP_STATUS_ERROR } from '../utils/constants'
+import { BTN_UPLOAD_LABEL } from '../utils/constants'
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -49,13 +49,13 @@ const InputFileUpload = () => {
     const response = await fetch('/api/upload', options)
 
     if (!response.ok) {
-      throw new Error(HTTP_STATUS_ERROR + response.status)
+      logError('File upload failed with status ' + response.status, 'InputFileUpload')
     }
 
     const text = await response.text()
 
     if (!text) {
-      throw new Error('Empty response body')
+      logError('Empty response body from file upload', 'InputFileUpload')
     }
 
     const isBoilerplateApplied = true

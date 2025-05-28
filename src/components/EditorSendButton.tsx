@@ -52,18 +52,19 @@ const EditorSendButton = () => {
 
   const handleResponse = (response: Response) => {
     if (!response.ok || response.status !== 200) {
-      throw new Error('An error returned response.statusText: ' + response.statusText)
+      logError('An error returned response.statusText: ' + response.statusText, 'EditorSendButton')
+      return false
     }
-    setIsSendSuccessful(true)
+    return true
   }
 
-  // refactor to improve readability?
   const handleClick = async () => {
     setOpenBackdrop(true)
 
     try {
       const response = await handleRequest(emailData)
-      handleResponse(response)
+      const isSuccess = handleResponse(response)
+      setIsSendSuccessful(isSuccess)
     } catch (error) {
       logError('An error occurred while sending the email', 'EditorSendButton', error)
       setIsSendSuccessful(false)
