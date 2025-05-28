@@ -11,14 +11,14 @@ import CloseIcon from '@mui/icons-material/Close'
 import DeleteIcon from '@mui/icons-material/Delete'
 
 const InputDeleteFile = () => {
-  const { deletedWorkingFileID, workingFileID, setHtml, setText, setAmp, workingFileName, setDeletedWorkingFileID } = useEditorContext()
+  const { deletedWorkingFileID, workingFileID, setHtml, setText, setAmp, workingFileName, setDeletedWorkingFileID, isFileLocked } = useEditorContext()
   const [open, setOpen] = useState(false)
 
   const COLLECTION = 'workingFiles'
   const DOCUMENT = workingFileID
 
   const handleOpen = () => {
-    if (!workingFileID || workingFileID === deletedWorkingFileID) {
+    if (isFileLocked || !workingFileID || workingFileID === deletedWorkingFileID) {
       return
     }
     setOpen(true)

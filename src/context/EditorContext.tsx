@@ -2,7 +2,7 @@
 import React, { createContext, useContext, useState } from 'react'
 import { EditorContextProps, WorkingFile } from '../interfaces'
 import { WORKING_FILE_ID_KEY } from '../utils/constants'
-import usePersistentValue from '../utils/usePersistentSizes'
+import usePersistentValue from '../utils/usePersistentValue'
 
 const EditorContext = createContext<EditorContextProps | undefined>(undefined)
 
@@ -15,6 +15,7 @@ export const EditorProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [deletedWorkingFileID, setDeletedWorkingFileID] = useState<string>('')
   const [workingFileName, setWorkingFileName] = useState<string>('')
   const [files, setFiles] = useState<WorkingFile[]>([])
+  const [isFileLocked, setIsFileLocked] = useState<boolean>(false)
 
   return (
     <EditorContext.Provider
@@ -35,6 +36,8 @@ export const EditorProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         setWorkingFileName,
         files,
         setFiles,
+        isFileLocked,
+        setIsFileLocked,
       }}>
       {children}
     </EditorContext.Provider>

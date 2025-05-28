@@ -11,12 +11,12 @@ import CloseIcon from '@mui/icons-material/Close'
 import EditIcon from '@mui/icons-material/Edit'
 
 const InputUpdateFiles = () => {
-  const { deletedWorkingFileID, workingFileID, workingFileName, setWorkingFileName } = useEditorContext()
+  const { deletedWorkingFileID, workingFileID, workingFileName, setWorkingFileName, isFileLocked } = useEditorContext()
   const [open, setOpen] = useState(false)
   const [fileName, setFileName] = useState('')
 
   const handleOpen = () => {
-    if (!workingFileID || workingFileID === deletedWorkingFileID) {
+    if (isFileLocked || !workingFileID || workingFileID === deletedWorkingFileID) {
       return
     }
     setFileName(workingFileName)

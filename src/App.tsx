@@ -16,6 +16,7 @@ import InputToggleEditorTheme from './components/InputToggleEditorTheme'
 import { editorActionsStyles, inputActionsStyles, inputConfigStyles, inputSenderSettingsStyles } from './styles/global.styles'
 import usePreferredTheme from './utils/usePreferredTheme'
 import Authenticator from './components/Authenticator'
+import InputLockFile from './components/InputLockFile'
 
 function App() {
   const theme = usePreferredTheme()
@@ -33,6 +34,7 @@ function App() {
               <InputSenderSettings />
             </Box>
             <Box sx={inputActionsStyles}>
+              <InputLockFile />
               <InputToggleEditorTheme />
               <InputToggleWorkingFiles />
               <InputCreateNewFile />

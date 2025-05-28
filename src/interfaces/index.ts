@@ -27,6 +27,7 @@ export interface WorkingFile {
   html: string
   text: string
   amp: string
+  isFileLocked: boolean
 }
 
 export interface EditorContextProps {
@@ -46,6 +47,8 @@ export interface EditorContextProps {
   setWorkingFileName: (name: string) => void
   files: WorkingFile[]
   setFiles: React.Dispatch<React.SetStateAction<WorkingFile[]>>
+  isFileLocked: boolean
+  setIsFileLocked: (isFileLocked: boolean) => void
 }
 
 export interface AppContextProps {

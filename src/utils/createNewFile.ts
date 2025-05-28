@@ -10,7 +10,8 @@ export const createNewFile = async (
   setWorkingFileName: (name: string) => void,
   setHtml: (html: string) => void,
   setText: (text: string) => void,
-  setAmp: (amp: string) => void
+  setAmp: (amp: string) => void,
+  setIsFileLocked: (isFileLocked: boolean) => void
 ) => {
   try {
     const requestBody: { fileName: string; boilerPlateMarkup?: string } = { fileName }
@@ -38,6 +39,7 @@ export const createNewFile = async (
       text: parsedBoilerPlateMarkup.text || '',
       amp: parsedBoilerPlateMarkup.amp || '',
       createdAt: new Date().toISOString(),
+      isFileLocked: false, // Default value for new files
     }
 
     const newFileRef = await addDoc(collection(db, 'workingFiles'), newFileData)
@@ -47,6 +49,7 @@ export const createNewFile = async (
     setHtml(newFileData.html || '')
     setText(newFileData.text || '')
     setAmp(newFileData.amp || '')
+    setIsFileLocked(false) // Ensure the file is not locked when created
   } catch (error) {
     logError('Error creating new file', 'createNewFile', error)
     return false

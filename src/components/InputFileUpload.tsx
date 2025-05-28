@@ -23,7 +23,7 @@ const VisuallyHiddenInput = styled('input')({
 })
 
 const InputFileUpload = () => {
-  const { setHtml, setText, setAmp, setWorkingFileID, setWorkingFileName } = useEditorContext()
+  const { setHtml, setText, setAmp, setWorkingFileID, setWorkingFileName, setIsFileLocked } = useEditorContext()
   const { setIsMinifyEnabled, setIsWordWrapEnabled } = useAppContext()
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -62,7 +62,7 @@ const InputFileUpload = () => {
     const fileName = file.name.replace(/\.[^/.]+$/, '')
     const boilerPlateMarkup = JSON.parse(text)
 
-    await createNewFile(fileName, boilerPlateMarkup, isBoilerplateApplied, setWorkingFileID, setWorkingFileName, setHtml, setText, setAmp)
+    await createNewFile(fileName, boilerPlateMarkup, isBoilerplateApplied, setWorkingFileID, setWorkingFileName, setHtml, setText, setAmp, setIsFileLocked)
   }
 
   const handleButtonClick = () => {

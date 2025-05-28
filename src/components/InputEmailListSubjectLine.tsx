@@ -6,14 +6,14 @@ import { TagsInput } from 'react-tag-input-component'
 import { logError } from '../utils/logError'
 import { INPUT_EMAIL_LIST_SUBJECT_LINE_SPLIT_SIZES_DEFAULT, INPUT_EMAIL_LIST_SUBJECT_LINE_SPLIT_SIZES_STORAGE_KEY } from '../utils/constants'
 import Split from 'react-split'
-import usePersistentSizes from '../utils/usePersistentSizes'
+import usePersistentValue from '../utils/usePersistentValue'
 
 const COLLECTION = 'config'
 const DOCUMENT = 'editorSettings'
 
 const InputEmailListSubjectLine = () => {
   const { subject, setSubject, emailAddresses, setEmailAddresses } = useAppContext()
-  const [sizes, setSizes] = usePersistentSizes(INPUT_EMAIL_LIST_SUBJECT_LINE_SPLIT_SIZES_STORAGE_KEY, INPUT_EMAIL_LIST_SUBJECT_LINE_SPLIT_SIZES_DEFAULT)
+  const [sizes, setSizes] = usePersistentValue(INPUT_EMAIL_LIST_SUBJECT_LINE_SPLIT_SIZES_STORAGE_KEY, INPUT_EMAIL_LIST_SUBJECT_LINE_SPLIT_SIZES_DEFAULT)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSubject(e.target.value)
