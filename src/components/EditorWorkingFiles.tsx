@@ -7,6 +7,7 @@ import { useEditorContext } from '../context/EditorContext'
 import { Box, Button } from '@mui/material'
 import { WorkingFile } from '../interfaces'
 import { logError } from '../utils/logError'
+import LockIcon from '@mui/icons-material/Lock'
 import { BTN_VARIANT_CONTAINED, BTN_VARIANT_OUTLINED } from '../utils/constants'
 
 const EditorWorkingFiles = () => {
@@ -42,7 +43,7 @@ const EditorWorkingFiles = () => {
       {files.length > 0 &&
         files.map((file) => (
           <Button variant={workingFileID === file.id ? BTN_VARIANT_CONTAINED : BTN_VARIANT_OUTLINED} onClick={() => handleClick(file)} key={file.id}>
-            {file.fileName}
+            {file.fileName} {file.isFileLocked ? <LockIcon /> : ''}
           </Button>
         ))}
     </Box>

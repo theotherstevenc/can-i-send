@@ -13,7 +13,7 @@ import CloseIcon from '@mui/icons-material/Close'
 
 const InputCreateNewFile = () => {
   const { setIsMinifyEnabled, setIsWordWrapEnabled } = useAppContext()
-  const { setWorkingFileID, setWorkingFileName, setHtml, setText, setAmp } = useEditorContext()
+  const { setWorkingFileID, setWorkingFileName, setHtml, setText, setAmp, setIsFileLocked } = useEditorContext()
   const [open, setOpen] = useState(false)
   const [fileName, setFileName] = useState('')
   const [isBoilerplateApplied, setIsBoilerplateApplied] = useState(false)
@@ -31,7 +31,7 @@ const InputCreateNewFile = () => {
     setWorkingFileID('')
 
     try {
-      await createNewFile(fileName, boilerPlateMarkup, isBoilerplateApplied, setWorkingFileID, setWorkingFileName, setHtml, setText, setAmp)
+      await createNewFile(fileName, boilerPlateMarkup, isBoilerplateApplied, setWorkingFileID, setWorkingFileName, setHtml, setText, setAmp, setIsFileLocked)
       setFileName('')
       handleClose()
     } catch (error) {
