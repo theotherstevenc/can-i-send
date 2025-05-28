@@ -15,6 +15,7 @@ export const EditorProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [deletedWorkingFileID, setDeletedWorkingFileID] = useState<string>('')
   const [workingFileName, setWorkingFileName] = useState<string>('')
   const [files, setFiles] = useState<WorkingFile[]>([])
+  const [isFileLocked, setIsFileLocked] = useState<boolean>(false)
 
   return (
     <EditorContext.Provider
@@ -35,6 +36,8 @@ export const EditorProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         setWorkingFileName,
         files,
         setFiles,
+        isFileLocked,
+        setIsFileLocked,
       }}>
       {children}
     </EditorContext.Provider>
