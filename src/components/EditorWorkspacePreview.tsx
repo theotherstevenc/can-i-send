@@ -75,7 +75,6 @@ const EditorWorkspacePreview = () => {
       const currentFile = files.find((file) => file.id === workingFileID)
 
       if (!currentFile) {
-        logError('File not found in the list of files', 'EditorWorkspacePreview.tsx')
         return
       }
 
