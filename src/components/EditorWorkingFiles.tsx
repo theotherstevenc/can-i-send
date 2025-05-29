@@ -11,7 +11,7 @@ import LockIcon from '@mui/icons-material/Lock'
 import { BTN_VARIANT_CONTAINED, BTN_VARIANT_OUTLINED } from '../utils/constants'
 
 const EditorWorkingFiles = () => {
-  const { setHtml, setText, setAmp, workingFileID, setWorkingFileID, setWorkingFileName, files, setFiles } = useEditorContext()
+  const { setHtml, setText, setAmp, workingFileID, setWorkingFileID, setWorkingFileName, files, setFiles, setIsFileLocked } = useEditorContext()
   const { user } = useAppContext()
 
   const handleClick = (file: WorkingFile) => {
@@ -20,6 +20,7 @@ const EditorWorkingFiles = () => {
     setAmp(file.amp)
     setWorkingFileID(file.id)
     setWorkingFileName(file.fileName)
+    setIsFileLocked(file.isFileLocked || false)
   }
 
   useEffect(() => {
