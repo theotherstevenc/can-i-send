@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { db } from '../firebase'
 import { Tooltip } from '@mui/material'
 import { useEditorContext } from '../context/EditorContext'
