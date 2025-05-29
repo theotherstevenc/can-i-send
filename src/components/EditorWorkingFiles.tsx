@@ -43,11 +43,27 @@ const EditorWorkingFiles = () => {
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, padding: 0.5 }} className='editor-working-files'>
       {files.length > 0 &&
         files.map((file) => (
-          <Button variant={workingFileID === file.id ? BTN_VARIANT_CONTAINED : BTN_VARIANT_OUTLINED} onClick={() => handleClick(file)} key={file.id} sx={{ justifyContent: 'center' }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-              <Box sx={{ minWidth: 24, display: 'flex', justifyContent: 'flex-start' }}>{file.isFileLocked ? <LockIcon fontSize='small' /> : null}</Box>
-              <Box sx={{ flex: 1, textAlign: 'center' }}>{file.fileName}</Box>
-            </Box>
+          <Button
+            variant={workingFileID === file.id ? BTN_VARIANT_CONTAINED : BTN_VARIANT_OUTLINED}
+            onClick={() => handleClick(file)}
+            key={file.id}
+            sx={{ justifyContent: 'flex-start', position: 'relative', paddingLeft: 4, paddingRight: 4 }}>
+            {file.isFileLocked && (
+              <Box
+                sx={{
+                  position: 'absolute',
+                  left: 8,
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  zIndex: 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  height: '100%',
+                }}>
+                <LockIcon fontSize='inherit' sx={{ fontSize: 12 }} />
+              </Box>
+            )}
+            <Box sx={{ width: '100%', textAlign: 'center' }}>{file.fileName}</Box>
           </Button>
         ))}
     </Box>
