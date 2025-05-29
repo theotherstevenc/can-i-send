@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useAppContext } from '../context/AppContext'
 import { Box } from '@mui/material'
 import { clsx } from 'clsx'
@@ -6,6 +7,7 @@ import Split from 'react-split'
 import EditorWorkspacePreview from './EditorWorkspacePreview'
 import EditorWorkingFiles from './EditorWorkingFiles'
 import usePersistentValue from '../utils/usePersistentValue'
+import { useEffect } from 'react'
 
 const EditorContainer = () => {
   const { hideWorkingFiles, setHideWorkingFiles } = useAppContext()
@@ -28,6 +30,12 @@ const EditorContainer = () => {
     'no-working-files': hideWorkingFiles,
     'warn-collapse': sizes[0] < minThreshold,
   })
+
+  useEffect(() => {
+    if (!hideWorkingFiles && sizes[0] < minThreshold) {
+      setSizes(EDITOR_CONTAINER_SPLIT_SIZES_DEFAULT)
+    }
+  }, [hideWorkingFiles])
 
   return (
     <Split className='split-component' sizes={sizes} minSize={EDITOR_CONTAINER_SPLIT_SIZES_MINIMUM} onDragEnd={handleDragEnd} onDrag={handleDrag}>
