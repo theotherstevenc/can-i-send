@@ -39,6 +39,11 @@ const EditorWorkingFiles = () => {
     return () => unsubscribe()
   }, [user])
 
+  useEffect(() => {
+    const currentFile = files.find((file) => file.id === workingFileID)
+    setIsFileLocked(currentFile?.isFileLocked || false)
+  }, [files])
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, padding: 0.5 }} className='editor-working-files'>
       {files.length > 0 &&
