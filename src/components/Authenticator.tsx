@@ -61,7 +61,13 @@ export const Authenticator = () => {
   return (
     <>
       <Tooltip title={handleLoginButtonLabel}>
-        <StyledIconButton onClick={handleOpen} aria-label={handleLoginButtonLabel}>
+        <StyledIconButton
+          onClick={handleOpen}
+          aria-label={handleLoginButtonLabel}
+          sx={{
+            bgcolor: user ? 'grey.400' : 'primary.dark',
+            boxShadow: 3,
+          }}>
           {user ? <LogoutIcon /> : <LoginIcon />}
         </StyledIconButton>
       </Tooltip>
