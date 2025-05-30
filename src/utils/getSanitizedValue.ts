@@ -1,4 +1,3 @@
-import DOMPurify from 'dompurify'
 import { EDITOR_OPTION_TEXT } from './constants'
 const rootColorScheme = `
   <style>
@@ -12,9 +11,13 @@ const rootColorScheme = `
   </style>
 `
 
+const escapeStr = (str: string): string => {
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;')
+}
+
 const getSanitizedValue = (editor: { type: string; value: string }): string => {
   if (editor.type === EDITOR_OPTION_TEXT) {
-    return rootColorScheme + '<pre class=pre>' + DOMPurify.sanitize(editor.value) + '</pre>'
+    return rootColorScheme + '<pre class=pre>' + escapeStr(editor.value) + '</pre>'
   }
   return editor.value
 }
