@@ -5,7 +5,7 @@ const rootColorScheme = `
       color-scheme: light dark;
       supported-color-schemes: light dark;
     }
-    .pre {
+    .editorOptionText {
       white-space: pre-wrap;
     }
   </style>
@@ -17,7 +17,7 @@ const escapeStr = (str: string): string => {
 
 const getSanitizedValue = (editor: { type: string; value: string }): string => {
   if (editor.type === EDITOR_OPTION_TEXT) {
-    return rootColorScheme + '<pre class=pre>' + escapeStr(editor.value) + '</pre>'
+    return rootColorScheme + '<pre class="editorOptionText">' + escapeStr(editor.value) + '</pre>'
   }
   return editor.value
 }
