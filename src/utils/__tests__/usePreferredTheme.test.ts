@@ -1,21 +1,25 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 
 vi.mock('@mui/material', () => ({
   useMediaQuery: vi.fn(),
 }))
 
-import * as mui from '@mui/material'
+import { useMediaQuery } from '@mui/material'
 import { darkTheme, lightTheme } from '../../styles/global.theme'
 import usePreferredTheme from '../usePreferredTheme'
 
 describe('usePreferredTheme', () => {
-  it('returns darkTheme when prefers dark mode', () => {
-    vi.spyOn(mui, 'useMediaQuery').mockReturnValue(true)
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  it('returns darkTheme when prefers-color-scheme is dark', () => {
+    vi.mocked(useMediaQuery).mockReturnValue(true)
     expect(usePreferredTheme()).toBe(darkTheme)
   })
 
-  it('returns lightTheme when prefers light mode', () => {
-    vi.spyOn(mui, 'useMediaQuery').mockReturnValue(false)
+  it('returns lightTheme when prefers-color-scheme is not dark', () => {
+    vi.mocked(useMediaQuery).mockReturnValue(false)
     expect(usePreferredTheme()).toBe(lightTheme)
   })
 })
