@@ -12,12 +12,13 @@
     "depcheck": "depcheck",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
+    "patch": "npm version patch --no-git-tag-version",
     "preview": "vite preview",
     "start": "npx nodemon app.js",
     "start-dev": "NODE_ENV=development npx nodemon app.js",
     "tag": "git tag -a $npm_package_version -m \"Release version $npm_package_version\" && git push origin $npm_package_version",
     "test": "vitest",
-    "patch": "npm version patch --no-git-tag-version"
+    "test-coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@emotion/styled": "^11.14.0",
@@ -43,6 +44,7 @@
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.4.0",
+    "@vitest/coverage-v8": "^3.1.4",
     "depcheck": "^1.4.7",
     "eslint": "^9.25.0",
     "eslint-plugin-react-hooks": "^5.1.0",
