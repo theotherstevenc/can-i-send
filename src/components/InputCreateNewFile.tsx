@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useAppContext } from '../context/AppContext'
 import { useEditorContext } from '../context/EditorContext'
-import { boilerPlateMarkup } from '../utils/bolierpateMarkup'
+import { boilerPlateMarkup } from '../utils/boilerPlateMarkup'
 import { StyledIconButton } from './InputIconButton'
 import { createNewFile } from '../utils/createNewFile'
 import { iconButtonStyles } from '../styles/global.styles'

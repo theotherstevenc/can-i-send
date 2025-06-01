@@ -1,7 +1,7 @@
 {
   "name": "can-i-send",
   "private": true,
-  "version": "4.4.15",
+  "version": "4.4.16",
   "type": "module",
   "engines": {
     "node": "22.x",
@@ -12,11 +12,13 @@
     "depcheck": "depcheck",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
+    "patch": "npm version patch --no-git-tag-version",
     "preview": "vite preview",
     "start": "npx nodemon app.js",
     "start-dev": "NODE_ENV=development npx nodemon app.js",
     "tag": "git tag -a $npm_package_version -m \"Release version $npm_package_version\" && git push origin $npm_package_version",
-    "patch": "npm version patch --no-git-tag-version"
+    "test": "vitest",
+    "test-coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@emotion/styled": "^11.14.0",
@@ -39,9 +41,11 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
+    "@testing-library/react": "^16.3.0",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.4.0",
+    "@vitest/coverage-v8": "^3.1.4",
     "depcheck": "^1.4.7",
     "eslint": "^9.25.0",
     "eslint-plugin-react-hooks": "^5.1.0",
@@ -53,7 +57,8 @@
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.24.1",
     "vite": "^6.3.5",
-    "vite-plugin-html": "^3.2.2"
+    "vite-plugin-html": "^3.2.2",
+    "vitest": "^3.1.4"
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "4.6.1"
