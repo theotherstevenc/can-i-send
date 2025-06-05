@@ -52,12 +52,12 @@ const EditorWorkingFiles = () => {
             variant={workingFileID === file.id ? BTN_VARIANT_CONTAINED : BTN_VARIANT_OUTLINED}
             onClick={() => handleClick(file)}
             key={file.id}
-            sx={{ justifyContent: 'flex-start', position: 'relative', paddingLeft: 4, paddingRight: 4 }}>
+            sx={{ justifyContent: 'flex-start', position: 'relative', paddingLeft: 2, paddingRight: 4 }}>
             {file.isFileLocked && (
               <Box
                 sx={{
                   position: 'absolute',
-                  left: 8,
+                  right: 8,
                   top: '50%',
                   transform: 'translateY(-50%)',
                   zIndex: 1,

@@ -69,6 +69,10 @@ button:hover {
   overflow: hidden;
 }
 
+.editor-working-files button div {
+  text-align: left;
+}
+
 .warn-collapse {
   opacity: 0.5;
   transition: opacity 0.2s;
