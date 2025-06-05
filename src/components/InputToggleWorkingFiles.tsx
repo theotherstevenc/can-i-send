@@ -5,6 +5,7 @@ import { StyledIconButton } from './InputIconButton'
 import { updateFirestoreDoc } from '../utils/updateFirestoreDoc'
 import { logError } from '../utils/logError'
 import { TOGGLE_BTN_HIDE_PROJECTS, TOGGLE_BTN_SHOW_PROJECTS } from '../utils/constants'
+import { useHotkeys } from 'react-hotkeys-hook'
 import ToggleOffIcon from '@mui/icons-material/ToggleOff'
 import ToggleOnIcon from '@mui/icons-material/ToggleOn'
 
@@ -13,6 +14,17 @@ const DOCUMENT = 'editorSettings'
 
 const InputToggleWorkingFiles = () => {
   const { hideWorkingFiles, setHideWorkingFiles } = useAppContext()
+
+  useHotkeys(
+    'mod+b',
+    () => {
+      handleOpen()
+    },
+    {
+      preventDefault: true,
+      enableOnFormTags: true,
+    }
+  )
 
   const handleOpen = async () => {
     try {
