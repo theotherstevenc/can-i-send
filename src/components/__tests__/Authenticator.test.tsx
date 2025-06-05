@@ -59,7 +59,9 @@ const mockEditorContext: EditorContextProps = {
 vi.spyOn(EditorContext, 'useEditorContext').mockReturnValue(mockEditorContext)
 
 describe('Authenticator', () => {
-  render(<Authenticator />)
+  beforeEach(() => {
+    render(<Authenticator />)
+  })
 
   it('renders without crashing', () => {
     expect(true).toBe(true)
