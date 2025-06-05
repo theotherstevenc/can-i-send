@@ -7,7 +7,7 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./vitest.setup.ts'],
     coverage: {
-      exclude: ['build/**', '*.config.*'],
+      exclude: ['build/**', '*.config.*', 'src/types/**', 'src/interfaces/**', 'src/vite-env.d.ts'],
     },
   },
 })
