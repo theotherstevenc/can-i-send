@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { describe, it, expect, vi } from 'vitest'
+import { beforeEach, describe, it, expect, vi } from 'vitest'
 import { Authenticator } from '../Authenticator'
 import { AppContextProps, EditorContextProps } from '../../interfaces'
 import * as AppContext from '../../context/AppContext'
@@ -54,6 +54,8 @@ const mockEditorContext: EditorContextProps = {
   setFiles: vi.fn(),
   isFileLocked: false,
   setIsFileLocked: vi.fn(),
+  editorFontSize: 0,
+  setEditorFontSize: vi.fn(),
 }
 
 vi.spyOn(EditorContext, 'useEditorContext').mockReturnValue(mockEditorContext)
