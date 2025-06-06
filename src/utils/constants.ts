@@ -15,6 +15,7 @@ export const BTN_UPLOAD_LABEL = 'Upload + Convert EML'
 export const BTN_VARIANT_CONTAINED = 'contained'
 export const BTN_VARIANT_OUTLINED = 'outlined'
 export const DIALOG_CANNOT_BE_UNDONE = 'This cannot be undone. Are you sure you want to delete this file?'
+export const EDITOR_DEFAULT_FONT_SIZE_KEY = 'editorFontSize'
 export const EDITOR_DEFAULT_FONT_SIZE = 12
 export const EDITOR_INCREASE_FONT_SIZE_LABEL = 'Increase Editor Font Size'
 export const EDITOR_RESET_FONT_SIZE_LABEL = 'Reset Editor Font Size'
