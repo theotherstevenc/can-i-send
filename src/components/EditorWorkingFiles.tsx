@@ -68,7 +68,7 @@ const EditorWorkingFiles = () => {
                 <LockIcon fontSize='inherit' sx={{ fontSize: 12 }} />
               </Box>
             )}
-            <Box sx={{ width: '100%', textAlign: 'center' }}>{file.fileName}</Box>
+            <Box sx={{ width: '100%', textAlign: 'center', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{file.fileName}</Box>
           </Button>
         ))}
     </Box>
