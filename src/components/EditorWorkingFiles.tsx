@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { useAppContext } from '../context/AppContext'
 import { collection, onSnapshot } from 'firebase/firestore'
 import { useEditorContext } from '../context/EditorContext'
-import { Box, Button } from '@mui/material'
+import { Box, Button, Tooltip } from '@mui/material'
 import { WorkingFile } from '../interfaces'
 import { logError } from '../utils/logError'
 import LockIcon from '@mui/icons-material/Lock'
@@ -68,7 +68,40 @@ const EditorWorkingFiles = () => {
                 <LockIcon fontSize='inherit' sx={{ fontSize: 12 }} />
               </Box>
             )}
-            <Box sx={{ width: '100%', textAlign: 'center' }}>{file.fileName}</Box>
+            <Tooltip
+              title={file.fileName}
+              arrow
+              enterDelay={1500}
+              leaveDelay={0}
+              slotProps={{
+                tooltip: {
+                  sx: {
+                    backgroundColor: '#252526',
+                    color: '#d4d4d4',
+                    fontFamily: 'Menlo, Monaco, "Courier New", monospace',
+                    fontSize: 13,
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.5)',
+                    border: '1px solid #333',
+                    padding: '6px 12px',
+                  },
+                },
+                arrow: {
+                  sx: {
+                    color: '#252526',
+                  },
+                },
+              }}>
+              <Box
+                sx={{
+                  width: '100%',
+                  textAlign: 'center',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}>
+                {file.fileName}
+              </Box>
+            </Tooltip>
           </Button>
         ))}
     </Box>

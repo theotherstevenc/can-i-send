@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
-import React, { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useState } from 'react'
 import { EditorContextProps, WorkingFile } from '../interfaces'
-import { WORKING_FILE_ID_KEY } from '../utils/constants'
+import { EDITOR_DEFAULT_FONT_SIZE, EDITOR_DEFAULT_FONT_SIZE_KEY, WORKING_FILE_ID_KEY } from '../utils/constants'
 import usePersistentValue from '../utils/usePersistentValue'
 
 const EditorContext = createContext<EditorContextProps | undefined>(undefined)
@@ -16,6 +16,7 @@ export const EditorProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [workingFileName, setWorkingFileName] = useState<string>('')
   const [files, setFiles] = useState<WorkingFile[]>([])
   const [isFileLocked, setIsFileLocked] = useState<boolean>(false)
+  const [editorFontSize, setEditorFontSize] = usePersistentValue<number>(EDITOR_DEFAULT_FONT_SIZE_KEY, EDITOR_DEFAULT_FONT_SIZE)
 
   return (
     <EditorContext.Provider
@@ -38,6 +39,8 @@ export const EditorProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         setFiles,
         isFileLocked,
         setIsFileLocked,
+        editorFontSize,
+        setEditorFontSize,
       }}>
       {children}
     </EditorContext.Provider>

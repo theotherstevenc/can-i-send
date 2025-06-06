@@ -49,6 +49,8 @@ export interface EditorContextProps {
   setFiles: React.Dispatch<React.SetStateAction<WorkingFile[]>>
   isFileLocked: boolean
   setIsFileLocked: (isFileLocked: boolean) => void
+  editorFontSize: number
+  setEditorFontSize: (fontSize: number) => void
 }
 
 export interface AppContextProps {

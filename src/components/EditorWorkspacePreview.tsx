@@ -25,7 +25,7 @@ import forceIframeReflow from '../utils/forceIframeReflow'
 import Split from 'react-split'
 
 const EditorWorkspacePreview = () => {
-  const { html, setHtml, text, setText, amp, setAmp, workingFileID, deletedWorkingFileID, files } = useEditorContext()
+  const { html, setHtml, text, setText, amp, setAmp, workingFileID, deletedWorkingFileID, files, editorFontSize } = useEditorContext()
   const { isDarkMode, isMinifyEnabled, isWordWrapEnabled, activeEditor } = useAppContext()
 
   const iframeRef = useRef<HTMLIFrameElement>(null)
@@ -123,6 +123,7 @@ const EditorWorkspacePreview = () => {
                   value={editor.value}
                   onChange={editor.onChange}
                   options={{
+                    fontSize: editorFontSize,
                     readOnly: isMinifyEnabled,
                     wordWrap: isWordWrapEnabled ? MOSAIC_OPTION_ON : MOSAIC_OPTION_OFF,
                     lineNumbers: MOSAIC_OPTION_ON,
