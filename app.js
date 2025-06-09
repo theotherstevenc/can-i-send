@@ -24,6 +24,25 @@ const decryptText = (encryptedData) => {
   return decrypted.toString(CryptoJS.enc.Utf8)
 }
 
+const ampVersion = (parsed) => {
+  if (parsed && Array.isArray(parsed.attachments)) {
+    const ampAttachment = parsed.attachments.find((attachment) => attachment.contentType === 'text/x-amp-html')
+    if (ampAttachment) {
+      return ampAttachment.content.toString()
+    }
+  }
+}
+
+const parseUpload = async (file) => {
+  const parsed = await simpleParser(file.data)
+
+  return {
+    html: parsed.html || '',
+    text: parsed.text || '',
+    amp: ampVersion(parsed) || '',
+  }
+}
+
 app.post('/api/encrypt', async (req, res) => {
   const { text } = req.body
 
@@ -65,41 +84,21 @@ app.post('/api/send', async (req, res) => {
       },
     })
 
-    const mailOptions = {
+    await transporter.sendMail({
       from: from + ' <' + user + '>',
       to: testaddress,
       subject: testsubject,
       html: htmlversion,
       text: textversion,
       amp: ampversion,
-    }
+    })
 
-    await transporter.sendMail(mailOptions)
     return res.status(200).json({ success: true })
   } catch (error) {
     console.error('Error sending email:', error)
     return res.status(500).json({ error: 'Internal Server Error.' })
   }
 })
-
-const ampVersion = (parsed) => {
-  if (parsed && Array.isArray(parsed.attachments)) {
-    const ampAttachment = parsed.attachments.find((attachment) => attachment.contentType === 'text/x-amp-html')
-    if (ampAttachment) {
-      return ampAttachment.content.toString()
-    }
-  }
-}
-
-const parseUpload = async (file) => {
-  const parsed = await simpleParser(file.data)
-
-  return {
-    html: parsed.html || '',
-    text: parsed.text || '',
-    amp: ampVersion(parsed) || '',
-  }
-}
 
 app.post('/api/upload', async (req, res) => {
   const file = req.files.file
