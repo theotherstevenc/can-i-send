@@ -34,6 +34,7 @@
     "firebase": "^11.5.0",
     "mailparser": "^3.7.2",
     "nodemailer": "^6.10.0",
+    "prettier": "^3.5.3",
     "react": "^18",
     "react-dom": "^18",
     "react-hotkeys-hook": "^5.1.0",
