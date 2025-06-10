@@ -1,5 +1,4 @@
 import { db } from '../firebase'
-import { EditorType } from '../types/types'
 import { useAppContext } from '../context/AppContext'
 import { logError } from '../utils/logError'
 import { Button } from '@mui/material'
@@ -9,10 +8,12 @@ import { BTN_VARIANT_CONTAINED, BTN_VARIANT_OUTLINED, EDITOR_OPTION_AMP, EDITOR_
 const COLLECTION = 'config'
 const DOCUMENT = 'editorSettings'
 
+type EditorType = typeof EDITOR_OPTION_HTML | typeof EDITOR_OPTION_TEXT | typeof EDITOR_OPTION_AMP
+
 const EditorSelectorButtons = () => {
   const { activeEditor, setActiveEditor } = useAppContext()
 
-  const handleClick = async (editorType: string) => {
+  const handleClick = async (editorType: EditorType) => {
     const firestoreObj = { activeEditor: editorType }
 
     try {
