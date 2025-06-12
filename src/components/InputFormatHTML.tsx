@@ -1,13 +1,11 @@
-import FormatPaintIcon from '@mui/icons-material/FormatPaint'
+import beautify from 'js-beautify'
+import CodeIcon from '@mui/icons-material/Code'
 import { INPUT_FORMAT_HTML_LABEL } from '../utils/constants'
 import { useEditorContext } from '../context/EditorContext'
 import { useAppContext } from '../context/AppContext'
 import { StyledIconButton } from './InputIconButton'
 import { Tooltip } from '@mui/material'
 import { logError } from '../utils/logError'
-import prettier from 'prettier/standalone'
-import parserHtml from 'prettier/plugins/html'
-import parserPostcss from 'prettier/plugins/postcss'
 
 const InputFormatHTML = () => {
   const { html, setHtml } = useEditorContext()
@@ -19,14 +17,11 @@ const InputFormatHTML = () => {
       return
     }
     try {
-      const formattedHtml = await prettier.format(html, {
-        parser: 'html',
-        plugins: [parserHtml, parserPostcss],
-        printWidth: 120,
-        tabWidth: 1,
-        useTabs: false,
-        bracketSameLine: true,
-        singleAttributePerLine: false,
+      const formattedHtml = beautify.html(html, {
+        indent_size: 1,
+        max_preserve_newlines: 1,
+        preserve_newlines: true,
+        wrap_line_length: 120,
       })
 
       setHtml(formattedHtml)
@@ -38,7 +33,7 @@ const InputFormatHTML = () => {
     <>
       <Tooltip title={INPUT_FORMAT_HTML_LABEL}>
         <StyledIconButton onClick={handleClick} aria-label={INPUT_FORMAT_HTML_LABEL}>
-          <FormatPaintIcon />
+          <CodeIcon />
         </StyledIconButton>
       </Tooltip>
     </>
