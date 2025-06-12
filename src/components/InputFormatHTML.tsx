@@ -30,13 +30,11 @@ const InputFormatHTML = () => {
     }
   }
   return (
-    <>
-      <Tooltip title={INPUT_FORMAT_HTML_LABEL}>
-        <StyledIconButton onClick={handleClick} aria-label={INPUT_FORMAT_HTML_LABEL}>
-          <CodeIcon />
-        </StyledIconButton>
-      </Tooltip>
-    </>
+    <Tooltip title={INPUT_FORMAT_HTML_LABEL}>
+      <StyledIconButton onClick={handleClick} aria-label={INPUT_FORMAT_HTML_LABEL}>
+        <CodeIcon />
+      </StyledIconButton>
+    </Tooltip>
   )
 }
 export default InputFormatHTML
