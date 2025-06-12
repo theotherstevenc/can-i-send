@@ -18,6 +18,7 @@ import usePreferredTheme from './utils/usePreferredTheme'
 import Authenticator from './components/Authenticator'
 import InputLockFile from './components/InputLockFile'
 import FontSizeControls from './components/FontSizeControls'
+import InputFormatHTML from './components/InputFormatHTML'
 
 function App() {
   const theme = usePreferredTheme()
@@ -35,6 +36,7 @@ function App() {
               <InputSenderSettings />
             </Box>
             <Box sx={inputActionsStyles}>
+              <InputFormatHTML />
               <FontSizeControls />
               <InputLockFile />
               <InputToggleEditorTheme />
