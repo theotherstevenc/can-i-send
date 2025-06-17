@@ -3,7 +3,7 @@ import CodeIcon from '@mui/icons-material/Code'
 import { INPUT_FORMAT_HTML_LABEL } from '../utils/constants'
 import { useEditorContext } from '../context/EditorContext'
 import { useAppContext } from '../context/AppContext'
-import { StyledIconButton } from './InputIconButton'
+import { StyledIconButton } from './StyledIconButton'
 import { Tooltip } from '@mui/material'
 import { logError } from '../utils/logError'
 

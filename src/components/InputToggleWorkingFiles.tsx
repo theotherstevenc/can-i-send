@@ -1,7 +1,7 @@
 import { db } from '../firebase'
 import { Tooltip } from '@mui/material'
 import { useAppContext } from '../context/AppContext'
-import { StyledIconButton } from './InputIconButton'
+import { StyledIconButton } from './StyledIconButton'
 import { updateFirestoreDoc } from '../utils/updateFirestoreDoc'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { logError } from '../utils/logError'
