@@ -64,8 +64,5 @@
     "vite": "^6.3.5",
     "vite-plugin-html": "^3.2.2",
     "vitest": "^3.1.4"
-  },
-  "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "4.6.1"
   }
 }
