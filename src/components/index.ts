@@ -1,4 +1,5 @@
 export { default as Authenticator } from './Authenticator'
+export { default as EditorActions } from './EditorActions'
 export { default as EditorContainer } from './EditorContainer'
 export { default as EditorSelectorButtons } from './EditorSelectorButtons'
 export { default as EditorSendButton } from './EditorSendButton'
