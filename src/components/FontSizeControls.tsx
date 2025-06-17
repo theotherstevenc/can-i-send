@@ -1,4 +1,3 @@
-import React from 'react'
 import TextIncreaseIcon from '@mui/icons-material/TextIncrease'
 import TextDecreaseIcon from '@mui/icons-material/TextDecrease'
 import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore'
@@ -7,7 +6,7 @@ import { StyledIconButton } from './InputIconButton'
 import { Tooltip } from '@mui/material'
 import { EDITOR_DECREASE_FONT_SIZE_LABEL, EDITOR_DEFAULT_FONT_SIZE, EDITOR_INCREASE_FONT_SIZE_LABEL, EDITOR_RESET_FONT_SIZE_LABEL } from '../utils/constants'
 
-const FontSizeControls: React.FC = () => {
+const FontSizeControls = () => {
   const { editorFontSize, setEditorFontSize } = useEditorContext()
 
   const increase = () => setEditorFontSize(editorFontSize + 1)

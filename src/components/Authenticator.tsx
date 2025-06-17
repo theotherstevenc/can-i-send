@@ -11,7 +11,7 @@ import LogoutIcon from '@mui/icons-material/Logout'
 import LoginIcon from '@mui/icons-material/Login'
 import CloseIcon from '@mui/icons-material/Close'
 
-export const Authenticator = () => {
+const Authenticator = () => {
   const auth = getAuth()
   const { user } = useAppContext()
   const { setHtml, setText, setAmp, setWorkingFileID, setWorkingFileName, setFiles } = useEditorContext()
