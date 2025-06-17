@@ -6,7 +6,7 @@ vi.mock('@mui/material', () => ({
 
 import { useMediaQuery } from '@mui/material'
 import { darkTheme, lightTheme } from '../../styles/global.theme'
-import usePreferredTheme from '../usePreferredTheme'
+import { usePreferredTheme } from '../usePreferredTheme'
 
 describe('usePreferredTheme', () => {
   beforeEach(() => {

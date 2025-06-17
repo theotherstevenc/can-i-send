@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { beforeEach, describe, it, expect, vi } from 'vitest'
-import { Authenticator } from '../Authenticator'
+import { Authenticator } from '../../components'
 import { AppContextProps, EditorContextProps } from '../../interfaces'
 import * as AppContext from '../../context/AppContext'
 import * as EditorContext from '../../context/EditorContext'
