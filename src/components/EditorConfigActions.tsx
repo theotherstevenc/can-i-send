@@ -1,5 +1,5 @@
 import { Box } from '@mui/material'
-import { inputActionsStyles } from '../styles/global.styles'
+import { inputActionsStyles, inputConfigStyles, inputSenderSettingsStyles } from '../styles/global.styles'
 import {
   Authenticator,
   FontSizeControls,
@@ -8,13 +8,21 @@ import {
   InputFileUpload,
   InputFormatHTML,
   InputLockFile,
+  InputMarkupSettings,
+  InputSenderSettings,
   InputToggleEditorTheme,
   InputToggleWorkingFiles,
   InputUpdateFiles,
 } from '../components'
 
-const EditorActions = () => {
-  return (
+const EditorConfigActions = () => (
+  <Box sx={inputConfigStyles}>
+    <Box>
+      <InputMarkupSettings />
+    </Box>
+    <Box sx={inputSenderSettingsStyles}>
+      <InputSenderSettings />
+    </Box>
     <Box sx={inputActionsStyles}>
       <InputFormatHTML />
       <FontSizeControls />
@@ -27,7 +35,7 @@ const EditorActions = () => {
       <InputFileUpload />
       <Authenticator />
     </Box>
-  )
-}
+  </Box>
+)
 
-export default EditorActions
+export default EditorConfigActions
