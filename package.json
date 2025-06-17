@@ -35,8 +35,8 @@
     "js-beautify": "^1.15.4",
     "mailparser": "^3.7.3",
     "nodemailer": "^7.0.3",
-    "react": "^18",
-    "react-dom": "^18",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "react-hotkeys-hook": "^5.1.0",
     "react-split": "^2.0.14",
     "react-tag-input-component": "^2.0.2"
