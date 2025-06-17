@@ -7,7 +7,7 @@ import { useEditorContext } from '../context/EditorContext'
 import { useRef } from 'react'
 import { logError } from '../utils/logError'
 import { createNewFile } from '../utils/createNewFile'
-import { StyledIconButton } from './InputIconButton'
+import { StyledIconButton } from './StyledIconButton'
 import { BTN_UPLOAD_LABEL } from '../utils/constants'
 
 const VisuallyHiddenInput = styled('input')({

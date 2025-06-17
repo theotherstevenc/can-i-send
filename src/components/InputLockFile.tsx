@@ -1,7 +1,7 @@
 import { db } from '../firebase'
 import { Tooltip } from '@mui/material'
 import { useEditorContext } from '../context/EditorContext'
-import { StyledIconButton } from './InputIconButton'
+import { StyledIconButton } from './StyledIconButton'
 import { updateFirestoreDoc } from '../utils/updateFirestoreDoc'
 import { logError } from '../utils/logError'
 import { INPUT_LOCK_FILE_LABEL_LOCK, INPUT_LOCK_FILE_LABEL_UNLOCK } from '../utils/constants'

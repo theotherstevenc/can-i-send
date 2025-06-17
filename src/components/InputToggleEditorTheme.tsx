@@ -1,7 +1,7 @@
 import { db } from '../firebase'
 import { Tooltip } from '@mui/material'
 import { useAppContext } from '../context/AppContext'
-import { StyledIconButton } from './InputIconButton'
+import { StyledIconButton } from './StyledIconButton'
 import { updateFirestoreDoc } from '../utils/updateFirestoreDoc'
 import { logError } from '../utils/logError'
 import { TOGGLE_BTN_DARK_MODE, TOGGLE_BTN_LIGHT_MODE } from '../utils/constants'

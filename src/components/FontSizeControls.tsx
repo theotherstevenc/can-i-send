@@ -2,7 +2,7 @@ import TextIncreaseIcon from '@mui/icons-material/TextIncrease'
 import TextDecreaseIcon from '@mui/icons-material/TextDecrease'
 import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore'
 import { useEditorContext } from '../context/EditorContext'
-import { StyledIconButton } from './InputIconButton'
+import { StyledIconButton } from './StyledIconButton'
 import { Tooltip } from '@mui/material'
 import { EDITOR_DECREASE_FONT_SIZE_LABEL, EDITOR_DEFAULT_FONT_SIZE, EDITOR_INCREASE_FONT_SIZE_LABEL, EDITOR_RESET_FONT_SIZE_LABEL } from '../utils/constants'
 
