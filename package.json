@@ -1,7 +1,7 @@
 {
   "name": "can-i-send",
   "private": true,
-  "version": "4.4.26",
+  "version": "4.4.27",
   "type": "module",
   "engines": {
     "node": "22.x",
@@ -38,8 +38,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-hotkeys-hook": "^5.1.0",
-    "react-split": "^2.0.14",
-    "react-tag-input-component": "^2.0.2"
+    "react-split": "^2.0.14"
   },
   "devDependencies": {
     "@eslint/js": "^9.29.0",
