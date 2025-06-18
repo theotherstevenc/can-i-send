@@ -65,7 +65,7 @@ export interface AppContextProps {
   subject: string
   setSubject: (subject: string) => void
   emailAddresses: string[]
-  setEmailAddresses: (emailAddresses: string[]) => void
+  setEmailAddresses: React.Dispatch<React.SetStateAction<string[]>>
   inputSenderSettings: SenderSettings
   setInputSenderSettings: React.Dispatch<React.SetStateAction<SenderSettings>>
   hideWorkingFiles: boolean
