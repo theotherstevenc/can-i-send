@@ -3,9 +3,12 @@ import { useAppContext } from '../context/AppContext'
 import { updateFirestoreDoc } from '../utils/updateFirestoreDoc'
 import { Box, TextField } from '@mui/material'
 import { logError } from '../utils/logError'
-import { INPUT_EMAIL_LIST_SUBJECT_LINE_SPLIT_SIZES_DEFAULT, INPUT_EMAIL_LIST_SUBJECT_LINE_SPLIT_SIZES_STORAGE_KEY } from '../utils/constants'
+import {
+  INPUT_EMAIL_LIST_SUBJECT_LINE_SPLIT_SIZES_DEFAULT,
+  INPUT_EMAIL_LIST_SUBJECT_LINE_SPLIT_SIZES_STORAGE_KEY,
+} from '../utils/constants'
 import Split from 'react-split'
-import PillCollection from './PillCollection/PillCollection'
+import InputChips from './InputChips'
 import usePersistentValue from '../utils/usePersistentValue'
 
 const COLLECTION = 'config'
@@ -13,7 +16,10 @@ const DOCUMENT = 'editorSettings'
 
 const InputEmailListSubjectLine = () => {
   const { subject, setSubject, emailAddresses, setEmailAddresses } = useAppContext()
-  const [sizes, setSizes] = usePersistentValue(INPUT_EMAIL_LIST_SUBJECT_LINE_SPLIT_SIZES_STORAGE_KEY, INPUT_EMAIL_LIST_SUBJECT_LINE_SPLIT_SIZES_DEFAULT)
+  const [sizes, setSizes] = usePersistentValue(
+    INPUT_EMAIL_LIST_SUBJECT_LINE_SPLIT_SIZES_STORAGE_KEY,
+    INPUT_EMAIL_LIST_SUBJECT_LINE_SPLIT_SIZES_DEFAULT
+  )
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSubject(e.target.value)
@@ -42,7 +48,11 @@ const InputEmailListSubjectLine = () => {
     <>
       <Box className='split-container'>
         <Split className='split-component' sizes={sizes} onDragEnd={setSizes}>
-          <PillCollection pillValues={emailAddresses} setPillValues={setEmailAddresses} onChange={handleEmailAddressesChange} />
+          <InputChips
+            chipValues={emailAddresses}
+            setChipValues={setEmailAddresses}
+            onChange={handleEmailAddressesChange}
+          />
           <TextField
             id='subject'
             className='full-height'
