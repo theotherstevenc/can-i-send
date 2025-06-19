@@ -5,7 +5,7 @@ import { Box, TextField } from '@mui/material'
 import { logError } from '../utils/logError'
 import { INPUT_EMAIL_LIST_SUBJECT_LINE_SPLIT_SIZES_DEFAULT, INPUT_EMAIL_LIST_SUBJECT_LINE_SPLIT_SIZES_STORAGE_KEY } from '../utils/constants'
 import Split from 'react-split'
-import PillCollection from './PillCollection'
+import PillCollection from './PillCollection/PillCollection'
 import usePersistentValue from '../utils/usePersistentValue'
 
 const COLLECTION = 'config'
