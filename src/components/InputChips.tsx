@@ -128,8 +128,8 @@ const InputChips: React.FC<InputChipsProps> = ({ chipValues, setChipValues, onCh
 
   return (
     <StyledStack direction='row' spacing={1}>
-      {chipValues.map((chipItem, index) => (
-        <ChipItem key={index} value={chipItem} onDelete={handleDelete} />
+      {chipValues.map((chipItem) => (
+        <ChipItem key={chipItem} value={chipItem} onDelete={handleDelete} />
       ))}
       <TextField inputRef={inputRef} onChange={handleInputChange} value={inputValue} onKeyDown={handleKeyDown} />
     </StyledStack>
