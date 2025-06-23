@@ -8,7 +8,7 @@ import {
   INPUT_EMAIL_LIST_SUBJECT_LINE_SPLIT_SIZES_STORAGE_KEY,
 } from '../utils/constants'
 import Split from 'react-split'
-import InputChips from './InputChips'
+import { InputChips } from 'mui-input-chips'
 import usePersistentValue from '../utils/usePersistentValue'
 
 const COLLECTION = 'config'
