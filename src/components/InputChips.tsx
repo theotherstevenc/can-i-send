@@ -5,7 +5,6 @@ import Chip from '@mui/material/Chip'
 import ClearIcon from '@mui/icons-material/Clear'
 
 const FOCUS_OUTLINE_COLOR = '#1976d2'
-const FOCUS_SHADOW_OPACITY = '25'
 
 const StyledStack = styled(Stack)(({ theme }) => ({
   padding: theme.spacing(0.5),
@@ -19,8 +18,8 @@ const StyledStack = styled(Stack)(({ theme }) => ({
   alignContent: 'center',
   transition: theme.transitions.create(['border-color', 'box-shadow']),
   '&:focus-within': {
+    borderWidth: 1,
     borderColor: theme.palette.primary.main,
-    boxShadow: `0 0 0 2px ${theme.palette.primary.main}${FOCUS_SHADOW_OPACITY}`,
   },
   '& .MuiTextField-root': {
     flex: 1,
