@@ -1,10 +1,9 @@
 import React, { useRef, useState } from 'react'
 import { TextField, styled } from '@mui/material'
+import { FOCUS_OUTLINE_COLOR } from '../utils/constants'
 import Stack from '@mui/material/Stack'
 import Chip from '@mui/material/Chip'
 import ClearIcon from '@mui/icons-material/Clear'
-
-const FOCUS_OUTLINE_COLOR = '#1976d2'
 
 const StyledStack = styled(Stack)(({ theme }) => ({
   padding: theme.spacing(0.5),
@@ -18,8 +17,8 @@ const StyledStack = styled(Stack)(({ theme }) => ({
   alignContent: 'center',
   transition: theme.transitions.create(['border-color', 'box-shadow']),
   '&:focus-within': {
-    borderWidth: 1,
-    borderColor: theme.palette.primary.main,
+    outline: `2px solid ${FOCUS_OUTLINE_COLOR}`,
+    zIndex: 1,
   },
   '& .MuiTextField-root': {
     flex: 1,
