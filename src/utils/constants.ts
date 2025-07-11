@@ -30,6 +30,7 @@ export const EDITOR_OPTION_HTML = 'html'
 export const EDITOR_OPTION_TEXT = 'text'
 export const EDITOR_WORKSPACE_PREVIEW_SPLIT_SIZES_DEFAULT = [50, 50]
 export const EDITOR_WORKSPACE_PREVIEW_SPLIT_SIZES_STORAGE_KEY = 'EditorWorkspacePreviewSplitSizes'
+export const FOCUS_OUTLINE_COLOR = '#90caf9'
 export const INPUT_EMAIL_LIST_SUBJECT_LINE_SPLIT_SIZES_DEFAULT = [50, 50]
 export const INPUT_EMAIL_LIST_SUBJECT_LINE_SPLIT_SIZES_STORAGE_KEY = 'InputEmailListSubjectLineSplitSizes'
 export const INPUT_FORMAT_HTML_LABEL = 'Format HTML'
