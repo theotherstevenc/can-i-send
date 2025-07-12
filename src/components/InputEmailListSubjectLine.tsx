@@ -6,6 +6,8 @@ import { logError } from '../utils/logError'
 import {
   INPUT_EMAIL_LIST_SUBJECT_LINE_SPLIT_SIZES_DEFAULT,
   INPUT_EMAIL_LIST_SUBJECT_LINE_SPLIT_SIZES_STORAGE_KEY,
+  SUBJECT_LINE_INPUT_LABEL,
+  SUBJECT_LINE_INPUT_LABEL_NON_THREADED,
 } from '../utils/constants'
 import Split from 'react-split'
 import InputChips from './InputChips'
@@ -15,7 +17,7 @@ const COLLECTION = 'config'
 const DOCUMENT = 'editorSettings'
 
 const InputEmailListSubjectLine = () => {
-  const { subject, setSubject, emailAddresses, setEmailAddresses } = useAppContext()
+  const { isPreventThreadingEnabled, subject, setSubject, emailAddresses, setEmailAddresses } = useAppContext()
   const [sizes, setSizes] = usePersistentValue(
     INPUT_EMAIL_LIST_SUBJECT_LINE_SPLIT_SIZES_STORAGE_KEY,
     INPUT_EMAIL_LIST_SUBJECT_LINE_SPLIT_SIZES_DEFAULT
@@ -57,7 +59,7 @@ const InputEmailListSubjectLine = () => {
             id='subject'
             className='full-height'
             variant='outlined'
-            label='subject line'
+            label={isPreventThreadingEnabled ? SUBJECT_LINE_INPUT_LABEL_NON_THREADED : SUBJECT_LINE_INPUT_LABEL}
             value={subject}
             size='small'
             onBlur={handleBlur}
