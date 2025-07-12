@@ -8,7 +8,7 @@ import ClearIcon from '@mui/icons-material/Clear'
 const StyledStack = styled(Stack)(({ theme }) => ({
   padding: theme.spacing(0.5),
   borderRadius: theme.shape.borderRadius,
-  border: `1px solid ${theme.palette.divider}`,
+  border: `1px solid ${theme.palette.action.disabled}`,
   alignItems: 'center',
   flexWrap: 'wrap',
   rowGap: theme.spacing(1),
