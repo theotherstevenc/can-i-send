@@ -15,10 +15,13 @@ const StyledStack = styled(Stack)(({ theme }) => ({
   columnGap: theme.spacing(0),
   display: 'flex',
   alignContent: 'center',
-  transition: theme.transitions.create(['border-color', 'box-shadow']),
+  '&:hover': {
+    borderColor: theme.palette.text.primary,
+  },
   '&:focus-within': {
     outline: `2px solid ${FOCUS_OUTLINE_COLOR}`,
     zIndex: 1,
+    borderColor: theme.palette.primary.main,
   },
   '& .MuiTextField-root': {
     flex: 1,

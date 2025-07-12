@@ -28,6 +28,8 @@ export const inputSenderSettingsStyles = {
 
 export const inputActionsStyles = {
   display: 'flex',
+  flexWrap: 'wrap',
+  justifyContent: 'right',
   alignItems: 'center',
   gap: '0.175rem',
 }
