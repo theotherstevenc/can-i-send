@@ -14,6 +14,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [isPreventThreadingEnabled, setIsPreventThreadingEnabled] = useState(false)
   const [hideWorkingFiles, setHideWorkingFiles] = useState<boolean>(true)
   const [isDarkMode, setIsDarkMode] = useState(false)
+  const [isPreviewDarkMode, setIsPreviewDarkMode] = useState(false)
   const [activeEditor, setActiveEditor] = useState('')
   const [subject, setSubject] = useState<string>('')
   const [emailAddresses, setEmailAddresses] = useState<string[]>([])
@@ -40,6 +41,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       setIsWordWrapEnabled(false)
       setIsPreventThreadingEnabled(false)
       setIsDarkMode(false)
+      setIsPreviewDarkMode(false)
       setHideWorkingFiles(true)
       setActiveEditor('')
       setEmailAddresses([])
@@ -59,12 +61,28 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       (doc) => {
         const data = doc.data()
         if (data) {
-          const { subject, host, port, username, pass, from, isMinifyEnabled, isWordWrapEnabled, isPreventThreadingEnabled, activeEditor, emailAddresses, hideWorkingFiles, isDarkMode } = data
+          const {
+            subject,
+            host,
+            port,
+            username,
+            pass,
+            from,
+            isMinifyEnabled,
+            isWordWrapEnabled,
+            isPreventThreadingEnabled,
+            activeEditor,
+            emailAddresses,
+            hideWorkingFiles,
+            isDarkMode,
+            isPreviewDarkMode,
+          } = data
           setSubject(subject)
           setIsMinifyEnabled(isMinifyEnabled)
           setIsWordWrapEnabled(isWordWrapEnabled)
           setIsPreventThreadingEnabled(isPreventThreadingEnabled)
           setIsDarkMode(isDarkMode)
+          setIsPreviewDarkMode(isPreviewDarkMode)
           setHideWorkingFiles(hideWorkingFiles)
           setActiveEditor(activeEditor)
           setEmailAddresses(emailAddresses)
@@ -100,6 +118,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setHideWorkingFiles,
         isDarkMode,
         setIsDarkMode,
+        isPreviewDarkMode,
+        setIsPreviewDarkMode,
         user,
       }}>
       {children}

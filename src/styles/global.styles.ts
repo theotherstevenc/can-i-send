@@ -1,10 +1,11 @@
-export const workspacePreviewIframeStyles = {
+export const workspacePreviewIframeStyles = (isDarkMode: boolean) => ({
   width: '100%',
   height: '100%',
   border: 'none',
   overflow: 'hidden',
   display: 'block',
-}
+  colorScheme: isDarkMode ? 'dark' : 'light',
+})
 
 export const workspaceEditorStyles = {
   display: 'flex',
