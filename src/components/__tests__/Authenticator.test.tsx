@@ -30,6 +30,8 @@ const mockAppContext: AppContextProps = {
   setHideWorkingFiles: vi.fn(),
   isDarkMode: false,
   setIsDarkMode: vi.fn(),
+  isPreviewDarkMode: false,
+  setIsPreviewDarkMode: vi.fn(),
   user: null,
 }
 
