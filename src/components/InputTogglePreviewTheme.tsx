@@ -21,7 +21,7 @@ const InputTogglePreviewTheme = () => {
       await updateFirestoreDoc(db, COLLECTION, DOCUMENT, firestoreObj)
       setIsPreviewDarkMode(!isPreviewDarkMode)
     } catch (error) {
-      logError('Failed to toggle editor theme:', 'InputTogglePreviewTheme', error)
+      logError('Failed to toggle preview theme:', 'InputTogglePreviewTheme', error)
     }
   }
 
