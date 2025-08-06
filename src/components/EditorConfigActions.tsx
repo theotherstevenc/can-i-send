@@ -11,6 +11,7 @@ import {
   InputMarkupSettings,
   InputSenderSettings,
   InputToggleEditorTheme,
+  InputTogglePreviewTheme,
   InputToggleWorkingFiles,
   InputUpdateFiles,
 } from '../components'
@@ -24,10 +25,11 @@ const EditorConfigActions = () => (
       <InputSenderSettings />
     </Box>
     <Box sx={inputActionsStyles}>
+      <InputToggleEditorTheme />
+      <InputTogglePreviewTheme />
       <InputFormatHTML />
       <FontSizeControls />
       <InputLockFile />
-      <InputToggleEditorTheme />
       <InputToggleWorkingFiles />
       <InputCreateNewFile />
       <InputUpdateFiles />

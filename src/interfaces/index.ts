@@ -72,5 +72,7 @@ export interface AppContextProps {
   setHideWorkingFiles: React.Dispatch<React.SetStateAction<boolean>>
   isDarkMode: boolean
   setIsDarkMode: React.Dispatch<React.SetStateAction<boolean>>
+  isPreviewDarkMode: boolean
+  setIsPreviewDarkMode: React.Dispatch<React.SetStateAction<boolean>>
   user: User | null
 }

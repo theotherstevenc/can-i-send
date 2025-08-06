@@ -25,13 +25,24 @@ import forceIframeReflow from '../utils/forceIframeReflow'
 import Split from 'react-split'
 
 const EditorWorkspacePreview = () => {
-  const { html, setHtml, text, setText, amp, setAmp, workingFileID, deletedWorkingFileID, files, editorFontSize } = useEditorContext()
-  const { isDarkMode, isMinifyEnabled, isWordWrapEnabled, activeEditor } = useAppContext()
+  const { html, setHtml, text, setText, amp, setAmp, workingFileID, deletedWorkingFileID, files, editorFontSize } =
+    useEditorContext()
+  const { isDarkMode, isPreviewDarkMode, isMinifyEnabled, isWordWrapEnabled, activeEditor } = useAppContext()
 
   const iframeRef = useRef<HTMLIFrameElement>(null)
-  const [sizes, setSizes] = usePersistentValue(EDITOR_WORKSPACE_PREVIEW_SPLIT_SIZES_STORAGE_KEY, EDITOR_WORKSPACE_PREVIEW_SPLIT_SIZES_DEFAULT)
+  const [sizes, setSizes] = usePersistentValue(
+    EDITOR_WORKSPACE_PREVIEW_SPLIT_SIZES_STORAGE_KEY,
+    EDITOR_WORKSPACE_PREVIEW_SPLIT_SIZES_DEFAULT
+  )
 
-  const getEditorsConfig = (html: string, setHtml: (html: string) => void, text: string, setText: (text: string) => void, amp: string, setAmp: (amp: string) => void) => [
+  const getEditorsConfig = (
+    html: string,
+    setHtml: (html: string) => void,
+    text: string,
+    setText: (text: string) => void,
+    amp: string,
+    setAmp: (amp: string) => void
+  ) => [
     {
       type: EDITOR_OPTION_HTML,
       language: 'html',
@@ -137,7 +148,16 @@ const EditorWorkspacePreview = () => {
         </Box>
         <Box>
           {editors.map((editor) => {
-            return activeEditor === editor.type && <iframe ref={iframeRef} style={workspacePreviewIframeStyles} key={editor.type} srcDoc={getSanitizedValue(editor)} />
+            return (
+              activeEditor === editor.type && (
+                <iframe
+                  ref={iframeRef}
+                  style={workspacePreviewIframeStyles(isPreviewDarkMode)}
+                  key={editor.type}
+                  srcDoc={getSanitizedValue(editor)}
+                />
+              )
+            )
           })}
         </Box>
       </Split>
